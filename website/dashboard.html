@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron Haven — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+
+    <aside class="sidebar">
+      <div class="profile-section">
+        <img src="" alt="Profile Photo">
+        <h3>(NAME)</h3>
+        <p>Member since: (YEAR)</p>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="#dashboard" class="active">Dashboard</a></li>
+          <li><a href="#treinos">Workout History</a></li>
+          <li><a href="#plano-alimentar">Nutrition Plan</a></li>
+          <li><a href="#configuracoes">Manage Account</a></li>
+          <li><a href="#logout">Sign Out</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+
+      <header class="top-header">
+        <h1>Welcome, (NAME)!</h1>
+        <p>Today is a great day to train.</p>
+      </header>
+
+      <section class="stats-grid">
+
+        <article class="stat-card">
+          <h3>Total Workouts</h3>
+          <p class="stat-value">(No. WORKOUTS)</p>
+          <small>This month: +5 vs last month</small>
+        </article>
+
+        <article class="stat-card">
+          <h3>Active Time</h3>
+          <p class="stat-value">(No. HOURS)</p>
+          <small>Average X h per session</small>
+        </article>
+
+        <article class="stat-card">
+          <h3>Estimated Calories</h3>
+          <p class="stat-value">(ESTIMATED)</p>
+          <small>Goal: 80% complete</small>
+        </article>
+
+        <article class="stat-card">
+          <h3>Weekly Frequency</h3>
+          <p class="stat-value">4 / 7 days</p>
+        </article>
+
+      </section>
+
+      <section class="details-section">
+
+        <div class="chart-container">
+          <h2>Progress Over Time</h2>
+          <canvas id="evolutionChart"></canvas>
+        </div>
+
+        <div class="recent-activity">
+          <h2>Recent Activity</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Workout Type</th>
+                <th>Duration</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>1h 10min</td>
+                <td><span class="tag-complete">Completed</span></td>
+              </tr>
+              <tr>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>45min</td>
+                <td><span class="tag-complete">Completed</span></td>
+              </tr>
+              <tr>
+                <td>18/10/2024</td>
+                <td>Upper Body</td>
+                <td>1h 05min</td>
+                <td><span class="tag-incomplete">Pending</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+    </main>
+
+  </div>
+
+</body>
+</html>

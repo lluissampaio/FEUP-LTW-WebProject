@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iron Haven — Register</title>
+  <meta name="description" content="Create your Iron Haven membership account." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+  <!--NAV-->
+  <header class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">IRON HAVEN</a>
+      <nav class="nav__links" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="classes.html">Classes</a></li>
+          <li><a href="trainers.html">Trainers</a></li>
+          <li><a href="#pricing">Membership</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="login.html" class="btn btn--nav">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!--REGISTER SECTION-->
+    <section class="register">
+      <div class="register__card">
+
+        <h1 class="register__title">Join us</h1>
+        <p class="register__subtitle">Create your account</p>
+
+        <form class="register__form" id="register-form" action="#" method="post">
+
+          <div class="register__field">
+            <label for="register-name" class="register__label">Full Name</label>
+            <input type="text" id="register-name" name="name" class="register__input"
+              placeholder="João Paulo" required autocomplete="name" />
+          </div>
+
+          <div class="register__field">
+            <label for="register-email" class="register__label">Email</label>
+            <input type="email" id="register-email" name="email" class="register__input"
+              placeholder="your@email.com" required autocomplete="email" />
+          </div>
+
+          <div class="register__field">
+            <label for="register-password" class="register__label">Password</label>
+            <input type="password" id="register-password" name="password" class="register__input"
+              placeholder="••••••••" required autocomplete="new-password" />
+          </div>
+
+          <div class="register__field">
+            <label for="register-confirm" class="register__label">Confirm Password</label>
+            <input type="password" id="register-confirm" name="confirm_password" class="register__input"
+              placeholder="••••••••" required autocomplete="new-password" />
+          </div>
+
+          <button type="submit" id="register-submit" class="btn btn--register">Create Account</button>
+        </form>
+
+        <div class="register__divider">
+          <span>or</span>
+        </div>
+
+        <p class="register__login">
+          Already have an account? <a href="login.html" class="register__login-link">Sign In</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!--FOOTER-->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-logo">IRON HAVEN</span>
+      <p class="footer-copy">© 2024 Iron Haven — Private Members Only</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="#pricing">Membership</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+
+</html>
