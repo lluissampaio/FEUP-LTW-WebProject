@@ -1,0 +1,159 @@
+/* =========================================================
+   REGISTER PAGE — page-specific styles
+   Depends on: style.css (variables + components)
+   ========================================================= */
+
+/* ---- REGISTER SECTION ---- */
+
+.register {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  background-color: var(--color-bg);
+}
+
+.register__card {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  padding: 56px 48px;
+}
+
+.register__title {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.register__subtitle {
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--color-muted);
+  margin-bottom: 40px;
+}
+
+/* ---- FORM ---- */
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.register__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.register__label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.register__input {
+  background-color: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.register__input::placeholder {
+  color: var(--color-border);
+}
+
+.register__input:focus {
+  border-color: var(--color-accent);
+}
+
+/* ---- SUBMIT BUTTON ---- */
+
+.btn--register {
+  width: 100%;
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius);
+  margin-top: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.btn--register:hover {
+  background-color: var(--color-accent);
+}
+
+/* ---- DIVIDER ---- */
+
+.register__divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 32px 0 24px;
+}
+
+.register__divider::before,
+.register__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+.register__divider span {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--color-muted);
+}
+
+/* ---- SIGN IN LINK ---- */
+
+.register__login {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.register__login-link {
+  color: var(--color-accent);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.register__login-link:hover {
+  border-color: var(--color-accent);
+}
+
+/* ---- RESPONSIVE ---- */
+
+@media (max-width: 768px) {
+  .register__card {
+    padding: 40px 24px;
+  }
+
+  .register__title {
+    font-size: 36px;
+  }
+}
