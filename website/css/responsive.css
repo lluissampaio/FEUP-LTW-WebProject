@@ -5,11 +5,11 @@
 @media (max-width: 768px) {
 
   /* Header — hide nav links, keep logo + join */
-  .header-inner {
+  .nav__inner {
     gap: 0;
   }
 
-  .site-nav {
+  .nav__links {
     display: none;
   }
 
