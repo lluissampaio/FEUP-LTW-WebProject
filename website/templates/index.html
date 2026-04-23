@@ -4,22 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iron Haven — Private Members Gym</title>
-
-  <!-- Google Fonts -->
+  <meta name="description" content="Iron Haven — Elite training and uncompromised privacy for private members.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/layout.css">
-  <link rel="stylesheet" href="../css/responsive.css">
-
+  <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 
-  <!-- ============================
-       HEADER
-       ============================ -->
+  <!-- HEADER -->
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
@@ -36,15 +29,13 @@
     </div>
   </header>
 
-  <!-- ============================
-       HERO
-       ============================ -->
+  <!-- HERO -->
   <section class="hero" id="home" aria-labelledby="hero-heading">
     <div class="hero-inner">
       <p class="hero-eyebrow">New York · Lisbon · Porto · Viseu</p>
       <h1 class="hero-heading" id="hero-heading">The Haven<br>You Deserve.</h1>
       <p class="hero-sub">Elite training. Uncompromised privacy. A private membership for those who demand discretion and excellence.</p>
-      <button class="btn-primary" type="button">REQUEST MEMBERSHIP</button>
+      <a href="register.html" class="btn-primary">REQUEST MEMBERSHIP</a>
       <div class="hero-locations" aria-label="Locations">
         <span class="location-badge">New York</span>
         <span class="location-badge">Lisbon</span>
@@ -56,9 +47,7 @@
 
   <hr class="divider">
 
-  <!-- ============================
-       STATS
-       ============================ -->
+  <!-- STATS -->
   <section class="stats" aria-label="Key numbers">
     <div class="section-inner">
       <div class="stats-grid">
@@ -82,9 +71,7 @@
     </div>
   </section>
 
-  <!-- ============================
-       SERVICES
-       ============================ -->
+  <!-- SERVICES -->
   <section class="services" id="services" aria-labelledby="services-heading">
     <div class="section-inner">
       <p class="section-label">02 — Facilities</p>
@@ -116,9 +103,7 @@
     </div>
   </section>
 
-  <!-- ============================
-       TESTIMONIALS
-       ============================ -->
+  <!-- TESTIMONIALS -->
   <section class="testimonials" aria-labelledby="testimonials-heading">
     <div class="section-inner">
       <p class="section-label">03 — Members</p>
@@ -150,16 +135,13 @@
     </div>
   </section>
 
-  <!-- ============================
-       PRICING
-       ============================ -->
+  <!-- PRICING -->
   <section class="pricing" id="pricing" aria-labelledby="pricing-heading">
     <div class="section-inner">
       <p class="section-label">04 — Membership</p>
       <h2 class="section-heading" id="pricing-heading">Choose Your Plan</h2>
       <div class="pricing-grid">
 
-        <!-- Essential -->
         <article class="pricing-card">
           <p class="pricing-plan-label">Plan 01</p>
           <h3 class="pricing-plan-name">Essential</h3>
@@ -172,10 +154,9 @@
             <li>Access to one location</li>
             <li>Member app access</li>
           </ul>
-          <a href="#" class="btn-outline">Apply Now</a>
+          <a href="register.html" class="btn-outline">Apply Now</a>
         </article>
 
-        <!-- Premium (featured) -->
         <article class="pricing-card pricing-card--featured">
           <p class="pricing-plan-label">Plan 02 — Most Popular</p>
           <h3 class="pricing-plan-name">Premium</h3>
@@ -189,10 +170,9 @@
             <li>Guest privileges (2/month)</li>
             <li>Priority class booking</li>
           </ul>
-          <a href="#" class="btn-primary">Apply Now</a>
+          <a href="register.html" class="btn-primary">Apply Now</a>
         </article>
 
-        <!-- Elite -->
         <article class="pricing-card">
           <p class="pricing-plan-label">Plan 03</p>
           <h3 class="pricing-plan-name">Elite</h3>
@@ -207,25 +187,23 @@
             <li>Invite-only members events</li>
             <li>Nutritionist consultation</li>
           </ul>
-          <a href="#" class="btn-outline">Apply Now</a>
+          <a href="register.html" class="btn-outline">Apply Now</a>
         </article>
 
       </div>
     </div>
   </section>
 
-  <!-- ============================
-       FOOTER
-       ============================ -->
+  <!-- FOOTER -->
   <footer class="site-footer" id="contact" role="contentinfo">
     <div class="footer-inner">
       <span class="footer-logo">IRON HAVEN</span>
       <p class="footer-copy">© 2024 Iron Haven — Private Members Only</p>
       <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="#home">Home</a>
-        <a href="#services">Facilities</a>
-        <a href="#pricing">Membership</a>
-        <a href="#contact">Contact</a>
+        <a href="index.html">Home</a>
+        <a href="index.html#services">Facilities</a>
+        <a href="index.html#pricing">Membership</a>
+        <a href="index.html#contact">Contact</a>
       </nav>
     </div>
   </footer>

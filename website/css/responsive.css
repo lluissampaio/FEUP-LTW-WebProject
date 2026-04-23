@@ -13,6 +13,13 @@
     display: none;
   }
 
+  /* Footer — stack vertically */
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
   /* Hero */
   .hero {
     padding: 72px 24px 64px;
@@ -20,6 +27,11 @@
 
   .hero-heading {
     font-size: 56px;
+  }
+
+  /* Section headings */
+  .section-heading {
+    font-size: 36px;
   }
 
   /* Stats — stack vertically */
@@ -58,15 +70,36 @@
     gap: 2px;
   }
 
-  /* Section headings */
-  .section-heading {
+  /* Register */
+  .register__card {
+    padding: 40px 24px;
+  }
+
+  .register__title {
     font-size: 36px;
   }
 
-  /* Footer — stack vertically */
-  .footer-inner {
+  /* Dashboard */
+  .dashboard-container {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+
+  .main-content {
+    padding: 24px;
+  }
+
+  .dashboard__stats {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .details-section {
+    flex-direction: column;
   }
 }

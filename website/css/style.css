@@ -122,6 +122,13 @@ ul {
   color: var(--color-accent);
 }
 
+/* Makes any button span the full width of its container */
+.btn--block {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
 /* --- Card --- */
 .card {
   background-color: var(--color-bg-card);
@@ -149,4 +156,27 @@ ul {
 .divider {
   border: none;
   border-top: 1px solid var(--color-border);
+}
+
+/* --- Status tags --- */
+.tag-complete {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  padding: 2px 8px;
+  border-radius: var(--radius);
+}
+
+.tag-incomplete {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+  padding: 2px 8px;
+  border-radius: var(--radius);
 }

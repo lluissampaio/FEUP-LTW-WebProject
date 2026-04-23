@@ -4,18 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iron Haven — Dashboard</title>
+  <meta name="description" content="Your Iron Haven member dashboard.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/layout.css">
-  <link rel="stylesheet" href="../css/responsive.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 
   <div class="dashboard-container">
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="profile-section">
         <img src="" alt="Profile Photo">
@@ -23,17 +22,18 @@
         <p>Member since: (YEAR)</p>
       </div>
 
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" aria-label="Dashboard navigation">
         <ul>
           <li><a href="#dashboard" class="active">Dashboard</a></li>
-          <li><a href="#treinos">Workout History</a></li>
-          <li><a href="#plano-alimentar">Nutrition Plan</a></li>
-          <li><a href="#configuracoes">Manage Account</a></li>
-          <li><a href="#logout">Sign Out</a></li>
+          <li><a href="#workouts">Workout History</a></li>
+          <li><a href="#nutrition">Nutrition Plan</a></li>
+          <li><a href="#account">Manage Account</a></li>
+          <li><a href="index.html">Sign Out</a></li>
         </ul>
       </nav>
     </aside>
 
+    <!-- MAIN -->
     <main class="main-content">
 
       <header class="top-header">
@@ -41,7 +41,8 @@
         <p>Today is a great day to train.</p>
       </header>
 
-      <section class="stats-grid">
+      <!-- STATS -->
+      <section class="dashboard__stats" aria-label="Your statistics">
 
         <article class="stat-card">
           <h3>Total Workouts</h3>
@@ -68,7 +69,8 @@
 
       </section>
 
-      <section class="details-section">
+      <!-- DETAILS -->
+      <section class="details-section" aria-label="Progress and activity">
 
         <div class="chart-container">
           <h2>Progress Over Time</h2>
@@ -80,10 +82,10 @@
           <table>
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Workout Type</th>
-                <th>Duration</th>
-                <th>Status</th>
+                <th scope="col">Date</th>
+                <th scope="col">Workout Type</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -110,6 +112,7 @@
         </div>
 
       </section>
+
     </main>
 
   </div>
