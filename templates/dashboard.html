@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iron Haven — Dashboard</title>
+  <title>Dashboard</title>
   <meta name="description" content="Your Iron Haven member dashboard.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,19 +12,36 @@
 </head>
 <body>
 
-  <div class="dashboard">
+  <header class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">IRON HAVEN</a>
+      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true">
+      <label for="nav-toggle-state" class="nav__toggle" aria-label="Toggle navigation menu">&#9776;</label>
+      <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="classes.html">Classes</a></li>
+          <li><a href="trainers.html">Trainers</a></li>
+          <li><a href="#pricing">Membership</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="register.html" class="btn btn--nav">Join</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main class="dashboard">
 
-    <!-- SIDEBAR -->
     <aside class="dashboard__sidebar" aria-label="Member sidebar">
       <div class="profile">
-        <div class="profile__photo" aria-hidden="true"></div>
+        <img src="profile.jpg" alt="Profile photo" class="profile__photo" aria-hidden="true"></img>
         <p class="profile__name">Member Name</p>
         <p class="profile__since">Member since 2026</p>
       </div>
 
       <nav class="sidebar-nav" aria-label="Dashboard navigation">
         <ul class="sidebar-nav__list">
-          <li><a href="#dashboard" class="sidebar-nav__link sidebar-nav__link--active">Dashboard</a></li>
+          <li><a href="dashboard.html" class="sidebar-nav__link sidebar-nav__link--active">Dashboard</a></li>
           <li><a href="#workouts" class="sidebar-nav__link">Workout History</a></li>
           <li><a href="#nutrition" class="sidebar-nav__link">Nutrition Plan</a></li>
           <li><a href="#account" class="sidebar-nav__link">Manage Account</a></li>
@@ -33,15 +50,13 @@
       </nav>
     </aside>
 
-    <!-- MAIN -->
-    <main class="dashboard__main">
+    <section class="dashboard__main">
 
       <header class="dashboard__header">
         <h1>Welcome back</h1>
         <p>Today is a great day to train.</p>
       </header>
 
-      <!-- STATS -->
       <section class="dashboard__stats" aria-label="Your statistics">
 
         <article class="stat-card">
@@ -70,15 +85,14 @@
 
       </section>
 
-      <!-- DETAILS -->
       <section class="dashboard__details" aria-label="Progress and activity">
 
-        <div class="chart">
+        <figure class="chart">
           <h2 class="chart__title">Progress Over Time</h2>
           <canvas class="chart__canvas" id="evolutionChart" role="img" aria-label="Workout progress chart">
             Your progress chart is currently unavailable.
           </canvas>
-        </div>
+        </figure>
 
         <div class="activity">
           <h2 class="activity__title">Recent Activity</h2>
@@ -118,9 +132,22 @@
 
       </section>
 
-    </main>
+    </section>
 
-  </div>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="site-footer__inner">
+      <span class="site-footer__logo">IRON HAVEN</span>
+      <p class="site-footer__copy">© 2026 Iron Haven — Private Members Only</p>
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="#services">Facilities</a>
+        <a href="#pricing">Membership</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
 
 </body>
 </html>
