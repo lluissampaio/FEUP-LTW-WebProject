@@ -1,8 +1,0 @@
-/* =========================================================
-   MAIN — imports all stylesheets in correct layer order
-   HTML files only need to link this one file.
-   ========================================================= */
-
-@import url('style.css');
-@import url('layout.css');
-@import url('responsive.css');
