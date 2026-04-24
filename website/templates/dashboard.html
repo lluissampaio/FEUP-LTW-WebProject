@@ -12,32 +12,32 @@
 </head>
 <body>
 
-  <div class="dashboard-container">
+  <div class="dashboard">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="profile-section">
-        <img src="" alt="Profile Photo">
-        <h3>(NAME)</h3>
-        <p>Member since: (YEAR)</p>
+    <aside class="dashboard__sidebar" aria-label="Member sidebar">
+      <div class="profile">
+        <div class="profile__photo" aria-hidden="true"></div>
+        <p class="profile__name">Member Name</p>
+        <p class="profile__since">Member since 2026</p>
       </div>
 
       <nav class="sidebar-nav" aria-label="Dashboard navigation">
-        <ul>
-          <li><a href="#dashboard" class="active">Dashboard</a></li>
-          <li><a href="#workouts">Workout History</a></li>
-          <li><a href="#nutrition">Nutrition Plan</a></li>
-          <li><a href="#account">Manage Account</a></li>
-          <li><a href="index.html">Sign Out</a></li>
+        <ul class="sidebar-nav__list">
+          <li><a href="#dashboard" class="sidebar-nav__link sidebar-nav__link--active">Dashboard</a></li>
+          <li><a href="#workouts" class="sidebar-nav__link">Workout History</a></li>
+          <li><a href="#nutrition" class="sidebar-nav__link">Nutrition Plan</a></li>
+          <li><a href="#account" class="sidebar-nav__link">Manage Account</a></li>
+          <li><a href="index.html" class="sidebar-nav__link">Sign Out</a></li>
         </ul>
       </nav>
     </aside>
 
     <!-- MAIN -->
-    <main class="main-content">
+    <main class="dashboard__main">
 
-      <header class="top-header">
-        <h1>Welcome, (NAME)!</h1>
+      <header class="dashboard__header">
+        <h1>Welcome back</h1>
         <p>Today is a great day to train.</p>
       </header>
 
@@ -45,70 +45,75 @@
       <section class="dashboard__stats" aria-label="Your statistics">
 
         <article class="stat-card">
-          <h3>Total Workouts</h3>
-          <p class="stat-value">(No. WORKOUTS)</p>
-          <small>This month: +5 vs last month</small>
+          <p class="stat-card__label">Total Workouts</p>
+          <p class="stat-card__value">42</p>
+          <p class="stat-card__note">This month: +5 vs last month</p>
         </article>
 
         <article class="stat-card">
-          <h3>Active Time</h3>
-          <p class="stat-value">(No. HOURS)</p>
-          <small>Average X h per session</small>
+          <p class="stat-card__label">Active Time</p>
+          <p class="stat-card__value">38h</p>
+          <p class="stat-card__note">Average 1h per session</p>
         </article>
 
         <article class="stat-card">
-          <h3>Estimated Calories</h3>
-          <p class="stat-value">(ESTIMATED)</p>
-          <small>Goal: 80% complete</small>
+          <p class="stat-card__label">Estimated Calories</p>
+          <p class="stat-card__value">18,200</p>
+          <p class="stat-card__note">Goal: 80% complete</p>
         </article>
 
         <article class="stat-card">
-          <h3>Weekly Frequency</h3>
-          <p class="stat-value">4 / 7 days</p>
+          <p class="stat-card__label">Weekly Frequency</p>
+          <p class="stat-card__value">4 / 7</p>
+          <p class="stat-card__note">days this week</p>
         </article>
 
       </section>
 
       <!-- DETAILS -->
-      <section class="details-section" aria-label="Progress and activity">
+      <section class="dashboard__details" aria-label="Progress and activity">
 
-        <div class="chart-container">
-          <h2>Progress Over Time</h2>
-          <canvas id="evolutionChart"></canvas>
+        <div class="chart">
+          <h2 class="chart__title">Progress Over Time</h2>
+          <canvas class="chart__canvas" id="evolutionChart" role="img" aria-label="Workout progress chart">
+            Your progress chart is currently unavailable.
+          </canvas>
         </div>
 
-        <div class="recent-activity">
-          <h2>Recent Activity</h2>
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Workout Type</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>N/A</td>
-                <td>N/A</td>
-                <td>1h 10min</td>
-                <td><span class="tag-complete">Completed</span></td>
-              </tr>
-              <tr>
-                <td>N/A</td>
-                <td>N/A</td>
-                <td>45min</td>
-                <td><span class="tag-complete">Completed</span></td>
-              </tr>
-              <tr>
-                <td>18/10/2024</td>
-                <td>Upper Body</td>
-                <td>1h 05min</td>
-                <td><span class="tag-incomplete">Pending</span></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="activity">
+          <h2 class="activity__title">Recent Activity</h2>
+          <div class="activity__scroll">
+            <table class="activity__table">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Workout Type</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>22/10/2026</td>
+                  <td>Lower Body</td>
+                  <td>1h 10min</td>
+                  <td><span class="tag tag--complete">Completed</span></td>
+                </tr>
+                <tr>
+                  <td>20/10/2026</td>
+                  <td>Mobility</td>
+                  <td>45min</td>
+                  <td><span class="tag tag--complete">Completed</span></td>
+                </tr>
+                <tr>
+                  <td>18/10/2026</td>
+                  <td>Upper Body</td>
+                  <td>1h 05min</td>
+                  <td><span class="tag tag--pending">Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </section>

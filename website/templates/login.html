@@ -16,14 +16,16 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <nav class="nav__links" aria-label="Primary navigation">
+      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true">
+      <label for="nav-toggle-state" class="nav__toggle" aria-label="Toggle navigation menu">&#9776;</label>
+      <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="classes.html">Classes</a></li>
           <li><a href="trainers.html">Trainers</a></li>
           <li><a href="index.html#pricing">Membership</a></li>
           <li><a href="index.html#contact">Contact</a></li>
-          <li><a href="register.html" class="btn btn--nav">JOIN</a></li>
+          <li><a href="register.html" class="btn btn--nav">Join</a></li>
         </ul>
       </nav>
     </div>
@@ -31,44 +33,44 @@
 
   <!-- LOGIN -->
   <main>
-    <section class="login" aria-labelledby="login-heading">
-      <div class="login__card">
+    <section class="auth" aria-labelledby="login-heading">
+      <div class="auth__card">
 
-        <h1 class="login__title" id="login-heading">Welcome Back</h1>
-        <p class="login__subtitle">Sign in to continue your journey</p>
+        <h1 class="auth__title" id="login-heading">Welcome Back</h1>
+        <p class="auth__subtitle">Sign in to continue your journey</p>
 
-        <form class="login__form" id="login-form" action="#" method="post">
+        <form class="auth__form" id="login-form" action="#" method="post">
 
-          <div class="login__field">
-            <label for="login-email" class="login__label">Email</label>
-            <input type="email" id="login-email" name="email" class="login__input"
+          <div class="auth__field">
+            <label for="login-email" class="auth__label">Email</label>
+            <input type="email" id="login-email" name="email" class="auth__input"
               placeholder="your@email.com" required autocomplete="email">
           </div>
 
-          <div class="login__field">
-            <label for="login-password" class="login__label">Password</label>
-            <input type="password" id="login-password" name="password" class="login__input"
-              placeholder="••••••••" required autocomplete="current-password">
+          <div class="auth__field">
+            <label for="login-password" class="auth__label">Password</label>
+            <input type="password" id="login-password" name="password" class="auth__input"
+              placeholder="Your password" required autocomplete="current-password">
           </div>
 
-          <div class="login__options">
-            <label class="login__remember">
+          <div class="auth__options">
+            <label class="auth__remember">
               <input type="checkbox" id="login-remember" name="remember">
               <span>Remember me</span>
             </label>
-            <a href="#" class="login__forgot">Forgot password?</a>
+            <a href="#" class="auth__forgot">Forgot password?</a>
           </div>
 
-          <button type="submit" class="btn-primary btn--block">Sign In</button>
+          <button type="submit" class="btn btn--primary btn--block">Sign In</button>
 
         </form>
 
-        <div class="login__divider">
+        <div class="auth__divider">
           <span>or</span>
         </div>
 
-        <p class="login__register">
-          Don't have an account? <a href="register.html" class="login__register-link">Create one</a>
+        <p class="auth__alt">
+          Don't have an account? <a href="register.html" class="auth__alt-link">Create one</a>
         </p>
 
       </div>
@@ -76,11 +78,11 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="site-footer" id="contact" role="contentinfo">
-    <div class="footer-inner">
-      <span class="footer-logo">IRON HAVEN</span>
-      <p class="footer-copy">© 2024 Iron Haven — Private Members Only</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
+  <footer class="site-footer" id="contact">
+    <div class="site-footer__inner">
+      <span class="site-footer__logo">IRON HAVEN</span>
+      <p class="site-footer__copy">© 2026 Iron Haven — Private Members Only</p>
+      <nav class="site-footer__nav" aria-label="Footer navigation">
         <a href="index.html">Home</a>
         <a href="index.html#services">Facilities</a>
         <a href="index.html#pricing">Membership</a>

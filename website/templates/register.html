@@ -16,14 +16,16 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <nav class="nav__links" aria-label="Primary navigation">
+      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true">
+      <label for="nav-toggle-state" class="nav__toggle" aria-label="Toggle navigation menu">&#9776;</label>
+      <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="classes.html">Classes</a></li>
           <li><a href="trainers.html">Trainers</a></li>
           <li><a href="index.html#pricing">Membership</a></li>
           <li><a href="index.html#contact">Contact</a></li>
-          <li><a href="login.html" class="btn btn--nav">LOGIN</a></li>
+          <li><a href="login.html" class="btn btn--nav">Login</a></li>
         </ul>
       </nav>
     </div>
@@ -31,48 +33,48 @@
 
   <!-- REGISTER -->
   <main>
-    <section class="register" aria-labelledby="register-heading">
-      <div class="register__card">
+    <section class="auth" aria-labelledby="register-heading">
+      <div class="auth__card">
 
-        <h1 class="register__title" id="register-heading">Join us</h1>
-        <p class="register__subtitle">Create your account</p>
+        <h1 class="auth__title" id="register-heading">Join us</h1>
+        <p class="auth__subtitle">Create your account</p>
 
-        <form class="register__form" id="register-form" action="#" method="post">
+        <form class="auth__form" id="register-form" action="#" method="post">
 
-          <div class="register__field">
-            <label for="register-name" class="register__label">Full Name</label>
-            <input type="text" id="register-name" name="name" class="register__input"
+          <div class="auth__field">
+            <label for="register-name" class="auth__label">Full Name</label>
+            <input type="text" id="register-name" name="name" class="auth__input"
               placeholder="João Paulo" required autocomplete="name">
           </div>
 
-          <div class="register__field">
-            <label for="register-email" class="register__label">Email</label>
-            <input type="email" id="register-email" name="email" class="register__input"
+          <div class="auth__field">
+            <label for="register-email" class="auth__label">Email</label>
+            <input type="email" id="register-email" name="email" class="auth__input"
               placeholder="your@email.com" required autocomplete="email">
           </div>
 
-          <div class="register__field">
-            <label for="register-password" class="register__label">Password</label>
-            <input type="password" id="register-password" name="password" class="register__input"
-              placeholder="••••••••" required autocomplete="new-password">
+          <div class="auth__field">
+            <label for="register-password" class="auth__label">Password</label>
+            <input type="password" id="register-password" name="password" class="auth__input"
+              placeholder="Your password" required autocomplete="new-password" minlength="8">
           </div>
 
-          <div class="register__field">
-            <label for="register-confirm" class="register__label">Confirm Password</label>
-            <input type="password" id="register-confirm" name="confirm_password" class="register__input"
-              placeholder="••••••••" required autocomplete="new-password">
+          <div class="auth__field">
+            <label for="register-confirm" class="auth__label">Confirm Password</label>
+            <input type="password" id="register-confirm" name="confirm_password" class="auth__input"
+              placeholder="Repeat your password" required autocomplete="new-password" minlength="8">
           </div>
 
-          <button type="submit" class="btn-primary btn--block">Create Account</button>
+          <button type="submit" class="btn btn--primary btn--block">Create Account</button>
 
         </form>
 
-        <div class="register__divider">
+        <div class="auth__divider">
           <span>or</span>
         </div>
 
-        <p class="register__login">
-          Already have an account? <a href="login.html" class="register__login-link">Sign In</a>
+        <p class="auth__alt">
+          Already have an account? <a href="login.html" class="auth__alt-link">Sign in</a>
         </p>
 
       </div>
@@ -80,11 +82,11 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="site-footer" id="contact" role="contentinfo">
-    <div class="footer-inner">
-      <span class="footer-logo">IRON HAVEN</span>
-      <p class="footer-copy">© 2024 Iron Haven — Private Members Only</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
+  <footer class="site-footer" id="contact">
+    <div class="site-footer__inner">
+      <span class="site-footer__logo">IRON HAVEN</span>
+      <p class="site-footer__copy">© 2026 Iron Haven — Private Members Only</p>
+      <nav class="site-footer__nav" aria-label="Footer navigation">
         <a href="index.html">Home</a>
         <a href="index.html#services">Facilities</a>
         <a href="index.html#pricing">Membership</a>
