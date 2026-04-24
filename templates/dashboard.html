@@ -18,10 +18,10 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true" tabindex="-1">
+      <input type="checkbox" id="nav-toggle-state" class="nav__state">
       <label for="nav-toggle-state" class="nav__toggle">
         <span class="sr-only">Toggle navigation menu</span>
-        &#9776;
+        <span aria-hidden="true">&#9776;</span>
       </label>
       <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
         <ul>
@@ -36,8 +36,8 @@
     </div>
   </header>
 
-  <main class="dashboard">
-  
+  <div class="dashboard">
+
     <aside class="dashboard__sidebar" aria-label="Member sidebar">
       <header class="profile">
         <div class="profile__photo" aria-hidden="true"></div>
@@ -58,7 +58,7 @@
       </nav>
     </aside>
 
-    <section class="dashboard__main">
+    <main class="dashboard__main">
 
       <header class="dashboard__header">
         <h1 id="dashboard-heading">Welcome back</h1>
@@ -142,18 +142,20 @@
           </div>
         </section>
       </section>
-    </section>
-  </main>
+    </main>
+  </div>
 
   <footer class="site-footer" id="contact">
     <div class="site-footer__inner">
       <span class="site-footer__logo">IRON HAVEN</span>
       <p class="site-footer__copy">© 2026 Iron Haven — Private Members Only</p>
       <nav class="site-footer__nav" aria-label="Footer navigation">
-        <a href="index.html">Home</a>
-        <a href="#services">Facilities</a>
-        <a href="#pricing">Membership</a>
-        <a href="#contact">Contact</a>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#services">Facilities</a></li>
+          <li><a href="index.html#pricing">Membership</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
       </nav>
     </div>
   </footer>
