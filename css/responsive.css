@@ -78,7 +78,7 @@
     gap: 28px;
   }
 
-  .nav__links a {
+  .nav__links a:not(.btn) {
     display: inline-flex;
     min-height: auto;
     padding: 0;
@@ -87,7 +87,7 @@
     border-bottom: none;
   }
 
-  .nav__links a:hover {
+  .nav__links a:not(.btn):hover {
     background: transparent;
     color: var(--color-text);
   }
