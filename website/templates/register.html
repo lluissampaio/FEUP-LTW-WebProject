@@ -16,8 +16,8 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true">
-      <label for="nav-toggle-state" class="nav__toggle" aria-label="Toggle navigation menu">&#9776;</label>
+      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-label="Toggle navigation menu">
+      <label for="nav-toggle-state" class="nav__toggle">&#9776;</label>
       <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -39,29 +39,29 @@
         <h1 class="auth__title" id="register-heading">Join us</h1>
         <p class="auth__subtitle">Create your account</p>
 
-        <form class="auth__form" id="register-form" action="#" method="post">
+        <form class="form" id="register-form" action="#" method="post">
 
-          <div class="auth__field">
-            <label for="register-name" class="auth__label">Full Name</label>
-            <input type="text" id="register-name" name="name" class="auth__input"
+          <div class="form__field">
+            <label for="register-name" class="form__label">Full Name</label>
+            <input type="text" id="register-name" name="name" class="form__input"
               placeholder="João Paulo" required autocomplete="name">
           </div>
 
-          <div class="auth__field">
-            <label for="register-email" class="auth__label">Email</label>
-            <input type="email" id="register-email" name="email" class="auth__input"
+          <div class="form__field">
+            <label for="register-email" class="form__label">Email</label>
+            <input type="email" id="register-email" name="email" class="form__input"
               placeholder="your@email.com" required autocomplete="email">
           </div>
 
-          <div class="auth__field">
-            <label for="register-password" class="auth__label">Password</label>
-            <input type="password" id="register-password" name="password" class="auth__input"
+          <div class="form__field">
+            <label for="register-password" class="form__label">Password</label>
+            <input type="password" id="register-password" name="password" class="form__input"
               placeholder="Your password" required autocomplete="new-password" minlength="8">
           </div>
 
-          <div class="auth__field">
-            <label for="register-confirm" class="auth__label">Confirm Password</label>
-            <input type="password" id="register-confirm" name="confirm_password" class="auth__input"
+          <div class="form__field">
+            <label for="register-confirm" class="form__label">Confirm Password</label>
+            <input type="password" id="register-confirm" name="confirm_password" class="form__input"
               placeholder="Repeat your password" required autocomplete="new-password" minlength="8">
           </div>
 

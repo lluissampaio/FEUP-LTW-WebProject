@@ -16,8 +16,8 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true">
-      <label for="nav-toggle-state" class="nav__toggle" aria-label="Toggle navigation menu">&#9776;</label>
+      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-label="Toggle navigation menu">
+      <label for="nav-toggle-state" class="nav__toggle">&#9776;</label>
       <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -31,47 +31,49 @@
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero" id="home" aria-labelledby="hero-heading">
-    <div class="hero__inner">
-      <p class="hero__eyebrow">New York · Lisbon · Porto · Viseu</p>
-      <h1 class="hero__heading" id="hero-heading">The Haven<br>You Deserve.</h1>
-      <p class="hero__sub">Elite training. Uncompromised privacy. A private membership for those who demand discretion and excellence.</p>
-      <a href="register.html" class="btn btn--primary">Request Membership</a>
-      <div class="hero__locations" aria-label="Locations">
-        <span class="hero__badge">New York</span>
-        <span class="hero__badge">Lisbon</span>
-        <span class="hero__badge">Porto</span>
-        <span class="hero__badge">Viseu</span>
-      </div>
-    </div>
-  </section>
+  <main>
 
-  <hr class="divider">
-
-  <!-- STATS -->
-  <section class="stats" aria-label="Key numbers">
-    <div class="section__inner">
-      <div class="stats__grid">
-        <div class="stats__block">
-          <p class="stats__number">4</p>
-          <p class="stats__label">Locations</p>
-        </div>
-        <div class="stats__block">
-          <p class="stats__number">2,400+</p>
-          <p class="stats__label">Members</p>
-        </div>
-        <div class="stats__block">
-          <p class="stats__number">60+</p>
-          <p class="stats__label">Weekly Classes</p>
-        </div>
-        <div class="stats__block">
-          <p class="stats__number">30+</p>
-          <p class="stats__label">Elite Trainers</p>
-        </div>
+    <!-- HERO -->
+    <section class="hero" id="home" aria-labelledby="hero-heading">
+      <div class="hero__inner">
+        <p class="hero__eyebrow">New York · Lisbon · Porto · Viseu</p>
+        <h1 class="hero__heading" id="hero-heading">The Haven<br>You Deserve.</h1>
+        <p class="hero__sub">Elite training. Uncompromised privacy. A private membership for those who demand discretion and excellence.</p>
+        <a href="register.html" class="btn btn--primary">Request Membership</a>
+        <ul class="hero__locations" aria-label="Locations">
+          <li class="hero__badge">New York</li>
+          <li class="hero__badge">Lisbon</li>
+          <li class="hero__badge">Porto</li>
+          <li class="hero__badge">Viseu</li>
+        </ul>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <hr class="divider">
+
+    <!-- STATS -->
+    <section class="stats" aria-label="Key numbers">
+      <div class="section__inner">
+        <dl class="stats__grid">
+          <div class="stats__block">
+            <dt class="stats__label">Locations</dt>
+            <dd class="stats__number">4</dd>
+          </div>
+          <div class="stats__block">
+            <dt class="stats__label">Members</dt>
+            <dd class="stats__number">2,400+</dd>
+          </div>
+          <div class="stats__block">
+            <dt class="stats__label">Weekly Classes</dt>
+            <dd class="stats__number">60+</dd>
+          </div>
+          <div class="stats__block">
+            <dt class="stats__label">Elite Trainers</dt>
+            <dd class="stats__number">30+</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
 
   <!-- SERVICES -->
   <section class="services" id="services" aria-labelledby="services-heading">
@@ -195,6 +197,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- FOOTER -->
   <footer class="site-footer" id="contact">
