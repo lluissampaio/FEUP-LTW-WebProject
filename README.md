@@ -1,14 +1,23 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=23301033&assignment_repo_type=AssignmentRepo)
+# ltw12g06
 
-- index.html
-- classes.html
-- trainers.html
-- register.html
-- equipment.html
-- dashboard.html
+## Projeto LTW 2025/26
 
-1º Delivery
--index.html (Francisco)
--login.html (Ze Joao)
--account.html (Luis)
--style.css (aula)
+### Páginas Implementadas (1ª Entrega)
+
+- **[Página Principal (Index)](templates/index.html):** Landing page com secções de serviços, estatísticas, testemunhos e planos de adesão.
+- **[Registo](templates/register.html):** Formulário de criação de conta para novos membros.
+- **[Login](templates/login.html):** Interface de acesso para membros registados.
+- **[Dashboard](templates/dashboard.html):** Área personalizada para visualização de estatísticas de treino e progresso do membro.
+
+### Arquitetura CSS
+
+- **[main.css](css/main.css):** Gestão de importações e camadas de especificidade.
+- **[style.css](css/style.css):** *Design Tokens* (variáveis), resets e componentes base.
+- **[layout.css](css/layout.css):** Estruturas macro (Flexbox/Grid) e organização espacial.
+- **[responsive.css](css/responsive.css):** Adaptabilidade viewport-dependent (Mobile-first).
+
+
+### Membros do Grupo
+- José Lopes up202406360
+- Francisco Mendes up202407152  
+- Luís Sampaio up202404078
