@@ -175,6 +175,79 @@ ul {
   width: 100%;
 }
 
+/* ---- Forms (reusable across auth, profile, admin, enrollment, etc.) ---- */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form__label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.form__input,
+.form__select,
+.form__textarea {
+  min-height: var(--touch-target);
+  background-color: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form__textarea {
+  min-height: calc(var(--touch-target) * 2.5);
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.form__input::placeholder,
+.form__textarea::placeholder {
+  color: var(--color-border);
+}
+
+.form__input:focus,
+.form__select:focus,
+.form__textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.form__help {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+.form__error {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #e87a5a;
+}
+
+.form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
 /* ---- Tags (status badges) ---- */
 
 .tag {
