@@ -19,10 +19,10 @@
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true" tabindex="-1">
+      <input type="checkbox" id="nav-toggle-state" class="nav__state">
       <label for="nav-toggle-state" class="nav__toggle">
         <span class="sr-only">Toggle navigation menu</span>
-        &#9776;
+        <span aria-hidden="true">&#9776;</span>
       </label>
       <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
         <ul>
@@ -47,7 +47,7 @@
         <p class="hero__sub">Elite training. Uncompromised privacy. A private membership for those who demand discretion
           and excellence.</p>
         <a href="register.html" class="btn btn--primary">Request Membership</a>
-        <ul class="hero__locations">
+        <ul class="hero__locations" aria-label="Locations">
           <li class="hero__badge">New York</li>
           <li class="hero__badge">Lisbon</li>
           <li class="hero__badge">Porto</li>
