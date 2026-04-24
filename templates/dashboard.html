@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Iron Haven — Dashboard</title>
   <meta name="description" content="Your Iron Haven member dashboard.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../css/main.css">
 </head>
+
 <body>
 
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true">
-      <label for="nav-toggle-state" class="nav__toggle" aria-label="Toggle navigation menu">&#9776;</label>
+      <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true" tabindex="-1">
+      <label for="nav-toggle-state" class="nav__toggle">
+        <span class="sr-only">Toggle navigation menu</span>
+        &#9776;
+      </label>
       <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="classes.html">Classes</a></li>
           <li><a href="trainers.html">Trainers</a></li>
-          <li><a href="#pricing">Membership</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="index.html#pricing">Membership</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
           <li><a href="register.html" class="btn btn--nav">Join</a></li>
         </ul>
       </nav>
     </div>
   </header>
-  
-  <main class="dashboard">
 
+  <main class="dashboard">
+  
     <aside class="dashboard__sidebar" aria-label="Member sidebar">
-      <div class="profile">
-        <img src="profile.jpg" alt="Profile photo" class="profile__photo" aria-hidden="true"></img>
+      <header class="profile">
+        <div class="profile__photo" aria-hidden="true"></div>
         <p class="profile__name">Member Name</p>
         <p class="profile__since">Member since 2026</p>
-      </div>
+      </header>
 
       <nav class="sidebar-nav" aria-label="Dashboard navigation">
         <ul class="sidebar-nav__list">
-          <li><a href="dashboard.html" class="sidebar-nav__link sidebar-nav__link--active">Dashboard</a></li>
+          <li><a href="#dashboard" class="sidebar-nav__link sidebar-nav__link--active">Dashboard</a></li>
           <li><a href="#workouts" class="sidebar-nav__link">Workout History</a></li>
           <li><a href="#nutrition" class="sidebar-nav__link">Nutrition Plan</a></li>
           <li><a href="#account" class="sidebar-nav__link">Manage Account</a></li>
-          <li><a href="index.html" class="sidebar-nav__link">Sign Out</a></li>
+          <li>
+            <button type="button" class="sidebar-nav__link sidebar-nav__link--signout">Sign Out</button>
+          </li>
         </ul>
       </nav>
     </aside>
@@ -53,51 +61,55 @@
     <section class="dashboard__main">
 
       <header class="dashboard__header">
-        <h1>Welcome back</h1>
+        <h1 id="dashboard-heading">Welcome back</h1>
         <p>Today is a great day to train.</p>
       </header>
 
       <section class="dashboard__stats" aria-label="Your statistics">
 
-        <article class="stat-card">
-          <p class="stat-card__label">Total Workouts</p>
-          <p class="stat-card__value">42</p>
-          <p class="stat-card__note">This month: +5 vs last month</p>
-        </article>
+        <dl class="stat-card">
+          <dt class="stat-card__label">Total Workouts</dt>
+          <dd class="stat-card__value">42</dd>
+          <dd class="stat-card__note">This month: +5 vs last month</dd>
+        </dl>
 
-        <article class="stat-card">
-          <p class="stat-card__label">Active Time</p>
-          <p class="stat-card__value">38h</p>
-          <p class="stat-card__note">Average 1h per session</p>
-        </article>
+        <dl class="stat-card">
+          <dt class="stat-card__label">Active Time</dt>
+          <dd class="stat-card__value">38h</dd>
+          <dd class="stat-card__note">Average 1h per session</dd>
+        </dl>
 
-        <article class="stat-card">
-          <p class="stat-card__label">Estimated Calories</p>
-          <p class="stat-card__value">18,200</p>
-          <p class="stat-card__note">Goal: 80% complete</p>
-        </article>
+        <dl class="stat-card">
+          <dt class="stat-card__label">Estimated Calories</dt>
+          <dd class="stat-card__value">18,200</dd>
+          <dd class="stat-card__note">Goal: 80% complete</dd>
+        </dl>
 
-        <article class="stat-card">
-          <p class="stat-card__label">Weekly Frequency</p>
-          <p class="stat-card__value">4 / 7</p>
-          <p class="stat-card__note">days this week</p>
-        </article>
+        <dl class="stat-card">
+          <dt class="stat-card__label">Weekly Frequency</dt>
+          <dd class="stat-card__value">4 / 7</dd>
+          <dd class="stat-card__note">days this week</dd>
+        </dl>
 
       </section>
 
       <section class="dashboard__details" aria-label="Progress and activity">
 
-        <figure class="chart">
-          <h2 class="chart__title">Progress Over Time</h2>
-          <canvas class="chart__canvas" id="evolutionChart" role="img" aria-label="Workout progress chart">
-            Your progress chart is currently unavailable.
-          </canvas>
-        </figure>
+        <section class="chart" aria-labelledby="chart-heading">
+          <h2 class="chart__title" id="chart-heading">Progress Over Time</h2>
+          <figure class="chart__figure">
+            <canvas class="chart__canvas" id="evolutionChart" role="img" aria-label="Workout progress chart">
+              Your progress chart is currently unavailable.
+            </canvas>
+            <figcaption class="sr-only">Workout progress over time</figcaption>
+          </figure>
+        </section>
 
-        <div class="activity">
-          <h2 class="activity__title">Recent Activity</h2>
+        <section class="activity" aria-labelledby="activity-heading">
+          <h2 class="activity__title" id="activity-heading">Recent Activity</h2>
           <div class="activity__scroll">
             <table class="activity__table">
+              <caption class="sr-only">Recent workout activity</caption>
               <thead>
                 <tr>
                   <th scope="col">Date</th>
@@ -128,12 +140,9 @@
               </tbody>
             </table>
           </div>
-        </div>
-
+        </section>
       </section>
-
     </section>
-
   </main>
 
   <footer class="site-footer" id="contact">
@@ -150,4 +159,5 @@
   </footer>
 
 </body>
+
 </html>

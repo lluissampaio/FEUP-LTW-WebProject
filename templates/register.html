@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,22 @@
   <meta name="description" content="Create your Iron Haven membership account.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../css/main.css">
 </head>
+
 <body>
+
 
   <header class="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">IRON HAVEN</a>
       <input type="checkbox" id="nav-toggle-state" class="nav__state" aria-hidden="true">
-      <label for="nav-toggle-state" class="nav__toggle" aria-label="Toggle navigation menu">&#9776;</label>
+      <label for="nav-toggle-state" class="nav__toggle">
+        <span class="sr-only">Toggle navigation menu</span>
+        &#9776;
+      </label>
       <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -30,6 +37,7 @@
     </div>
   </header>
 
+
   <main>
     <section class="auth" aria-labelledby="register-heading">
       <div class="auth__card">
@@ -37,29 +45,29 @@
         <h1 class="auth__title" id="register-heading">Join us</h1>
         <p class="auth__subtitle">Create your account</p>
 
-        <form class="auth__form" id="register-form" action="#" method="post">
+        <form class="form" id="register-form" method="post">
 
-          <div class="auth__field">
-            <label for="register-name" class="auth__label">Full Name</label>
-            <input type="text" id="register-name" name="name" class="auth__input"
-              placeholder="João Paulo" required autocomplete="name">
+          <div class="form__field">
+            <label for="register-name" class="form__label">Full Name</label>
+            <input type="text" id="register-name" name="name" class="form__input" placeholder="João Paulo" required
+              autocomplete="name">
           </div>
 
-          <div class="auth__field">
-            <label for="register-email" class="auth__label">Email</label>
-            <input type="email" id="register-email" name="email" class="auth__input"
-              placeholder="your@email.com" required autocomplete="email">
+          <div class="form__field">
+            <label for="register-email" class="form__label">Email</label>
+            <input type="email" id="register-email" name="email" class="form__input" placeholder="your@email.com"
+              required autocomplete="email">
           </div>
 
-          <div class="auth__field">
-            <label for="register-password" class="auth__label">Password</label>
-            <input type="password" id="register-password" name="password" class="auth__input"
+          <div class="form__field">
+            <label for="register-password" class="form__label">Password</label>
+            <input type="password" id="register-password" name="password" class="form__input"
               placeholder="Your password" required autocomplete="new-password" minlength="8">
           </div>
 
-          <div class="auth__field">
-            <label for="register-confirm" class="auth__label">Confirm Password</label>
-            <input type="password" id="register-confirm" name="confirm_password" class="auth__input"
+          <div class="form__field">
+            <label for="register-confirm" class="form__label">Confirm Password</label>
+            <input type="password" id="register-confirm" name="confirm_password" class="form__input"
               placeholder="Repeat your password" required autocomplete="new-password" minlength="8">
           </div>
 
@@ -67,7 +75,7 @@
 
         </form>
 
-        <div class="auth__divider">
+        <div class="auth__divider" role="separator" aria-hidden="true">
           <span>or</span>
         </div>
 
@@ -79,18 +87,22 @@
     </section>
   </main>
 
+
   <footer class="site-footer" id="contact">
     <div class="site-footer__inner">
       <span class="site-footer__logo">IRON HAVEN</span>
       <p class="site-footer__copy">© 2026 Iron Haven — Private Members Only</p>
       <nav class="site-footer__nav" aria-label="Footer navigation">
-        <a href="index.html">Home</a>
-        <a href="index.html#services">Facilities</a>
-        <a href="index.html#pricing">Membership</a>
-        <a href="index.html#contact">Contact</a>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#services">Facilities</a></li>
+          <li><a href="index.html#pricing">Membership</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
       </nav>
     </div>
   </footer>
 
 </body>
+
 </html>
