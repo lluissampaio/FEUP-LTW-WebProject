@@ -1,40 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iron Haven — Dashboard</title>
-  <meta name="description" content="Your Iron Haven member dashboard.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="../css/main.css">
-</head>
-
-<body class="dashboard-page">
-
-  <header class="nav">
-    <div class="nav__inner">
-      <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <input type="checkbox" id="nav-toggle-state" class="nav__state">
-      <label for="nav-toggle-state" class="nav__toggle">
-        <span class="sr-only">Toggle navigation menu</span>
-        <span aria-hidden="true">&#9776;</span>
-      </label>
-      <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="classes.html">Classes</a></li>
-          <li><a href="trainers.html">Trainers</a></li>
-          <li><a href="index.html#pricing">Membership</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
-          <li><a href="register.html" class="btn btn--nav">Join</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<?php
+$page_title       = 'Iron Haven — Dashboard';
+$page_description = 'Your Iron Haven member dashboard.';
+$body_class       = 'dashboard-page';
+include __DIR__ . '/partials/header.php';
+?>
 
   <aside class="sidebar" aria-label="Member sidebar">
     <header class="profile">
@@ -142,21 +111,4 @@
     </section>
   </main>
 
-  <footer class="site-footer" id="contact">
-    <div class="site-footer__inner">
-      <span class="site-footer__logo">IRON HAVEN</span>
-      <p class="site-footer__copy">© 2026 Iron Haven — Private Members Only</p>
-      <nav class="site-footer__nav" aria-label="Footer navigation">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="index.html#services">Facilities</a></li>
-          <li><a href="index.html#pricing">Membership</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </footer>
-
-</body>
-
-</html>
+<?php include __DIR__ . '/partials/footer.php'; ?>

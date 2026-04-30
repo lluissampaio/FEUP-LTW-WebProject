@@ -1,44 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iron Haven — Private Members Gym</title>
-  <meta name="description" content="Iron Haven — Elite training and uncompromised privacy for private members.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Space+Mono:wght@400&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="../css/main.css">
-</head>
-
-<body>
-
-
-  <header class="nav">
-    <div class="nav__inner">
-      <a href="index.html" class="nav__logo">IRON HAVEN</a>
-      <input type="checkbox" id="nav-toggle-state" class="nav__state">
-      <label for="nav-toggle-state" class="nav__toggle">
-        <span class="sr-only">Toggle navigation menu</span>
-        <span aria-hidden="true">&#9776;</span>
-      </label>
-      <nav class="nav__links" id="primary-nav" aria-label="Primary navigation">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="classes.html">Classes</a></li>
-          <li><a href="trainers.html">Trainers</a></li>
-          <li><a href="#pricing">Membership</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="register.html" class="btn btn--nav">Join</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<?php
+$page_title       = 'Iron Haven — Private Members Gym';
+$page_description = 'Iron Haven — Elite training and uncompromised privacy for private members.';
+include __DIR__ . '/partials/header.php';
+?>
 
   <main>
-
 
     <section class="hero" id="home" aria-labelledby="hero-heading">
       <div class="hero__inner">
@@ -46,7 +12,7 @@
         <h1 class="hero__heading" id="hero-heading">The Haven<br>You Deserve.</h1>
         <p class="hero__sub">Elite training. Uncompromised privacy. A private membership for those who demand discretion
           and excellence.</p>
-        <a href="register.html" class="btn btn--primary">Request Membership</a>
+        <a href="register.php" class="btn btn--primary">Request Membership</a>
         <ul class="hero__locations" aria-label="Locations">
           <li class="hero__badge">New York</li>
           <li class="hero__badge">Lisbon</li>
@@ -57,7 +23,6 @@
     </section>
 
     <hr class="divider">
-
 
     <section class="stats" aria-label="Key numbers">
       <div class="section__inner">
@@ -82,7 +47,6 @@
       </div>
     </section>
 
-
     <section class="services" id="services" aria-labelledby="services-heading">
       <div class="section__inner">
         <p class="section__label">02 — Facilities</p>
@@ -94,7 +58,7 @@
             <h3 class="service-card__title">Private Training Suites</h3>
             <p class="service-card__desc">Dedicated one-on-one spaces equipped for every programme. Fully private, fully
               equipped — designed around you and your coach alone.</p>
-            <a href="classes.html" class="service-card__link">Explore suites</a>
+            <a href="classes.php" class="service-card__link">Explore suites</a>
           </article>
 
           <article class="service-card">
@@ -102,7 +66,7 @@
             <h3 class="service-card__title">Recovery &amp; Spa</h3>
             <p class="service-card__desc">Cold plunge, infrared sauna, contrast therapy, and on-demand sports massage.
               Recovery is not optional — it is part of the programme.</p>
-            <a href="classes.html" class="service-card__link">Explore recovery</a>
+            <a href="classes.php" class="service-card__link">Explore recovery</a>
           </article>
 
           <article class="service-card">
@@ -110,13 +74,12 @@
             <h3 class="service-card__title">Members Lounge</h3>
             <p class="service-card__desc">A curated social space for our community. No cameras, no outsiders. Connect
               with peers who share your standard — entirely off the record.</p>
-            <a href="classes.html" class="service-card__link">Explore the lounge</a>
+            <a href="classes.php" class="service-card__link">Explore the lounge</a>
           </article>
 
         </div>
       </div>
     </section>
-
 
     <section class="testimonials" aria-labelledby="testimonials-heading">
       <div class="section__inner">
@@ -152,7 +115,6 @@
       </div>
     </section>
 
-
     <section class="pricing" id="pricing" aria-labelledby="pricing-heading">
       <div class="section__inner">
         <p class="section__label">04 — Membership</p>
@@ -171,7 +133,7 @@
               <li>Access to one location</li>
               <li>Member app access</li>
             </ul>
-            <a href="register.html" class="btn btn--outline">Apply for Essential</a>
+            <a href="register.php" class="btn btn--outline">Apply for Essential</a>
           </article>
 
           <article class="pricing-card pricing-card--featured">
@@ -187,7 +149,7 @@
               <li>Guest privileges (2/month)</li>
               <li>Priority class booking</li>
             </ul>
-            <a href="register.html" class="btn btn--primary">Apply for Premium</a>
+            <a href="register.php" class="btn btn--primary">Apply for Premium</a>
           </article>
 
           <article class="pricing-card">
@@ -204,7 +166,7 @@
               <li>Invite-only members events</li>
               <li>Nutritionist consultation</li>
             </ul>
-            <a href="register.html" class="btn btn--outline">Apply for Elite</a>
+            <a href="register.php" class="btn btn--outline">Apply for Elite</a>
           </article>
 
         </div>
@@ -213,22 +175,4 @@
 
   </main>
 
-
-  <footer class="site-footer" id="contact">
-    <div class="site-footer__inner">
-      <span class="site-footer__logo">IRON HAVEN</span>
-      <p class="site-footer__copy">© 2026 Iron Haven — Private Members Only</p>
-      <nav class="site-footer__nav" aria-label="Footer navigation">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="index.html#services">Facilities</a></li>
-          <li><a href="index.html#pricing">Membership</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </footer>
-
-</body>
-
-</html>
+<?php include __DIR__ . '/partials/footer.php'; ?>

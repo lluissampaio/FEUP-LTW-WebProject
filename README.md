@@ -10,16 +10,16 @@ A partir da raiz do repositório:
 php -S localhost:9000
 ```
 
-Depois abrir [`http://localhost:9000/templates/index.html`](http://localhost:9000/templates/index.html) no navegador.
+Depois abrir [`http://localhost:9000/templates/index.php`](http://localhost:9000/templates/index.php) no navegador.
 
 ### Páginas Implementadas (1ª Entrega)
 
-- **[Página Principal (Index)](templates/index.html):** Landing page com secções de serviços, estatísticas, testemunhos e planos de adesão.
-- **[Classes](templates/classes.html):** Página institucional para o horário de aulas (conteúdo detalhado previsto para a entrega final).
-- **[Trainers](templates/trainers.html):** Página institucional para o perfil dos treinadores (conteúdo detalhado previsto para a entrega final).
-- **[Registo](templates/register.html):** Formulário de criação de conta para novos membros.
-- **[Login](templates/login.html):** Interface de acesso para membros registados.
-- **[Dashboard](templates/dashboard.html):** Área personalizada para visualização de estatísticas de treino e progresso do membro.
+- **[Página Principal (Index)](templates/index.php):** Landing page com secções de serviços, estatísticas, testemunhos e planos de adesão.
+- **[Classes](templates/classes.php):** Página institucional para o horário de aulas (conteúdo detalhado previsto para a entrega final).
+- **[Trainers](templates/trainers.php):** Página institucional para o perfil dos treinadores (conteúdo detalhado previsto para a entrega final).
+- **[Registo](templates/register.php):** Formulário de criação de conta para novos membros.
+- **[Login](templates/login.php):** Interface de acesso para membros registados.
+- **[Dashboard](templates/dashboard.php):** Área personalizada para visualização de estatísticas de treino e progresso do membro.
 
 ### Arquitetura CSS
 
