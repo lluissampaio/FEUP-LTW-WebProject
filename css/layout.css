@@ -629,16 +629,31 @@
   margin-bottom: 40px;
 }
 
-/* ---- DASHBOARD LAYOUT ---- */
+/* ---- DASHBOARD PAGE LAYOUT ----
 
-.dashboard {
-  display: flex;
-  flex-direction: column;
+   Mobile: header → sidebar → main → footer (single column).
+   Desktop layout (sidebar beside main) lives in responsive.css.
+*/
+
+.dashboard-page {
   min-height: 100vh;
+  display: grid;
+  grid-template-areas:
+    "header"
+    "sidebar"
+    "main"
+    "footer";
+  grid-template-rows: auto auto 1fr auto;
 }
 
-.dashboard__sidebar {
-  width: 100%;
+.dashboard-page > .nav         { grid-area: header; }
+.dashboard-page > .sidebar     { grid-area: sidebar; }
+.dashboard-page > .dashboard   { grid-area: main; }
+.dashboard-page > .site-footer { grid-area: footer; }
+
+/* ---- SIDEBAR (member sidebar on dashboard) ---- */
+
+.sidebar {
   background-color: var(--color-bg-card);
   border-bottom: 1px solid var(--color-border);
   display: flex;
@@ -676,16 +691,16 @@
   color: var(--color-muted);
 }
 
-.sidebar-nav {
+.sidebar__nav {
   padding: 20px 0;
 }
 
-.sidebar-nav__list {
+.sidebar__list {
   display: flex;
   flex-direction: column;
 }
 
-.sidebar-nav__link {
+.sidebar__link {
   display: flex;
   align-items: center;
   width: 100%;
@@ -702,35 +717,31 @@
   transition: color 0.2s ease, background-color 0.2s ease;
 }
 
-.sidebar-nav__link:hover {
+.sidebar__link:hover {
   color: var(--color-text);
   background-color: var(--color-bg-alt);
 }
 
-.sidebar-nav__link--active {
+.sidebar__link--active {
   color: var(--color-accent);
   border-left: 2px solid var(--color-accent);
 }
 
-.sidebar-nav__link--signout {
-  background: transparent;
-  border: none;
+.sidebar__link--signout {
   border-top: 1px solid var(--color-border);
   margin-top: 20px;
   padding-top: 24px;
-  width: 100%;
   justify-content: center;
-  cursor: pointer;
-  color: var(--color-muted);
 }
 
-.sidebar-nav__link--signout:hover {
-  color: #e87a5a; /* Tom de vermelho suave para indica o logout */
+.sidebar__link--signout:hover {
+  color: #e87a5a;
   background-color: transparent;
 }
 
-.dashboard__main {
-  flex: 1;
+/* ---- DASHBOARD CONTENT ---- */
+
+.dashboard {
   padding: 32px 24px;
 }
 

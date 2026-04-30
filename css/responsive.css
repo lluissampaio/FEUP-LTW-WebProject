@@ -196,23 +196,26 @@
     padding: 120px 24px;
   }
 
-  /* Dashboard — sidebar + main side by side */
-  .dashboard {
-    flex-direction: row;
+  /* Dashboard — sidebar + main side by side via grid on body */
+  .dashboard-page {
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-areas:
+      "header  header"
+      "sidebar main"
+      "footer  footer";
+    grid-template-rows: auto 1fr auto;
   }
 
-  .dashboard__sidebar {
-    width: var(--sidebar-width);
-    flex-shrink: 0;
-    height: 100vh;
+  .sidebar {
+    height: calc(100vh - var(--nav-height));
     position: sticky;
-    top: 0;
+    top: var(--nav-height);
     overflow-y: auto;
     border-right: 1px solid var(--color-border);
     border-bottom: none;
   }
 
-  .dashboard__main {
+  .dashboard {
     padding: 40px;
   }
 
@@ -269,7 +272,7 @@
   }
 
   /* Dashboard details: chart alongside recent activity */
-  .dashboard__main {
+  .dashboard {
     padding: 48px;
   }
 
