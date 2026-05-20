@@ -83,13 +83,13 @@
     ['q' => 'Can I pause my membership?',                      'a' => 'Yes. Members may pause once per year for up to three months — for travel, recovery, or any reason at all. Your concierge will arrange this without question.'],
   ];
 
-  drawHeader($session, 'membership', 'Membership — Iron Haven', 'APPLY', '#apply');
+  drawHeader($session, 'membership', 'Membership — Iron Haven', 'APPLY', 'contact.php');
   drawPageHero(
     'Membership',
     'Three plans.<br>One standard.',
     'All Iron Haven memberships are by referral. Application is reviewed within seventy-two hours. An interview follows. There is no waiting list — only the right fit.'
   );
-  drawPricing($plans, '#apply');
+  drawPricing($plans, 'contact.php');
   drawCompareTable($features, $columns);
   drawFaq($faqs);
   drawCtaBanner(
