@@ -7,10 +7,10 @@
 A partir da raiz do repositório:
 
 ```bash
-php -S localhost:9000
+php -S localhost:8080
 ```
 
-Depois abrir [`http://localhost:9000/templates/index.php`](http://localhost:9000/templates/index.php) no navegador.
+Depois abrir [`http://localhost:8080/templates/index.php`](http://localhost:8080/templates/index.php) no navegador.
 
 ### Páginas Implementadas (1ª Entrega)
 
