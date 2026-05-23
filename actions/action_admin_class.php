@@ -4,6 +4,9 @@
   require_once(__DIR__ . '/../utils/session.php');
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/class.class.php');
+  require_once(__DIR__ . '/../database/schedule.class.php');
+
+  $validDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
   $session = new Session();
   $session->requireLogin('../pages/login.php');
@@ -32,7 +35,16 @@
         (int)($_POST['location_id'] ?? 0),
         max(1, (int)($_POST['capacity'] ?? 10))
       );
-      $session->addMessage('success', 'Class created.');
+
+      $day      = trim((string)($_POST['schedule_day']      ?? ''));
+      $start    = trim((string)($_POST['schedule_start']    ?? ''));
+      $duration = (int)        ($_POST['schedule_duration'] ?? 0);
+      if ($day !== '' && $start !== '' && $duration > 0 && in_array($day, $validDays, true)) {
+        Schedule::create($db, $id, $day, $start, $duration);
+        $session->addMessage('success', 'Class created with one session.');
+      } else {
+        $session->addMessage('success', 'Class created. Add at least one session for it to appear on the schedule.');
+      }
     } elseif ($action === 'update') {
       $c = GymClass::getClass($db, (int)($_POST['class_id'] ?? 0));
       if (!$c) throw new RuntimeException('Class not found.');
