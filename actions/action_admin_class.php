@@ -1,0 +1,59 @@
+<?php
+  declare(strict_types = 1);
+
+  require_once(__DIR__ . '/../utils/session.php');
+  require_once(__DIR__ . '/../database/connection.db.php');
+  require_once(__DIR__ . '/../database/class.class.php');
+
+  $session = new Session();
+  $session->requireLogin('../pages/login.php');
+  $session->verifyCsrf($_POST['csrf_token'] ?? '', '../pages/admin_classes.php');
+
+  $db   = getDatabaseConnection();
+  $stmt = $db->prepare('SELECT Role FROM User WHERE UserId = ?');
+  $stmt->execute([$session->getId()]);
+  $row  = $stmt->fetch();
+  if (!$row || $row['Role'] !== 'admin') {
+    $session->addMessage('error', 'Admin access required.');
+    header('Location: ../pages/index.php');
+    exit;
+  }
+
+  $action = $_POST['action'] ?? '';
+
+  try {
+    if ($action === 'create') {
+      $id = GymClass::create(
+        $db,
+        trim((string)($_POST['name'] ?? '')),
+        trim((string)($_POST['type'] ?? '')),
+        trim((string)($_POST['description'] ?? '')) ?: null,
+        (int)($_POST['trainer_id']  ?? 0),
+        (int)($_POST['location_id'] ?? 0),
+        max(1, (int)($_POST['capacity'] ?? 10))
+      );
+      $session->addMessage('success', 'Class created.');
+    } elseif ($action === 'update') {
+      $c = GymClass::getClass($db, (int)($_POST['class_id'] ?? 0));
+      if (!$c) throw new RuntimeException('Class not found.');
+      $c->name        = trim((string)($_POST['name'] ?? ''));
+      $c->type        = trim((string)($_POST['type'] ?? ''));
+      $c->description = trim((string)($_POST['description'] ?? '')) ?: null;
+      $c->trainerId   = (int)($_POST['trainer_id']  ?? 0);
+      $c->locationId  = (int)($_POST['location_id'] ?? 0);
+      $c->capacity    = max(1, (int)($_POST['capacity'] ?? 10));
+      $c->save($db);
+      $session->addMessage('success', 'Class updated.');
+    } elseif ($action === 'delete') {
+      GymClass::delete($db, (int)($_POST['class_id'] ?? 0));
+      $session->addMessage('success', 'Class deleted.');
+    } else {
+      $session->addMessage('error', 'Unknown action.');
+    }
+  } catch (Throwable $e) {
+    $session->addMessage('error', $e->getMessage());
+  }
+
+  header('Location: ../pages/admin_classes.php');
+  exit;
+?>

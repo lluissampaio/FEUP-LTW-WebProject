@@ -2,10 +2,23 @@
   declare(strict_types = 1);
 
   require_once(__DIR__ . '/../utils/session.php');
+  require_once(__DIR__ . '/../database/connection.db.php');
+  require_once(__DIR__ . '/../database/notification.class.php');
 
   function navLink(string $href, string $label, string $current, string $slug) : string {
     $active = $current === $slug ? ' class="is-active"' : '';
     return "<a href=\"$href\"$active>$label</a>";
+  }
+
+  function isAdminUser(Session $session) : bool {
+    if (!$session->isLoggedIn()) return false;
+    try {
+      $db = getDatabaseConnection();
+      $stmt = $db->prepare('SELECT Role FROM User WHERE UserId = ?');
+      $stmt->execute([$session->getId()]);
+      $row = $stmt->fetch();
+      return $row && $row['Role'] === 'admin';
+    } catch (Throwable $e) { return false; }
   }
 ?>
 
@@ -34,9 +47,30 @@
         <?= navLink('trainers.php',   'Trainers',   $current, 'trainers') ?>
         <?= navLink('about.php',      'About',      $current, 'about') ?>
         <?= navLink('membership.php', 'Membership', $current, 'membership') ?>
+        <?= navLink('equipment.php', 'Equipment', $current, 'equipment') ?>
         <?= navLink('contact.php',    'Contact',    $current, 'contact') ?>
+        <?php if (isAdminUser($session)) { ?>
+          <?= navLink('admin.php', 'Admin', $current, 'admin') ?>
+        <?php } ?>
+        <?php if (!$session->isLoggedIn()) { ?>
+          <?= navLink('login.php', 'Sign in', $current, 'login') ?>
+        <?php } ?>
       </nav>
-      <a href="<?= htmlspecialchars($ctaHref, ENT_QUOTES, 'UTF-8') ?>" class="nav-cta"><?= htmlspecialchars($ctaLabel, ENT_QUOTES, 'UTF-8') ?></a>
+      <?php if ($session->isLoggedIn()) { ?>
+        <?php
+          $unread = 0;
+          try { $unread = Notification::unreadCount(getDatabaseConnection(), $session->getId()); } catch (Throwable $e) {}
+        ?>
+        <a href="notifications.php" class="nav-bell" aria-label="Notifications">
+          <span aria-hidden="true">&#9788;</span>
+          <?php if ($unread > 0) { ?>
+            <span class="nav-bell-count"><?= (int)$unread ?></span>
+          <?php } ?>
+        </a>
+        <a href="dashboard.php" class="nav-cta"><?= htmlspecialchars($session->getName() ?? 'Member', ENT_QUOTES, 'UTF-8') ?></a>
+      <?php } else { ?>
+        <a href="<?= htmlspecialchars($ctaHref, ENT_QUOTES, 'UTF-8') ?>" class="nav-cta"><?= htmlspecialchars($ctaLabel, ENT_QUOTES, 'UTF-8') ?></a>
+      <?php } ?>
     </div>
   </header>
 
@@ -59,11 +93,12 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <span class="footer-logo">IRON HAVEN</span>
-      <p class="footer-copy">&copy; 2024 Iron Haven &mdash; Private Members Only</p>
+      <p class="footer-copy">&copy; 2026 Iron Haven &mdash; Private Members Only</p>
       <nav class="footer-nav" aria-label="Footer navigation">
         <a href="index.php">Home</a>
         <a href="classes.php">Classes</a>
         <a href="trainers.php">Trainers</a>
+        <a href="equipment.php">Equipment</a>
         <a href="about.php">About</a>
         <a href="membership.php">Membership</a>
         <a href="contact.php">Contact</a>

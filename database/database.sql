@@ -5,6 +5,8 @@
    (bcrypt hash: $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi)
 ********************************************************************************/
 
+DROP TABLE IF EXISTS Notification;
+DROP TABLE IF EXISTS Waitlist;
 DROP TABLE IF EXISTS Review;
 DROP TABLE IF EXISTS Enrollment;
 DROP TABLE IF EXISTS Workout;
@@ -119,6 +121,32 @@ CREATE TABLE Review (
     FOREIGN KEY (ClassId) REFERENCES Class (ClassId) ON DELETE CASCADE
 );
 
+CREATE TABLE Waitlist (
+    WaitlistId  INTEGER       NOT NULL,
+    UserId      INTEGER       NOT NULL,
+    ScheduleId  INTEGER       NOT NULL,
+    Status      NVARCHAR(20)  NOT NULL DEFAULT 'waiting',  -- 'waiting' | 'promoted' | 'cancelled'
+    JoinedAt    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_Waitlist PRIMARY KEY (WaitlistId),
+    CONSTRAINT UQ_Waitlist UNIQUE (UserId, ScheduleId),
+    CONSTRAINT CK_Waitlist_Status CHECK (Status IN ('waiting','promoted','cancelled')),
+    FOREIGN KEY (UserId)     REFERENCES User     (UserId)     ON DELETE CASCADE,
+    FOREIGN KEY (ScheduleId) REFERENCES Schedule (ScheduleId) ON DELETE CASCADE
+);
+
+CREATE TABLE Notification (
+    NotificationId  INTEGER       NOT NULL,
+    UserId          INTEGER       NOT NULL,
+    Type            NVARCHAR(40)  NOT NULL,   -- 'enrollment' | 'cancellation' | 'waitlist' | 'promoted' | 'review' | 'system'
+    Title           NVARCHAR(120) NOT NULL,
+    Message         TEXT          NOT NULL,
+    Link            NVARCHAR(255),
+    ReadFlag        INTEGER       NOT NULL DEFAULT 0,
+    CreatedAt       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_Notification PRIMARY KEY (NotificationId),
+    FOREIGN KEY (UserId) REFERENCES User (UserId) ON DELETE CASCADE
+);
+
 CREATE TABLE Workout (
     WorkoutId        INTEGER       NOT NULL,
     UserId           INTEGER       NOT NULL,
@@ -144,6 +172,9 @@ CREATE INDEX IFK_EnrollmentSchedule  ON Enrollment (ScheduleId);
 CREATE INDEX IFK_EquipmentLocation   ON Equipment  (LocationId);
 CREATE INDEX IFK_ReviewClass         ON Review     (ClassId);
 CREATE INDEX IFK_WorkoutUser         ON Workout    (UserId);
+CREATE INDEX IFK_WaitlistSchedule    ON Waitlist     (ScheduleId);
+CREATE INDEX IFK_WaitlistUser        ON Waitlist     (UserId);
+CREATE INDEX IFK_NotificationUser    ON Notification (UserId);
 
 /*******************************************************************************
    Populate Tables

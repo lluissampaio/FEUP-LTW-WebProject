@@ -92,6 +92,46 @@
       return $stmt->rowCount() > 0;
     }
 
+    /**
+     * Try to auto-promote the first waitlisted user into a freed slot.
+     * Returns the promoted UserId or null if the waitlist is empty / class is full.
+     */
+    public static function promoteFromWaitlist(PDO $db, int $scheduleId) : ?int {
+      require_once(__DIR__ . '/waitlist.class.php');
+
+      $stmt = $db->prepare("
+        SELECT c.Capacity,
+               (SELECT COUNT(*) FROM Enrollment e WHERE e.ScheduleId = s.ScheduleId AND e.Status = 'enrolled') AS Enrolled
+        FROM Schedule s JOIN Class c ON c.ClassId = s.ClassId
+        WHERE s.ScheduleId = ?
+      ");
+      $stmt->execute(array($scheduleId));
+      $row = $stmt->fetch();
+      if (!$row) return null;
+      if ((int)$row['Enrolled'] >= (int)$row['Capacity']) return null;
+
+      $next = Waitlist::nextForSchedule($db, $scheduleId);
+      if ($next === null) return null;
+
+      $db->beginTransaction();
+      try {
+        $existing = self::find($db, $next->userId, $scheduleId);
+        if ($existing) {
+          $stmt = $db->prepare("UPDATE Enrollment SET Status = 'enrolled', EnrolledAt = CURRENT_TIMESTAMP WHERE EnrollmentId = ?");
+          $stmt->execute(array($existing->id));
+        } else {
+          $stmt = $db->prepare("INSERT INTO Enrollment (UserId, ScheduleId, Status) VALUES (?, ?, 'enrolled')");
+          $stmt->execute(array($next->userId, $scheduleId));
+        }
+        Waitlist::markPromoted($db, $next->id);
+        $db->commit();
+        return $next->userId;
+      } catch (Throwable $e) {
+        $db->rollBack();
+        throw $e;
+      }
+    }
+
     public static function getForUser(PDO $db, int $userId, ?string $status = 'enrolled') : array {
       $sql = '
         SELECT EnrollmentId, UserId, ScheduleId, Status, EnrolledAt

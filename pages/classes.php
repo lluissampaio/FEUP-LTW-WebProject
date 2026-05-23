@@ -2,75 +2,60 @@
   declare(strict_types = 1);
 
   require_once(__DIR__ . '/../utils/session.php');
-  $session = new Session();
-
+  require_once(__DIR__ . '/../database/connection.db.php');
+  require_once(__DIR__ . '/../database/class.class.php');
+  require_once(__DIR__ . '/../database/schedule.class.php');
+  require_once(__DIR__ . '/../database/trainer.class.php');
+  require_once(__DIR__ . '/../database/location.class.php');
+  require_once(__DIR__ . '/../database/enrollment.class.php');
+  require_once(__DIR__ . '/../database/waitlist.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/classes.tpl.php');
 
-  $classes = [
-    ['name' => 'Iron Strength',       'desc' => 'Compound barbell work, progressive overload, technique-led.',        'duration' => '60 min', 'level' => 'All levels'],
-    ['name' => 'Conditioning',        'desc' => 'Threshold and zone-two work on assault bikes, rowers, ski-ergs.',    'duration' => '45 min', 'level' => 'All levels'],
-    ['name' => 'Olympic Lifting',     'desc' => 'Clean & jerk, snatch progressions. Coach-led, video-reviewed.',     'duration' => '75 min', 'level' => 'Intermediate +'],
-    ['name' => 'Mobility & Movement', 'desc' => 'Restorative joint work, soft tissue release, breathing drills.',     'duration' => '50 min', 'level' => 'All levels'],
-    ['name' => 'Combat & Boxing',     'desc' => 'Pad work and footwork with former professional boxers.',             'duration' => '60 min', 'level' => 'All levels'],
-    ['name' => 'Pilates Reformer',    'desc' => 'Classical reformer work, small group. Posture, control, breath.',    'duration' => '55 min', 'level' => 'All levels'],
-    ['name' => 'Recovery Lab',        'desc' => 'Sauna, cold plunge, contrast protocol. Coach-supervised.',           'duration' => '90 min', 'level' => 'All levels'],
-    ['name' => 'Private 1:1',         'desc' => 'Programmed sessions with your assigned coach. Suite-based.',         'duration' => '60 min', 'level' => 'By appointment'],
-  ];
+  $session = new Session();
+  $db      = getDatabaseConnection();
 
-  $tabs = ['New York', 'Lisbon', 'Porto', 'Viseu'];
+  $type       = isset($_GET['type'])     ? trim($_GET['type'])     : '';
+  $day        = isset($_GET['day'])      ? trim($_GET['day'])      : '';
+  $trainerId  = isset($_GET['trainer'])  && $_GET['trainer']  !== '' ? (int)$_GET['trainer']  : null;
+  $locationId = isset($_GET['location']) && $_GET['location'] !== '' ? (int)$_GET['location'] : null;
+  $time       = isset($_GET['time'])     ? trim($_GET['time'])     : '';   // 'morning'|'afternoon'|'evening'
 
-  $days = [
-    ['label' => 'Mon · 20', 'slots' => [
-      ['time' => '06:30', 'class' => 'Iron Strength'],
-      ['time' => '12:00', 'class' => 'Conditioning'],
-      ['time' => '18:30', 'class' => 'Olympic Lifting'],
-    ]],
-    ['label' => 'Tue · 21', 'slots' => [
-      ['time' => '07:00', 'class' => 'Mobility'],
-      ['time' => '12:30', 'class' => 'Combat'],
-      ['time' => '19:00', 'class' => 'Pilates Reformer'],
-    ]],
-    ['label' => 'Wed · 22', 'slots' => [
-      ['time' => '06:30', 'class' => 'Iron Strength'],
-      ['time' => '12:00', 'class' => 'Conditioning'],
-      ['time' => '18:00', 'class' => 'Recovery Lab'],
-    ]],
-    ['label' => 'Thu · 23', 'slots' => [
-      ['time' => '07:00', 'class' => 'Mobility'],
-      ['time' => '12:30', 'class' => 'Olympic Lifting'],
-      ['time' => '19:00', 'class' => 'Combat'],
-    ]],
-    ['label' => 'Fri · 24', 'slots' => [
-      ['time' => '06:30', 'class' => 'Iron Strength'],
-      ['time' => '12:00', 'class' => 'Pilates Reformer'],
-      ['time' => '18:00', 'class' => 'Conditioning'],
-    ]],
-    ['label' => 'Sat · 25', 'slots' => [
-      ['time' => '08:00', 'class' => 'Iron Strength'],
-      ['time' => '10:00', 'class' => 'Combat'],
-      ['time' => '11:30', 'class' => 'Mobility'],
-    ]],
-    ['label' => 'Sun · 26', 'slots' => [
-      ['time' => '09:00', 'class' => 'Recovery Lab'],
-      ['time' => '10:30', 'class' => 'Pilates Reformer'],
-    ]],
-  ];
+  $schedules = Schedule::search($db, $type ?: null, $trainerId, $locationId, $day ?: null);
+
+  if ($time !== '') {
+    $schedules = array_values(array_filter($schedules, function($s) use ($time) {
+      $h = (int)substr($s->startTime, 0, 2);
+      if ($time === 'morning')   return $h < 12;
+      if ($time === 'afternoon') return $h >= 12 && $h < 17;
+      if ($time === 'evening')   return $h >= 17;
+      return true;
+    }));
+  }
+
+  $myEnrolled = array();
+  $myWaiting  = array();
+  if ($session->isLoggedIn()) {
+    foreach (Enrollment::getForUser($db, $session->getId(), 'enrolled') as $e) $myEnrolled[$e->scheduleId] = true;
+    foreach (Waitlist::getForUser($db, $session->getId())               as $w) $myWaiting[$w->scheduleId]  = true;
+  }
+
+  $types     = GymClass::getTypes($db);
+  $trainers  = Trainer::getTrainers($db);
+  $locations = Location::getLocations($db);
+  $days      = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  $csrf      = $session->csrfToken();
 
   drawHeader($session, 'classes', 'Classes — Iron Haven');
   drawPageHero(
     'Classes',
     'Train.<br>In private.',
-    'Sixty-plus weekly sessions across strength, conditioning, mobility and recovery. Capped at ten members. Booked through your concierge — never publicly listed.'
+    'Browse our weekly schedule. Capped capacities. Filter by class type, trainer, day or time.'
   );
-  drawClassList($classes);
-  drawSchedule($tabs, $days);
-  drawCtaBanner(
-    'Members book directly with their concierge.',
-    [
-      ['label' => 'Apply',       'href' => 'membership.php', 'style' => 'btn-primary'],
-      ['label' => 'Speak to us', 'href' => 'contact.php',    'style' => 'btn-outline'],
-    ]
-  );
+  drawClassFilters([
+    'type' => $type, 'day' => $day, 'trainer' => $trainerId, 'location' => $locationId, 'time' => $time,
+    'types' => $types, 'trainers' => $trainers, 'locations' => $locations, 'days' => $days,
+  ]);
+  drawScheduleList($schedules, $myEnrolled, $myWaiting, $session->isLoggedIn(), $csrf);
   drawFooter();
 ?>

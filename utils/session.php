@@ -42,5 +42,35 @@
     public function getMessages() : array {
       return $this->messages;
     }
+
+    public function requireLogin(string $redirectTo = '../pages/login.php') : void {
+      if (!$this->isLoggedIn()) {
+        $this->addMessage('error', 'You must be logged in to access this page.');
+        header('Location: ' . $redirectTo);
+        exit();
+      }
+    }
+
+    public function redirectIfLoggedIn(string $redirectTo = 'dashboard.php') : void {
+      if ($this->isLoggedIn()) {
+        header('Location: ' . $redirectTo);
+        exit();
+      }
+    }
+
+    public function csrfToken() : string {
+      if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+      }
+      return $_SESSION['csrf_token'];
+    }
+
+    public function verifyCsrf(string $token, string $redirectTo) : void {
+      if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
+        $this->addMessage('error', 'Invalid CSRF token. Please try again.');
+        header('Location: ' . $redirectTo);
+        exit();
+      }
+    }
   }
 ?>

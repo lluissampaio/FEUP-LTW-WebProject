@@ -1,45 +1,53 @@
-# ltw12g06
+# Iron Haven — ltw12g06
 
 ## Projeto LTW 2025/26
+
+Site de gestão de um ginásio privado. Membros podem navegar e inscrever-se em
+aulas, ver perfis de treinadores, consultar a disponibilidade de equipamento e
+deixar avaliações. Administradores gerem o catálogo de aulas, equipamento e
+contas. Inclui sistema de lista de espera automática e notificações in-app.
 
 ### Como executar localmente
 
 A partir da raiz do repositório:
 
 ```bash
-php -S localhost:8080
+php -S localhost:9000
 ```
 
-Depois abrir [`http://localhost:8080/templates/index.php`](http://localhost:8080/templates/index.php) no navegador.
+Depois abrir [`http://localhost:9000`](http://localhost:9000) no navegador
+(faz redirect para `pages/`).
 
-### Páginas Implementadas (1ª Entrega)
+### Contas de demonstração (password: `password`)
 
-- **[Página Principal (Index)](templates/index.php):** Landing page com secções de serviços, estatísticas, testemunhos e planos de adesão.
-- **[Classes](templates/classes.php):** Página institucional para o horário de aulas (conteúdo detalhado previsto para a entrega final).
-- **[Trainers](templates/trainers.php):** Página institucional para o perfil dos treinadores (conteúdo detalhado previsto para a entrega final).
-- **[Registo](templates/register.php):** Formulário de criação de conta para novos membros.
-- **[Login](templates/login.php):** Interface de acesso para membros registados.
-- **[Dashboard](templates/dashboard.php):** Área personalizada para visualização de estatísticas de treino e progresso do membro.
+| Tipo     | Email                          |
+| -------- | ------------------------------ |
+| Admin    | `admin@ironhaven.com`          |
+| Trainer  | `anika.patel@ironhaven.com`    |
+| Member   | `jordan.miller@example.com`    |
 
-### Arquitetura CSS
-
-Abordagem **mobile-first**, com nomenclatura **BEM** e organização em camadas de especificidade:
-
-- **[main.css](css/main.css):** Gestão de importações (único ficheiro ligado pelo HTML).
-- **[style.css](css/style.css):** *Design Tokens* (variáveis `:root`), resets e componentes reutilizáveis (botões, formulários, *tags*).
-- **[layout.css](css/layout.css):** Estruturas macro de página (navegação, hero, secções, dashboard, formulários de autenticação).
-- **[responsive.css](css/responsive.css):** Adaptações progressivas para `min-width: 641px / 769px / 1024px`.
-
-### Estrutura de Pastas
+### Estrutura
 
 ```
-├── css/          # Folhas de estilo (4 ficheiros em camadas)
-├── img/          # Imagens (ex.: hero.jpg)
-├── templates/    # Páginas HTML
-└── README.md
+├── actions/      # POST handlers (login, register, enrol, review, admin…)
+├── api/          # Endpoints JSON / AJAX
+├── css/          # Folha de estilos única (mobile-first, BEM)
+├── database/     # Schema SQL, ficheiro SQLite e classes PHP (PDO)
+├── images/       # Fotografia (treinadores, locais, founders)
+├── javascript/   # Scripts client-side
+├── pages/        # Páginas (controllers + partials)
+├── templates/    # Funções drawX() para renderizar HTML
+└── utils/        # Helpers (Session class)
 ```
+
+### Tecnologias
+
+HTML5 semântico · CSS3 (mobile-first, sem frameworks) · PHP 8 (PDO/SQLite)
+· JavaScript vanilla + Ajax/JSON. Senhas com `password_hash` (bcrypt),
+prepared statements em todas as queries, anti-CSRF tokens.
 
 ### Membros do Grupo
-- José Lopes up202406360
-- Francisco Mendes up202407152
-- Luís Sampaio up202404078
+
+- José Lopes — up202406360
+- Francisco Mendes — up202407152
+- Luís Sampaio — up202404078

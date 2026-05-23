@@ -1,0 +1,52 @@
+<?php
+  declare(strict_types = 1);
+
+  require_once(__DIR__ . '/../database/connection.db.php');
+  require_once(__DIR__ . '/../utils/session.php');
+
+  $session = new Session();
+  $session->verifyCsrf($_POST['csrf_token'] ?? '', '../pages/register.php');
+
+  $name             = trim($_POST['name'] ?? '');
+  $email            = trim($_POST['email'] ?? '');
+  $password         = $_POST['password'] ?? '';
+  $confirm_password = $_POST['confirm_password'] ?? '';
+
+  if ($name === '' || $email === '' || $password === '') {
+    $session->addMessage('error', 'Please fill in all fields.');
+    header('Location: ../pages/register.php');
+    exit();
+  }
+
+  if ($password !== $confirm_password) {
+    $session->addMessage('error', 'Passwords do not match.');
+    header('Location: ../pages/register.php');
+    exit();
+  }
+
+  if (strlen($password) < 8) {
+    $session->addMessage('error', 'Password must be at least 8 characters.');
+    header('Location: ../pages/register.php');
+    exit();
+  }
+
+  $parts     = preg_split('/\s+/', $name, 2);
+  $firstName = $parts[0];
+  $lastName  = $parts[1] ?? '';
+  $username  = strtolower($email);
+
+  $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
+
+  $db = getDatabaseConnection();
+  $stmt = $db->prepare('INSERT INTO User (FirstName, LastName, Username, Email, Password, Role) VALUES (?, ?, ?, ?, ?, ?)');
+  try {
+    $stmt->execute([$firstName, $lastName, $username, $email, $hash, 'member']);
+    $session->addMessage('success', 'Account created. Please sign in.');
+    header('Location: ../pages/login.php');
+    exit();
+  } catch (PDOException $e) {
+    $session->addMessage('error', 'An account with that email already exists.');
+    header('Location: ../pages/register.php');
+    exit();
+  }
+?>
