@@ -20,6 +20,17 @@
       return $row && $row['Role'] === 'admin';
     } catch (Throwable $e) { return false; }
   }
+
+  function isMemberUser(Session $session) : bool {
+    if (!$session->isLoggedIn()) return false;
+    try {
+      $db = getDatabaseConnection();
+      $stmt = $db->prepare('SELECT Role FROM User WHERE UserId = ?');
+      $stmt->execute([$session->getId()]);
+      $row = $stmt->fetch();
+      return $row && $row['Role'] === 'member';
+    } catch (Throwable $e) { return false; }
+  }
 ?>
 
 <?php function drawHeader(Session $session, string $current = '', string $title = 'Iron Haven — Private Members Gym', string $ctaLabel = 'JOIN', string $ctaHref = 'membership.php') { ?>

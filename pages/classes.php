@@ -13,6 +13,12 @@
   require_once(__DIR__ . '/../templates/classes.tpl.php');
 
   $session = new Session();
+  $session->requireLogin('login.php');
+   if (!isMemberUser($session) && !isAdminUser($session)) {
+    $session->addMessage('error', 'Member access required.');
+    header('Location: index.php');
+    exit;
+  }
   $db      = getDatabaseConnection();
 
   $type       = isset($_GET['type'])     ? trim($_GET['type'])     : '';
