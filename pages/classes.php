@@ -14,7 +14,7 @@
 
   $session = new Session();
   $session->requireLogin('login.php');
-   if (!isMemberUser($session) && !isAdminUser($session)) {
+   if (!$session->isLoggedIn()) {
     $session->addMessage('error', 'Member access required.');
     header('Location: index.php');
     exit;
