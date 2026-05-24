@@ -14,11 +14,7 @@
 
   $session = new Session();
   $session->requireLogin('login.php');
-   if (!$session->isLoggedIn()) {
-    $session->addMessage('error', 'Member access required.');
-    header('Location: index.php');
-    exit;
-  }
+   
   $db      = getDatabaseConnection();
 
   $type       = isset($_GET['type'])     ? trim($_GET['type'])     : '';
