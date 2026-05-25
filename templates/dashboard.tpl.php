@@ -23,6 +23,7 @@
         <a href="#account" class="dashboard-nav-link <?= $activePage === 'account' ? 'is-active' : '' ?>">Manage account</a>
         
         <?php if ($user && $user->role === 'trainer') { ?>
+          <a href="trainer_analytics.php" class="dashboard-nav-link <?= $activePage === 'trainer_analytics' ? 'is-active' : '' ?>">Analytics</a>
           <a href="trainer_classes.php" class="dashboard-nav-link <?= $activePage === 'trainer_classes' ? 'is-active' : '' ?>">My Classes & Roster</a>
           <a href="edit_trainer.php" class="dashboard-nav-link <?= $activePage === 'edit_trainer' ? 'is-active' : '' ?>">Edit public profile</a>
         <?php } ?>
