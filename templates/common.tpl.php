@@ -60,9 +60,6 @@
         <?= navLink('membership.php', 'Membership', $current, 'membership') ?>
         <?= navLink('equipment.php', 'Equipment', $current, 'equipment') ?>
         <?= navLink('contact.php',    'Contact',    $current, 'contact') ?>
-        <?php if (isAdminUser($session)) { ?>
-          <?= navLink('admin.php', 'Admin', $current, 'admin') ?>
-        <?php } ?>
         <?php if (!$session->isLoggedIn()) { ?>
           <?= navLink('login.php', 'Sign in', $current, 'login') ?>
         <?php } ?>

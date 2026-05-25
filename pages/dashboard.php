@@ -10,21 +10,34 @@
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
 
-  $db = getDatabaseConnection();
-  $stmt = $db->prepare('SELECT WorkoutId, WorkoutType, DurationMinutes, Calories, Date, Status FROM Workout WHERE UserId = ? ORDER BY Date DESC');
-  $stmt->execute([$session->getId()]);
-  $workouts = $stmt->fetchAll();
+  $db      = getDatabaseConnection();
+  $isAdmin = isAdminUser($session);
 
-  $totalWorkouts = count($workouts);
+  $workouts      = [];
+  $totalWorkouts = 0;
   $totalCalories = 0;
   $totalDuration = 0;
-  foreach ($workouts as $w) {
-    if ($w['Status'] === 'Completed') {
-      $totalCalories += (int)($w['Calories'] ?? 0);
-      $totalDuration += (int)($w['DurationMinutes'] ?? 0);
+  $activeHours   = 0;
+  $adminCounts   = [];
+
+  if ($isAdmin) {
+    foreach (['User','Class','Schedule','Enrollment','Equipment','Waitlist','Review'] as $t) {
+      $adminCounts[$t] = (int)$db->query("SELECT COUNT(*) FROM $t")->fetchColumn();
     }
+  } else {
+    $stmt = $db->prepare('SELECT WorkoutId, WorkoutType, DurationMinutes, Calories, Date, Status FROM Workout WHERE UserId = ? ORDER BY Date DESC');
+    $stmt->execute([$session->getId()]);
+    $workouts = $stmt->fetchAll();
+
+    $totalWorkouts = count($workouts);
+    foreach ($workouts as $w) {
+      if ($w['Status'] === 'Completed') {
+        $totalCalories += (int)($w['Calories'] ?? 0);
+        $totalDuration += (int)($w['DurationMinutes'] ?? 0);
+      }
+    }
+    $activeHours = round($totalDuration / 60, 1);
   }
-  $activeHours = round($totalDuration / 60, 1);
 
   $user = User::getUser($db, $session->getId());
   $name      = $user ? $user->name() : ($session->getName() ?? 'Member');
@@ -43,7 +56,53 @@
         <h1 class="dashboard-heading">Welcome back, <?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?>.</h1>
         <p class="dashboard-sub">Today is a great day to train.</p>
       </header>
+      
+      <?php if ($isAdmin) { ?>
+        <section class="dashboard-stats" aria-label="Catalog overview">
+          <article class="stat-card">
+            <p class="stat-card-label">Classes</p>
+            <p class="stat-card-value"><?= (int)$adminCounts['Class'] ?></p>
+            <p class="stat-card-note"><?= (int)$adminCounts['Schedule'] ?> sessions scheduled</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Equipment</p>
+            <p class="stat-card-value"><?= (int)$adminCounts['Equipment'] ?></p>
+            <p class="stat-card-note">Items tracked</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Members</p>
+            <p class="stat-card-value"><?= (int)$adminCounts['User'] ?></p>
+            <p class="stat-card-note"><?= (int)$adminCounts['Enrollment'] ?> active enrolments</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Engagement</p>
+            <p class="stat-card-value"><?= (int)$adminCounts['Review'] ?></p>
+            <p class="stat-card-note"><?= (int)$adminCounts['Waitlist'] ?> on waitlists</p>
+          </article>
+        </section>
 
+        <section class="admin-section">
+          <div class="section-inner admin-cards">
+            <article class="card">
+              <h2 class="card-title">Classes</h2>
+              <p class="card-body">Create, edit or remove classes. Add sessions so they appear on the public schedule.</p>
+              <a class="btn-primary" href="admin_classes.php">Manage classes</a>
+            </article>
+            <article class="card">
+              <h2 class="card-title">Equipment</h2>
+              <p class="card-body">Track inventory, availability and operational status of gym equipment.</p>
+              <a class="btn-primary" href="admin_equipment.php">Manage equipment</a>
+            </article>
+            <article class="card">
+              <h2 class="card-title">Activity</h2>
+              <p class="card-body"><?= (int)$adminCounts['Enrollment'] ?> enrolments &middot; <?= (int)$adminCounts['Waitlist'] ?> waitlist entries &middot; <?= (int)$adminCounts['Review'] ?> reviews</p>
+              <a class="btn-outline" href="classes.php">View public schedule</a>
+            </article>
+          </div>
+        </section>
+      
+      <?php } else { ?>
+      
       <section class="dashboard-stats" aria-label="Your statistics">
         <article class="stat-card">
           <p class="stat-card-label">Total workouts</p>
@@ -101,7 +160,7 @@
           </table>
         </div>
       </section>
-
+     <?php } ?>
     </main>
   </section>
 
