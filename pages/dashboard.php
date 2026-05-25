@@ -6,7 +6,9 @@
   $session->requireLogin('login.php');
 
   require_once(__DIR__ . '/../database/connection.db.php');
+  require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
+  require_once(__DIR__ . '/../templates/dashboard.tpl.php');
 
   $db = getDatabaseConnection();
   $stmt = $db->prepare('SELECT WorkoutId, WorkoutType, DurationMinutes, Calories, Date, Status FROM Workout WHERE UserId = ? ORDER BY Date DESC');
@@ -24,31 +26,15 @@
   }
   $activeHours = round($totalDuration / 60, 1);
 
-  $name      = $session->getName() ?? 'Member';
+  $user = User::getUser($db, $session->getId());
+  $name      = $user ? $user->name() : ($session->getName() ?? 'Member');
   $firstName = explode(' ', $name)[0];
 
   drawHeader($session, '', 'Dashboard — Iron Haven', 'SIGN OUT', '#');
 ?>
 
   <section class="dashboard">
-
-    <aside class="dashboard-sidebar" aria-label="Member sidebar">
-      <header class="dashboard-profile">
-        <div class="dashboard-profile-photo" aria-hidden="true"></div>
-        <p class="dashboard-profile-name"><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></p>
-        <p class="dashboard-profile-since">Member since 2026</p>
-      </header>
-
-      <nav class="dashboard-nav" aria-label="Dashboard navigation">
-        <a href="dashboard.php" class="dashboard-nav-link is-active">Dashboard</a>
-        <a href="#workouts"     class="dashboard-nav-link">Workout history</a>
-        <a href="#nutrition"    class="dashboard-nav-link">Nutrition plan</a>
-        <a href="#account"      class="dashboard-nav-link">Manage account</a>
-        <form action="../actions/action_logout.php" method="post" class="dashboard-logout">
-          <button type="submit" class="dashboard-nav-link dashboard-nav-link--signout">Sign out</button>
-        </form>
-      </nav>
-    </aside>
+    <?php drawDashboardSidebar($user, 'dashboard'); ?>
 
     <main class="dashboard-main">
 
