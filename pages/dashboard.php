@@ -11,7 +11,11 @@
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
 
   $db      = getDatabaseConnection();
-  $isAdmin = isAdminUser($session);
+  
+  $user = User::getUser($db, $session->getId());
+  $isAdmin = ($user && $user->role === 'admin');
+  $isTrainer = ($user && $user->role === 'trainer');
+  $isMember = ($user && $user->role === 'member');
 
   $workouts      = [];
   $totalWorkouts = 0;
@@ -19,11 +23,15 @@
   $totalDuration = 0;
   $activeHours   = 0;
   $adminCounts   = [];
+  $trainerStats = [];
 
   if ($isAdmin) {
     foreach (['User','Class','Schedule','Enrollment','Equipment','Waitlist','Review'] as $t) {
       $adminCounts[$t] = (int)$db->query("SELECT COUNT(*) FROM $t")->fetchColumn();
     }
+  } elseif ($isTrainer) {
+    require_once(__DIR__ . '/../database/analytics.class.php');
+    $trainerStats = TrainerAnalytics::getOverallStats($db, $user->id);
   } else {
     $stmt = $db->prepare('SELECT WorkoutId, WorkoutType, DurationMinutes, Calories, Date, Status FROM Workout WHERE UserId = ? ORDER BY Date DESC');
     $stmt->execute([$session->getId()]);
@@ -39,7 +47,6 @@
     $activeHours = round($totalDuration / 60, 1);
   }
 
-  $user = User::getUser($db, $session->getId());
   $name      = $user ? $user->name() : ($session->getName() ?? 'Member');
   $firstName = explode(' ', $name)[0];
 
@@ -52,9 +59,19 @@
     <main class="dashboard-main">
 
       <header class="dashboard-header">
-        <p class="dashboard-eyebrow">Member dashboard</p>
-        <h1 class="dashboard-heading">Welcome back, <?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?>.</h1>
-        <p class="dashboard-sub">Today is a great day to train.</p>
+        <?php if ($isAdmin) { ?>
+          <p class="dashboard-eyebrow">Admin dashboard</p>
+          <h1 class="dashboard-heading">Welcome back, <?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?>.</h1>
+          <p class="dashboard-sub">Manage gym operations, classes, and members.</p>
+        <?php } elseif ($isTrainer) { ?>
+          <p class="dashboard-eyebrow">Trainer dashboard</p>
+          <h1 class="dashboard-heading">Welcome back, <?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?>.</h1>
+          <p class="dashboard-sub">Manage your classes, schedule, and view analytics.</p>
+        <?php } else { ?>
+          <p class="dashboard-eyebrow">Member dashboard</p>
+          <h1 class="dashboard-heading">Welcome back, <?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?>.</h1>
+          <p class="dashboard-sub">Today is a great day to train.</p>
+        <?php } ?>
       </header>
       
       <?php if ($isAdmin) { ?>
@@ -101,6 +118,46 @@
           </div>
         </section>
       
+      <?php } elseif ($isTrainer) { ?>
+      
+        <section class="dashboard-stats" aria-label="Trainer overview">
+          <article class="stat-card">
+            <p class="stat-card-label">Total Enrollments</p>
+            <p class="stat-card-value"><?= (int)$trainerStats['TotalEnrollments'] ?></p>
+            <p class="stat-card-note">Across <?= (int)$trainerStats['TotalSessions'] ?> sessions</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Attendance Rate</p>
+            <p class="stat-card-value"><?= (int)$trainerStats['AttendanceRate'] ?><span style="font-size: 1.2rem;">%</span></p>
+            <p class="stat-card-note">Attended / Enrolled</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Average Rating</p>
+            <p class="stat-card-value"><?= $trainerStats['AverageRating'] ?? '—' ?><span style="font-size: 1.2rem;">/5</span></p>
+            <p class="stat-card-note">From <?= (int)$trainerStats['TotalReviews'] ?> reviews</p>
+          </article>
+        </section>
+
+        <section class="admin-section">
+          <div class="section-inner admin-cards">
+            <article class="card">
+              <h2 class="card-title">Analytics</h2>
+              <p class="card-body">View detailed attendance, ratings, and engagement data for your classes.</p>
+              <a class="btn-primary" href="trainer_analytics.php">View analytics</a>
+            </article>
+            <article class="card">
+              <h2 class="card-title">My Classes & Roster</h2>
+              <p class="card-body">Track and manage your assigned class schedule and enrolled members.</p>
+              <a class="btn-primary" href="trainer_classes.php">Manage schedule</a>
+            </article>
+            <article class="card">
+              <h2 class="card-title">Public Profile</h2>
+              <p class="card-body">Manage your public profile, including bio, specializations, and certifications.</p>
+              <a class="btn-outline" href="edit_trainer.php">Edit profile</a>
+            </article>
+          </div>
+        </section>
+
       <?php } else { ?>
       
       <section class="dashboard-stats" aria-label="Your statistics">
