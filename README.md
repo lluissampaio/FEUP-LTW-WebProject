@@ -1,23 +1,53 @@
-# ltw12g06
+# Iron Haven — ltw12g06
 
 ## Projeto LTW 2025/26
 
-### Páginas Implementadas (1ª Entrega)
+Site de gestão de um ginásio privado. Membros podem navegar e inscrever-se em
+aulas, ver perfis de treinadores, consultar a disponibilidade de equipamento e
+deixar avaliações. Administradores gerem o catálogo de aulas, equipamento e
+contas. Inclui sistema de lista de espera automática e notificações in-app.
 
-- **[Página Principal (Index)](templates/index.html):** Landing page com secções de serviços, estatísticas, testemunhos e planos de adesão.
-- **[Registo](templates/register.html):** Formulário de criação de conta para novos membros.
-- **[Login](templates/login.html):** Interface de acesso para membros registados.
-- **[Dashboard](templates/dashboard.html):** Área personalizada para visualização de estatísticas de treino e progresso do membro.
+### Como executar localmente
 
-### Arquitetura CSS
+A partir da raiz do repositório:
 
-- **[main.css](css/main.css):** Gestão de importações e camadas de especificidade.
-- **[style.css](css/style.css):** *Design Tokens* (variáveis), resets e componentes base.
-- **[layout.css](css/layout.css):** Estruturas macro (Flexbox/Grid) e organização espacial.
-- **[responsive.css](css/responsive.css):** Adaptabilidade viewport-dependent (Mobile-first).
+```bash
+php -S localhost:9000
+```
 
+Depois abrir [`http://localhost:9000`](http://localhost:9000) no navegador
+(faz redirect para `pages/`).
+
+### Contas de demonstração (password: `password`)
+
+| Tipo     | Email                          |
+| -------- | ------------------------------ |
+| Admin    | `admin@ironhaven.com`          |
+| Trainer  | `anika.patel@ironhaven.com`    |
+| Member   | `jordan.miller@example.com`    |
+
+### Estrutura
+
+```
+├── actions/      # POST handlers (login, register, enrol, review, admin…)
+├── api/          # Endpoints JSON / AJAX
+├── css/          # Folha de estilos única (mobile-first, BEM)
+├── database/     # Schema SQL, ficheiro SQLite e classes PHP (PDO)
+├── images/       # Fotografia (treinadores, locais, founders)
+├── javascript/   # Scripts client-side
+├── pages/        # Páginas (controllers + partials)
+├── templates/    # Funções drawX() para renderizar HTML
+└── utils/        # Helpers (Session class)
+```
+
+### Tecnologias
+
+HTML5 semântico · CSS3 (mobile-first, sem frameworks) · PHP 8 (PDO/SQLite)
+· JavaScript vanilla + Ajax/JSON. Senhas com `password_hash` (bcrypt),
+prepared statements em todas as queries, anti-CSRF tokens.
 
 ### Membros do Grupo
-- José Lopes up202406360
-- Francisco Mendes up202407152  
-- Luís Sampaio up202404078
+
+- José Lopes — up202406360
+- Francisco Mendes — up202407152
+- Luís Sampaio — up202404078
