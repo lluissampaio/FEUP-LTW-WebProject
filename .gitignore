@@ -1,3 +1,7 @@
 .DS_Store
 **/.DS_Store
 old/
+
+# SQLite database holds per-developer test data — rebuilt from database.sql
+# automatically on first connection (see database/connection.db.php).
+database/database.db

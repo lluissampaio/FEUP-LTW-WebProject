@@ -2379,3 +2379,200 @@ ul {
   background-color: rgba(240, 135, 132, .08);
   color: #f3c1bf;
 }
+
+/* ============================================================================
+   3. Page/variant rules — Member account features
+   (profile, personal-training bookings, membership manager, disputes, analytics)
+   ========================================================================== */
+
+/* --- Small / inline form helpers ----------------------------------------- */
+.btn-sm {
+  padding: 8px 18px;
+  font-size: 11px;
+}
+.btn-primary[disabled],
+.btn-outline[disabled] {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.inline-form { display: inline; margin: 0; }
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.form-hint {
+  font-size: 11px;
+  color: var(--color-muted);
+  margin-top: 6px;
+}
+
+/* --- Profile ------------------------------------------------------------- */
+.profile-section { max-width: 640px; }
+.profile-form { display: flex; flex-direction: column; gap: 22px; }
+.profile-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.profile-photo-preview {
+  width: 96px; height: 96px;
+  flex: 0 0 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  display: flex; align-items: center; justify-content: center;
+}
+.profile-photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.profile-photo-initials {
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: var(--color-accent);
+}
+.profile-fieldset {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.profile-fieldset legend {
+  padding: 0 10px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* --- Personal training bookings ------------------------------------------ */
+.booking-block { margin-bottom: 56px; }
+.booking-trainer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.booking-trainer-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.booking-trainer-name { font-size: 20px; margin: 0; }
+.booking-trainer-specialty {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--color-accent); margin: 4px 0 16px;
+}
+.booking-slot-list { list-style: none; margin: 0; padding: 0; }
+.booking-slot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--color-border);
+}
+.booking-slot-when { font-size: 13px; }
+.booking-slot-next { display: block; font-size: 11px; color: var(--color-muted); }
+.booking-slot-taken {
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* --- Membership manager -------------------------------------------------- */
+.membership-current {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+  padding: 24px;
+  margin-bottom: 32px;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+}
+.membership-current-meta { color: var(--color-muted); font-size: 13px; margin-top: 6px; }
+.pricing-card form { margin-top: 16px; }
+.pricing-card form .btn-primary,
+.pricing-card form .btn-outline { width: 100%; }
+
+/* --- Disputes & feedback ------------------------------------------------- */
+.dispute-block { margin-bottom: 48px; max-width: 760px; }
+.dispute-form { display: flex; flex-direction: column; gap: 18px; max-width: 560px; }
+.dispute-list { display: flex; flex-direction: column; gap: 18px; }
+.dispute-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.dispute-card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.dispute-cat {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--color-accent);
+}
+.dispute-subject { font-size: 18px; margin: 0 0 8px; }
+.dispute-message { font-size: 13px; line-height: 1.7; color: var(--color-text); }
+.dispute-meta { font-size: 11px; color: var(--color-muted); margin-top: 10px; }
+.dispute-response {
+  margin-top: 16px; padding: 16px;
+  background-color: var(--color-bg-alt);
+  border-left: 2px solid var(--color-accent);
+  border-radius: var(--radius);
+}
+.dispute-response-label {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--color-muted); margin-bottom: 6px;
+}
+.dispute-respond-form { margin-top: 18px; display: flex; flex-direction: column; gap: 14px; }
+.dispute-filter { display: flex; gap: 20px; margin-bottom: 28px; }
+.dispute-filter a {
+  font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--color-muted); text-decoration: none;
+  padding-bottom: 4px; border-bottom: 1px solid transparent;
+}
+.dispute-filter a.is-active, .dispute-filter a:hover {
+  color: var(--color-text); border-bottom-color: var(--color-accent);
+}
+.status-tag--in_review {
+  background-color: rgba(232, 216, 74, .14);
+  color: var(--color-accent);
+  border-color: rgba(232, 216, 74, .35);
+}
+.status-tag--resolved {
+  background-color: rgba(111, 207, 115, .15);
+  color: #6fcf73;
+  border-color: rgba(111, 207, 115, .35);
+}
+
+/* --- Admin analytics ----------------------------------------------------- */
+.analytics-block { margin-bottom: 48px; }
+.retention-bar-wrap { max-width: 560px; }
+.retention-bar {
+  height: 14px;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.retention-bar-fill { display: block; height: 100%; background-color: var(--color-accent); }
+.retention-figure { margin-top: 12px; font-size: 14px; }
+.retention-sub { color: var(--color-muted); font-size: 12px; }
+.plan-dist { display: flex; gap: 20px; flex-wrap: wrap; }
+.plan-dist-item {
+  flex: 1 1 160px;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 22px; text-align: center;
+}
+.plan-dist-name {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--color-accent);
+}
+.plan-dist-count { font-family: var(--font-display); font-size: 48px; line-height: 1; margin: 8px 0; }
+.plan-dist-label { font-size: 11px; color: var(--color-muted); }
+
+/* --- Responsive (mobile-first fallbacks) --------------------------------- */
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .profile-photo-row { flex-direction: column; align-items: flex-start; }
+  .membership-current { flex-direction: column; align-items: flex-start; }
+}

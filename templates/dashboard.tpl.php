@@ -20,12 +20,26 @@
           <a href="#nutrition" class="dashboard-nav-link <?= $activePage === 'nutrition' ? 'is-active' : '' ?>">Nutrition plan</a>
         <?php } ?>
 
-        <a href="#account" class="dashboard-nav-link <?= $activePage === 'account' ? 'is-active' : '' ?>">Manage account</a>
+        <a href="profile.php" class="dashboard-nav-link <?= $activePage === 'account' ? 'is-active' : '' ?>">Manage account</a>
+
+        <?php if (!$user || $user->role === 'member') { ?>
+          <a href="bookings.php"   class="dashboard-nav-link <?= $activePage === 'bookings' ? 'is-active' : '' ?>">Personal training</a>
+          <a href="membership.php" class="dashboard-nav-link <?= $activePage === 'membership' ? 'is-active' : '' ?>">My membership</a>
+          <a href="disputes.php"   class="dashboard-nav-link <?= $activePage === 'disputes' ? 'is-active' : '' ?>">Support &amp; disputes</a>
+        <?php } ?>
         
         <?php if ($user && $user->role === 'trainer') { ?>
           <a href="trainer_analytics.php" class="dashboard-nav-link <?= $activePage === 'trainer_analytics' ? 'is-active' : '' ?>">Analytics</a>
           <a href="trainer_classes.php" class="dashboard-nav-link <?= $activePage === 'trainer_classes' ? 'is-active' : '' ?>">My Classes & Roster</a>
+          <a href="bookings.php" class="dashboard-nav-link <?= $activePage === 'bookings' ? 'is-active' : '' ?>">Personal training</a>
           <a href="edit_trainer.php" class="dashboard-nav-link <?= $activePage === 'edit_trainer' ? 'is-active' : '' ?>">Edit public profile</a>
+        <?php } ?>
+
+        <?php if ($user && $user->role === 'admin') { ?>
+          <a href="admin_classes.php" class="dashboard-nav-link <?= $activePage === 'admin' ? 'is-active' : '' ?>">Manage classes</a>
+          <a href="admin_equipment.php" class="dashboard-nav-link <?= $activePage === 'admin_equipment' ? 'is-active' : '' ?>">Manage equipment</a>
+          <a href="admin_analytics.php" class="dashboard-nav-link <?= $activePage === 'analytics' ? 'is-active' : '' ?>">Analytics</a>
+          <a href="admin_disputes.php" class="dashboard-nav-link <?= $activePage === 'disputes' ? 'is-active' : '' ?>">Disputes</a>
         <?php } ?>
         
         <form action="../actions/action_logout.php" method="post" class="dashboard-logout">
