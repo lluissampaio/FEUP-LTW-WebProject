@@ -115,6 +115,24 @@
               <a class="btn-primary" href="admin_equipment.php">Manage equipment</a>
             </article>
             <article class="card">
+<<<<<<< Updated upstream
+=======
+              <h2 class="card-title">Users</h2>
+              <p class="card-body">Promote, deactivate or remove member, trainer and admin accounts.</p>
+              <a class="btn-primary" href="admin_users.php">Manage users</a>
+            </article>
+            <article class="card">
+              <h2 class="card-title">Analytics</h2>
+              <p class="card-body">Gym-wide metrics: popular classes, equipment usage, member retention and revenue.</p>
+              <a class="btn-primary" href="admin_analytics.php">View analytics</a>
+            </article>
+            <article class="card">
+              <h2 class="card-title">Disputes & feedback</h2>
+              <p class="card-body">Triage member reports on equipment, classes and billing, and respond.</p>
+              <a class="btn-primary" href="admin_disputes.php">Manage disputes</a>
+            </article>
+            <article class="card">
+>>>>>>> Stashed changes
               <h2 class="card-title">Activity</h2>
               <p class="card-body"><?= (int)$adminCounts['Enrollment'] ?> enrolments &middot; <?= (int)$adminCounts['Waitlist'] ?> waitlist entries &middot; <?= (int)$adminCounts['Review'] ?> reviews</p>
               <a class="btn-outline" href="classes.php">View public schedule</a>

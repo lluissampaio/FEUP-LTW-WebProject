@@ -7,7 +7,9 @@
   require_once(__DIR__ . '/../database/schedule.class.php');
   require_once(__DIR__ . '/../database/trainer.class.php');
   require_once(__DIR__ . '/../database/location.class.php');
+  require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
+  require_once(__DIR__ . '/../templates/dashboard.tpl.php');
 
   $session = new Session();
   $session->requireLogin('login.php');
@@ -17,7 +19,8 @@
     exit;
   }
 
-  $db = getDatabaseConnection();
+  $db   = getDatabaseConnection();
+  $user = User::getUser($db, $session->getId());
 
   $editing = null;
   if (isset($_GET['edit'])) $editing = GymClass::getClass($db, (int)$_GET['edit']);
@@ -37,15 +40,16 @@
   $stmt = $db->query('SELECT ClassId, COUNT(*) AS n FROM Schedule GROUP BY ClassId');
   while ($row = $stmt->fetch()) $sessionCounts[(int)$row['ClassId']] = (int)$row['n'];
 
-  drawHeader($session, 'admin', 'Admin · Classes — Iron Haven');
+  drawHeader($session, '', 'Admin · Classes — Iron Haven');
 ?>
-  <section class="page-hero">
-    <div class="page-hero-inner">
-      <p class="breadcrumb"><a href="admin.php">Admin</a> <span class="breadcrumb-sep">/</span> <span>Classes</span></p>
-      <h1 class="page-hero-heading">Class catalog</h1>
-      <p class="page-hero-sub">Create, edit or remove classes and assign trainers.</p>
-    </div>
-  </section>
+  <section class="dashboard">
+    <?php drawDashboardSidebar($user, 'admin'); ?>
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <p class="dashboard-eyebrow">Admin</p>
+        <h1 class="dashboard-heading">Class catalog</h1>
+        <p class="dashboard-sub">Create, edit or remove classes and assign trainers.</p>
+      </header>
 
   <section class="admin-section">
     <div class="section-inner">
@@ -220,6 +224,8 @@
         </tbody>
       </table>
     </div>
+  </section>
+    </main>
   </section>
 <?php
   drawFooter();
