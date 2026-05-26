@@ -5,7 +5,9 @@
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/equipment.class.php');
   require_once(__DIR__ . '/../database/location.class.php');
+  require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
+  require_once(__DIR__ . '/../templates/dashboard.tpl.php');
 
   $session = new Session();
   $session->requireLogin('login.php');
@@ -15,7 +17,8 @@
     exit;
   }
 
-  $db = getDatabaseConnection();
+  $db   = getDatabaseConnection();
+  $user = User::getUser($db, $session->getId());
 
   $editing = null;
   if (isset($_GET['edit'])) $editing = Equipment::getEquipment($db, (int)$_GET['edit']);
@@ -24,15 +27,16 @@
   $locations = Location::getLocations($db);
   $csrf      = $session->csrfToken();
 
-  drawHeader($session, 'admin', 'Admin · Equipment — Iron Haven');
+  drawHeader($session, '', 'Admin · Equipment — Iron Haven');
 ?>
-  <section class="page-hero">
-    <div class="page-hero-inner">
-      <p class="breadcrumb"><a href="admin.php">Admin</a> <span class="breadcrumb-sep">/</span> <span>Equipment</span></p>
-      <h1 class="page-hero-heading">Equipment inventory</h1>
-      <p class="page-hero-sub">Add, update availability or remove equipment across all locations.</p>
-    </div>
-  </section>
+  <section class="dashboard">
+    <?php drawDashboardSidebar($user, 'admin_equipment'); ?>
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <p class="dashboard-eyebrow">Admin</p>
+        <h1 class="dashboard-heading">Equipment inventory</h1>
+        <p class="dashboard-sub">Add, update availability or remove equipment across all locations.</p>
+      </header>
 
   <section class="admin-section">
     <div class="section-inner">
@@ -110,6 +114,8 @@
         </tbody>
       </table>
     </div>
+  </section>
+    </main>
   </section>
 <?php
   drawFooter();

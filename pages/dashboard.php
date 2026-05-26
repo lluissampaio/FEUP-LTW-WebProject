@@ -10,12 +10,11 @@
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
 
-  $db      = getDatabaseConnection();
-  
-  $user = User::getUser($db, $session->getId());
-  $isAdmin = ($user && $user->role === 'admin');
+  $db        = getDatabaseConnection();
+  $user      = User::getUser($db, $session->getId());
+  $isAdmin   = ($user && $user->role === 'admin');
   $isTrainer = ($user && $user->role === 'trainer');
-  $isMember = ($user && $user->role === 'member');
+  $isMember  = ($user && $user->role === 'member');
 
   $workouts      = [];
   $totalWorkouts = 0;
@@ -23,7 +22,7 @@
   $totalDuration = 0;
   $activeHours   = 0;
   $adminCounts   = [];
-  $trainerStats = [];
+  $trainerStats  = [];
 
   if ($isAdmin) {
     foreach (['User','Class','Schedule','Enrollment','Equipment','Waitlist','Review'] as $t) {
@@ -73,7 +72,7 @@
           <p class="dashboard-sub">Today is a great day to train.</p>
         <?php } ?>
       </header>
-      
+
       <?php if ($isAdmin) { ?>
         <section class="dashboard-stats" aria-label="Catalog overview">
           <article class="stat-card">
@@ -111,6 +110,11 @@
               <a class="btn-primary" href="admin_equipment.php">Manage equipment</a>
             </article>
             <article class="card">
+              <h2 class="card-title">Users</h2>
+              <p class="card-body">Promote, deactivate or remove member, trainer and admin accounts.</p>
+              <a class="btn-primary" href="admin_users.php">Manage users</a>
+            </article>
+            <article class="card">
               <h2 class="card-title">Analytics</h2>
               <p class="card-body">Gym-wide metrics: popular classes, equipment usage, member retention and revenue.</p>
               <a class="btn-primary" href="admin_analytics.php">View analytics</a>
@@ -127,9 +131,9 @@
             </article>
           </div>
         </section>
-      
+
       <?php } elseif ($isTrainer) { ?>
-      
+
         <section class="dashboard-stats" aria-label="Trainer overview">
           <article class="stat-card">
             <p class="stat-card-label">Total Enrollments</p>
@@ -169,65 +173,63 @@
         </section>
 
       <?php } else { ?>
-      
-      <section class="dashboard-stats" aria-label="Your statistics">
-        <article class="stat-card">
-          <p class="stat-card-label">Total workouts</p>
-          <p class="stat-card-value"><?= $totalWorkouts ?></p>
-          <p class="stat-card-note">Total activity recorded</p>
-        </article>
 
-        <article class="stat-card">
-          <p class="stat-card-label">Active time</p>
-          <p class="stat-card-value"><?= $activeHours ?>h</p>
-          <p class="stat-card-note">Cumulative hours logged</p>
-        </article>
+        <section class="dashboard-stats" aria-label="Your statistics">
+          <article class="stat-card">
+            <p class="stat-card-label">Total workouts</p>
+            <p class="stat-card-value"><?= $totalWorkouts ?></p>
+            <p class="stat-card-note">Total activity recorded</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Active time</p>
+            <p class="stat-card-value"><?= $activeHours ?>h</p>
+            <p class="stat-card-note">Cumulative hours logged</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Estimated calories</p>
+            <p class="stat-card-value"><?= number_format($totalCalories) ?></p>
+            <p class="stat-card-note">Calories burned</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Weekly frequency</p>
+            <p class="stat-card-value">0 / 7</p>
+            <p class="stat-card-note">Days this week</p>
+          </article>
+        </section>
 
-        <article class="stat-card">
-          <p class="stat-card-label">Estimated calories</p>
-          <p class="stat-card-value"><?= number_format($totalCalories) ?></p>
-          <p class="stat-card-note">Calories burned</p>
-        </article>
+        <section class="dashboard-activity" aria-labelledby="activity-heading">
+          <h2 class="dashboard-section-heading" id="activity-heading">Recent activity</h2>
 
-        <article class="stat-card">
-          <p class="stat-card-label">Weekly frequency</p>
-          <p class="stat-card-value">0 / 7</p>
-          <p class="stat-card-note">Days this week</p>
-        </article>
-      </section>
-
-      <section class="dashboard-activity" aria-labelledby="activity-heading">
-        <h2 class="dashboard-section-heading" id="activity-heading">Recent activity</h2>
-
-        <div class="activity-table-wrap">
-          <table class="activity-table">
-            <thead>
-              <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Workout type</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($workouts as $w) { ?>
+          <div class="activity-table-wrap">
+            <table class="activity-table">
+              <thead>
                 <tr>
-                  <td><?= htmlspecialchars(date('d/m/Y', strtotime($w['Date'])), ENT_QUOTES, 'UTF-8') ?></td>
-                  <td><?= htmlspecialchars($w['WorkoutType'], ENT_QUOTES, 'UTF-8') ?></td>
-                  <td><?= (int)$w['DurationMinutes'] ?> min</td>
-                  <td><span class="status-tag status-tag--<?= htmlspecialchars(strtolower($w['Status']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w['Status'], ENT_QUOTES, 'UTF-8') ?></span></td>
+                  <th scope="col">Date</th>
+                  <th scope="col">Workout type</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Status</th>
                 </tr>
-              <?php } ?>
-              <?php if (empty($workouts)) { ?>
-                <tr>
-                  <td colspan="4" class="activity-empty">No activity recorded yet. Start training.</td>
-                </tr>
-              <?php } ?>
-            </tbody>
-          </table>
-        </div>
-      </section>
-     <?php } ?>
+              </thead>
+              <tbody>
+                <?php foreach ($workouts as $w) { ?>
+                  <tr>
+                    <td><?= htmlspecialchars(date('d/m/Y', strtotime($w['Date'])), ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?= htmlspecialchars($w['WorkoutType'], ENT_QUOTES, 'UTF-8') ?></td>
+                    <td><?= (int)$w['DurationMinutes'] ?> min</td>
+                    <td><span class="status-tag status-tag--<?= htmlspecialchars(strtolower($w['Status']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w['Status'], ENT_QUOTES, 'UTF-8') ?></span></td>
+                  </tr>
+                <?php } ?>
+                <?php if (empty($workouts)) { ?>
+                  <tr>
+                    <td colspan="4" class="activity-empty">No activity recorded yet. Start training.</td>
+                  </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      <?php } ?>
     </main>
   </section>
 

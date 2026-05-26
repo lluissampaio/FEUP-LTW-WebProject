@@ -15,7 +15,7 @@
       <nav class="dashboard-nav" aria-label="Dashboard navigation">
         <a href="dashboard.php" class="dashboard-nav-link <?= $activePage === 'dashboard' ? 'is-active' : '' ?>">Dashboard</a>
         
-        <?php if (!$user || $user->role !== 'trainer') { ?>
+        <?php if (!$user || $user->role === 'member') { ?>
           <a href="#workouts"  class="dashboard-nav-link <?= $activePage === 'workouts' ? 'is-active' : '' ?>">Workout history</a>
           <a href="#nutrition" class="dashboard-nav-link <?= $activePage === 'nutrition' ? 'is-active' : '' ?>">Nutrition plan</a>
         <?php } ?>
@@ -38,6 +38,7 @@
         <?php if ($user && $user->role === 'admin') { ?>
           <a href="admin_classes.php" class="dashboard-nav-link <?= $activePage === 'admin' ? 'is-active' : '' ?>">Manage classes</a>
           <a href="admin_equipment.php" class="dashboard-nav-link <?= $activePage === 'admin_equipment' ? 'is-active' : '' ?>">Manage equipment</a>
+          <a href="admin_users.php" class="dashboard-nav-link <?= $activePage === 'admin_users' ? 'is-active' : '' ?>">Manage users</a>
           <a href="admin_analytics.php" class="dashboard-nav-link <?= $activePage === 'analytics' ? 'is-active' : '' ?>">Analytics</a>
           <a href="admin_disputes.php" class="dashboard-nav-link <?= $activePage === 'disputes' ? 'is-active' : '' ?>">Disputes</a>
         <?php } ?>

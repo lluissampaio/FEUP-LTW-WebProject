@@ -35,6 +35,25 @@
     }));
   }
 
+  // Sort sessions by their next occurrence so already-past slots
+  // for the current week sink to the bottom (they reappear next week).
+  $dayMap  = ['Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4, 'Friday' => 5, 'Saturday' => 6, 'Sunday' => 7];
+  $now     = new DateTime('now');
+  $todayN  = (int)$now->format('N');
+  $nowH    = (int)$now->format('G');
+  $nowM    = (int)$now->format('i');
+  usort($schedules, function($a, $b) use ($dayMap, $todayN, $nowH, $nowM) {
+    $score = function($s) use ($dayMap, $todayN, $nowH, $nowM) {
+      $sd  = $dayMap[$s->dayOfWeek] ?? $todayN;
+      $h   = (int)substr($s->startTime, 0, 2);
+      $m   = (int)substr($s->startTime, 3, 2);
+      $off = $sd - $todayN;
+      if ($off < 0 || ($off === 0 && ($h < $nowH || ($h === $nowH && $m <= $nowM)))) $off += 7;
+      return $off * 1440 + $h * 60 + $m;
+    };
+    return $score($a) <=> $score($b);
+  });
+
   $myEnrolled = array();
   $myWaiting  = array();
   if ($session->isLoggedIn()) {
