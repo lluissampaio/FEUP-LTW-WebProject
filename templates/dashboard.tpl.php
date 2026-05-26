@@ -3,11 +3,27 @@
 
   function drawDashboardSidebar(?User $user, string $activePage = 'dashboard') {
     $name = $user ? $user->name() : 'Member';
-    $roleDisplay = ($user && $user->role === 'trainer') ? 'Trainer' : 'Member since 2026';
+    if ($user && $user->role === 'trainer')      $roleDisplay = 'Trainer';
+    elseif ($user && $user->role === 'admin')    $roleDisplay = 'Administrator';
+    elseif ($user && !empty($user->joinDate))    $roleDisplay = 'Member since ' . date('Y', strtotime($user->joinDate));
+    else                                         $roleDisplay = 'Member';
+
+    $photoSrc = '';
+    if ($user && !empty($user->photo)) {
+      $photoFile = __DIR__ . '/../uploads/' . $user->photo;
+      if (is_file($photoFile)) $photoSrc = '../uploads/' . $user->photo;
+    }
+    $csrf = $_SESSION['csrf_token'] ?? '';
 ?>
     <aside class="dashboard-sidebar" aria-label="Member sidebar">
       <header class="dashboard-profile">
-        <div class="dashboard-profile-photo" aria-hidden="true"></div>
+        <?php if ($photoSrc !== '') { ?>
+          <img class="dashboard-profile-photo" src="<?= htmlspecialchars($photoSrc, ENT_QUOTES, 'UTF-8') ?>" alt="" aria-hidden="true">
+        <?php } else { ?>
+          <div class="dashboard-profile-photo dashboard-profile-photo--placeholder" aria-hidden="true">
+            <?= htmlspecialchars(strtoupper(substr($name, 0, 1)), ENT_QUOTES, 'UTF-8') ?>
+          </div>
+        <?php } ?>
         <p class="dashboard-profile-name"><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></p>
         <p class="dashboard-profile-since"><?= htmlspecialchars($roleDisplay, ENT_QUOTES, 'UTF-8') ?></p>
       </header>
@@ -44,6 +60,7 @@
         <?php } ?>
         
         <form action="../actions/action_logout.php" method="post" class="dashboard-logout">
+          <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
           <button type="submit" class="dashboard-nav-link dashboard-nav-link--signout">Sign out</button>
         </form>
       </nav>

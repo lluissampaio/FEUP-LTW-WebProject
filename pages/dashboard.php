@@ -197,6 +197,29 @@
           </article>
         </section>
 
+        <section class="dashboard-activity">
+          <h2 class="dashboard-section-heading">Log a workout</h2>
+          <form class="admin-form" method="post" action="../actions/action_workout.php" style="margin-bottom: 24px;">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($session->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+            <input type="hidden" name="action"     value="log">
+            <div class="form-field">
+              <label for="w-type">Type</label>
+              <input type="text" id="w-type" name="workout_type" required maxlength="60" placeholder="e.g. Strength, Cardio, Yoga">
+            </div>
+            <div class="form-field">
+              <label for="w-duration">Duration (min)</label>
+              <input type="number" id="w-duration" name="duration" min="1" max="600" step="5" value="45" required>
+            </div>
+            <div class="form-field">
+              <label for="w-calories">Calories (optional)</label>
+              <input type="number" id="w-calories" name="calories" min="0" max="5000" step="10" value="0">
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Log workout</button>
+            </div>
+          </form>
+        </section>
+
         <section class="dashboard-activity" aria-labelledby="activity-heading">
           <h2 class="dashboard-section-heading" id="activity-heading">Recent activity</h2>
 

@@ -22,8 +22,8 @@
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
         <div class="form-field">
-          <label for="login-email">Email</label>
-          <input type="email" id="login-email" name="email" required autocomplete="email">
+          <label for="login-id">Email or username</label>
+          <input type="text" id="login-id" name="identifier" required autocomplete="username">
         </div>
 
         <div class="form-field">

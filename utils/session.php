@@ -5,7 +5,16 @@
     private array $messages;
 
     public function __construct() {
-      if (session_status() === PHP_SESSION_NONE) session_start();
+      if (session_status() === PHP_SESSION_NONE) {
+        session_set_cookie_params([
+          'lifetime' => 0,
+          'path'     => '/',
+          'httponly' => true,
+          'samesite' => 'Lax',
+          'secure'   => !empty($_SERVER['HTTPS']),
+        ]);
+        session_start();
+      }
 
       $this->messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : array();
       unset($_SESSION['messages']);
@@ -33,6 +42,30 @@
 
     public function setName(string $name) : void {
       $_SESSION['name'] = $name;
+    }
+
+    public function getRole() : ?string {
+      return isset($_SESSION['role']) ? $_SESSION['role'] : null;
+    }
+
+    public function setRole(string $role) : void {
+      $_SESSION['role'] = $role;
+    }
+
+    public function getPhoto() : ?string {
+      return isset($_SESSION['photo']) ? $_SESSION['photo'] : null;
+    }
+
+    public function setPhoto(?string $photo) : void {
+      $_SESSION['photo'] = $photo;
+    }
+
+    public function getJoinDate() : ?string {
+      return isset($_SESSION['join_date']) ? $_SESSION['join_date'] : null;
+    }
+
+    public function setJoinDate(string $date) : void {
+      $_SESSION['join_date'] = $date;
     }
 
     public function addMessage(string $type, string $text) : void {
