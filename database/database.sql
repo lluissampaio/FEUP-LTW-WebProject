@@ -5,6 +5,11 @@
    (bcrypt hash: $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi)
 ********************************************************************************/
 
+DROP TABLE IF EXISTS Dispute;
+DROP TABLE IF EXISTS Booking;
+DROP TABLE IF EXISTS TrainerAvailability;
+DROP TABLE IF EXISTS Membership;
+DROP TABLE IF EXISTS Plan;
 DROP TABLE IF EXISTS Notification;
 DROP TABLE IF EXISTS Waitlist;
 DROP TABLE IF EXISTS Review;
@@ -160,6 +165,92 @@ CREATE TABLE Workout (
 );
 
 /*******************************************************************************
+   Membership plans & subscriptions (Francisco's slice)
+********************************************************************************/
+
+CREATE TABLE Plan (
+    PlanId       INTEGER        NOT NULL,
+    Name         NVARCHAR(60)   NOT NULL,
+    Tier         INTEGER        NOT NULL,             -- ordering for upgrade/downgrade (1 = lowest)
+    Price        INTEGER        NOT NULL,             -- price per month, in whole currency units
+    Period       NVARCHAR(40)   NOT NULL DEFAULT 'per month',
+    Description  TEXT,
+    Featured     INTEGER        NOT NULL DEFAULT 0,
+    CONSTRAINT PK_Plan PRIMARY KEY (PlanId),
+    CONSTRAINT UQ_Plan_Name UNIQUE (Name),
+    CONSTRAINT UQ_Plan_Tier UNIQUE (Tier)
+);
+
+CREATE TABLE Membership (
+    MembershipId INTEGER        NOT NULL,
+    UserId       INTEGER        NOT NULL,
+    PlanId       INTEGER        NOT NULL,
+    Status       NVARCHAR(20)   NOT NULL DEFAULT 'active',  -- 'active' | 'cancelled'
+    StartedAt    DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    RenewsAt     DATETIME,
+    CONSTRAINT PK_Membership PRIMARY KEY (MembershipId),
+    CONSTRAINT UQ_Membership_User UNIQUE (UserId),         -- one subscription record per member
+    CONSTRAINT CK_Membership_Status CHECK (Status IN ('active','cancelled')),
+    FOREIGN KEY (UserId) REFERENCES User (UserId) ON DELETE CASCADE,
+    FOREIGN KEY (PlanId) REFERENCES Plan (PlanId)
+);
+
+/*******************************************************************************
+   Personal training: trainer availability + one-on-one bookings
+********************************************************************************/
+
+CREATE TABLE TrainerAvailability (
+    AvailabilityId INTEGER       NOT NULL,
+    TrainerId      INTEGER       NOT NULL,
+    DayOfWeek      NVARCHAR(12)  NOT NULL,             -- 'Monday'..'Sunday'
+    StartTime      NVARCHAR(5)   NOT NULL,             -- 'HH:MM'
+    Duration       INTEGER       NOT NULL DEFAULT 60,  -- minutes
+    CONSTRAINT PK_TrainerAvailability PRIMARY KEY (AvailabilityId),
+    CONSTRAINT UQ_TrainerAvailability UNIQUE (TrainerId, DayOfWeek, StartTime),
+    CONSTRAINT CK_Availability_Day CHECK (DayOfWeek IN ('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday')),
+    FOREIGN KEY (TrainerId) REFERENCES Trainer (TrainerId) ON DELETE CASCADE
+);
+
+CREATE TABLE Booking (
+    BookingId      INTEGER       NOT NULL,
+    UserId         INTEGER       NOT NULL,             -- the member who booked
+    TrainerId      INTEGER       NOT NULL,
+    AvailabilityId INTEGER       NOT NULL,
+    BookingDate    DATE          NOT NULL,             -- 'YYYY-MM-DD' of the chosen occurrence
+    Status         NVARCHAR(20)  NOT NULL DEFAULT 'booked',  -- 'booked' | 'cancelled' | 'completed'
+    Notes          TEXT,
+    CreatedAt      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_Booking PRIMARY KEY (BookingId),
+    CONSTRAINT UQ_Booking_Slot UNIQUE (AvailabilityId, BookingDate),  -- a slot/date can only be taken once
+    CONSTRAINT CK_Booking_Status CHECK (Status IN ('booked','cancelled','completed')),
+    FOREIGN KEY (UserId)         REFERENCES User                (UserId)         ON DELETE CASCADE,
+    FOREIGN KEY (TrainerId)      REFERENCES Trainer             (TrainerId)      ON DELETE CASCADE,
+    FOREIGN KEY (AvailabilityId) REFERENCES TrainerAvailability (AvailabilityId) ON DELETE CASCADE
+);
+
+/*******************************************************************************
+   Disputes & feedback (member reports, admin responses)
+********************************************************************************/
+
+CREATE TABLE Dispute (
+    DisputeId    INTEGER        NOT NULL,
+    UserId       INTEGER        NOT NULL,             -- member who raised it
+    Category     NVARCHAR(40)   NOT NULL,             -- 'equipment' | 'class' | 'billing' | 'staff' | 'other'
+    Subject      NVARCHAR(140)  NOT NULL,
+    Message      TEXT           NOT NULL,
+    Status       NVARCHAR(20)   NOT NULL DEFAULT 'open',  -- 'open' | 'in_review' | 'resolved'
+    Response     TEXT,
+    RespondedBy  INTEGER,                              -- admin UserId
+    CreatedAt    DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt    DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_Dispute PRIMARY KEY (DisputeId),
+    CONSTRAINT CK_Dispute_Category CHECK (Category IN ('equipment','class','billing','staff','other')),
+    CONSTRAINT CK_Dispute_Status   CHECK (Status IN ('open','in_review','resolved')),
+    FOREIGN KEY (UserId)      REFERENCES User (UserId) ON DELETE CASCADE,
+    FOREIGN KEY (RespondedBy) REFERENCES User (UserId)
+);
+
+/*******************************************************************************
    Create Indexes (foreign-key access paths)
 ********************************************************************************/
 
@@ -175,6 +266,13 @@ CREATE INDEX IFK_WorkoutUser         ON Workout    (UserId);
 CREATE INDEX IFK_WaitlistSchedule    ON Waitlist     (ScheduleId);
 CREATE INDEX IFK_WaitlistUser        ON Waitlist     (UserId);
 CREATE INDEX IFK_NotificationUser    ON Notification (UserId);
+CREATE INDEX IFK_MembershipUser      ON Membership          (UserId);
+CREATE INDEX IFK_MembershipPlan      ON Membership          (PlanId);
+CREATE INDEX IFK_AvailabilityTrainer ON TrainerAvailability (TrainerId);
+CREATE INDEX IFK_BookingUser         ON Booking             (UserId);
+CREATE INDEX IFK_BookingTrainer      ON Booking             (TrainerId);
+CREATE INDEX IFK_BookingAvailability ON Booking             (AvailabilityId);
+CREATE INDEX IFK_DisputeUser         ON Dispute             (UserId);
 
 /*******************************************************************************
    Populate Tables
@@ -292,3 +390,38 @@ INSERT INTO Workout (WorkoutId, UserId, WorkoutType, DurationMinutes, Calories, 
 (3, 12, 'Pilates',   50, 280, 'Completed'),
 (4, 13, 'Strength',  80, 600, 'Completed'),
 (5, 14, 'Recovery',  60, 180, 'Completed');
+
+-- Membership plans ------------------------------------------------------------
+INSERT INTO Plan (PlanId, Name, Tier, Price, Period, Description, Featured) VALUES
+(1, 'Essential', 1, 450,  'per month', 'Full gym floor access, group classes, locker & towel service at one home location.', 0),
+(2, 'Premium',   2, 950,  'per month', 'Everything in Essential plus personal training, recovery & spa access, and multi-location access.', 1),
+(3, 'Elite',     3, 2400, 'per month', 'Unlimited personal training, private suite reservation, dedicated concierge and global access.', 0);
+
+-- Current member subscriptions ------------------------------------------------
+INSERT INTO Membership (MembershipId, UserId, PlanId, Status, RenewsAt) VALUES
+(1, 11, 2, 'active', datetime('now', '+1 month')),
+(2, 12, 1, 'active', datetime('now', '+1 month')),
+(3, 13, 3, 'active', datetime('now', '+1 month'));
+
+-- Trainer availability (recurring weekly one-on-one slots) --------------------
+INSERT INTO TrainerAvailability (AvailabilityId, TrainerId, DayOfWeek, StartTime, Duration) VALUES
+(1,  3, 'Monday',    '09:00', 60),
+(2,  3, 'Wednesday', '09:00', 60),
+(3,  3, 'Friday',    '14:00', 60),
+(4,  2, 'Tuesday',   '10:00', 60),
+(5,  2, 'Thursday',  '10:00', 60),
+(6,  4, 'Monday',    '07:00', 45),
+(7,  4, 'Wednesday', '18:00', 45),
+(8,  7, 'Thursday',  '20:00', 60),
+(9,  8, 'Tuesday',   '16:00', 60),
+(10, 9, 'Sunday',    '11:00', 60);
+
+-- An existing personal-training booking ---------------------------------------
+INSERT INTO Booking (BookingId, UserId, TrainerId, AvailabilityId, BookingDate, Status, Notes) VALUES
+(1, 11, 3, 1, date('now', 'weekday 1'), 'booked', 'Focus on squat depth.');
+
+-- Disputes & feedback ---------------------------------------------------------
+INSERT INTO Dispute (DisputeId, UserId, Category, Subject, Message, Status, Response, RespondedBy) VALUES
+(1, 11, 'equipment', 'Cable crossover out of service', 'The cable crossover in Porto has been down for two weeks.', 'in_review', NULL, NULL),
+(2, 12, 'class', 'Reformer class overbooked', 'My Wednesday reformer session felt over capacity last week.', 'resolved', 'Apologies — capacity has been corrected and a spot reserved for you.', 1),
+(3, 14, 'billing', 'Double charge in May', 'I appear to have been billed twice for my May membership.', 'open', NULL, NULL);

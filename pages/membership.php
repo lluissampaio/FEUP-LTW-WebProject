@@ -4,8 +4,25 @@
   require_once(__DIR__ . '/../utils/session.php');
   $session = new Session();
 
+  require_once(__DIR__ . '/../database/connection.db.php');
+  require_once(__DIR__ . '/../database/user.class.php');
+  require_once(__DIR__ . '/../database/plan.class.php');
+  require_once(__DIR__ . '/../database/membership.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/membership.tpl.php');
+
+  $db = getDatabaseConnection();
+
+  // A logged-in member manages a real subscription; everyone else sees marketing.
+  $currentUser = $session->isLoggedIn() ? User::getUser($db, $session->getId()) : null;
+  $isMember    = $currentUser && $currentUser->role === 'member';
+
+  // Feature bullets keyed by plan name (display only).
+  $featureBullets = [
+    'Essential' => ['Full gym floor access', 'Group classes (60+ weekly)', 'Locker & towel service', 'Access to one location', 'Member app access'],
+    'Premium'   => ['Everything in Essential', '4 personal training sessions', 'Recovery & spa access', 'Multi-location access', 'Guest privileges (2/month)', 'Priority class booking'],
+    'Elite'     => ['Everything in Premium', 'Unlimited personal training', 'Private suite reservation', 'Dedicated concierge', 'All-location global access', 'Invite-only members events', 'Nutritionist consultation'],
+  ];
 
   $plans = [
     [
@@ -89,7 +106,17 @@
     'Three plans.<br>One standard.',
     'All Iron Haven memberships are by referral. Application is reviewed within seventy-two hours. An interview follows. There is no waiting list — only the right fit.'
   );
-  drawPricing($plans, 'contact.php');
+
+  if ($isMember) {
+    // Functional subscribe / upgrade / cancel for signed-in members.
+    $dbPlans = Plan::getPlans($db);
+    $current = Membership::getForUser($db, $currentUser->id);
+    drawMembershipManager($dbPlans, $current, $featureBullets, $session->csrfToken());
+  } else {
+    // Public marketing pricing → routes to the contact/apply flow.
+    drawPricing($plans, 'contact.php');
+  }
+
   drawCompareTable($features, $columns);
   drawFaq($faqs);
   drawCtaBanner(

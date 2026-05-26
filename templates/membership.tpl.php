@@ -29,6 +29,75 @@
   </section>
 <?php } ?>
 
+<?php
+  /**
+   * Logged-in member view: current subscription + actionable plan cards.
+   * $plans   : array of Plan objects (from the DB)
+   * $current : ?Membership (current subscription, plan joined)
+   * $features: [planName => string[]] feature bullets for display
+   */
+  function drawMembershipManager(array $plans, ?Membership $current, array $features, string $csrf) {
+    $hasActive   = $current && $current->isActive();
+    $currentTier = $hasActive && $current->plan ? $current->plan->tier : 0;
+?>
+  <section class="pricing">
+    <div class="section-inner">
+      <p class="section-label">01 &mdash; Your membership</p>
+
+      <?php if ($hasActive && $current->plan) { ?>
+        <div class="membership-current">
+          <div>
+            <h2 class="section-heading">You are on the <?= htmlspecialchars($current->plan->name, ENT_QUOTES, 'UTF-8') ?> plan.</h2>
+            <p class="membership-current-meta">
+              <?= htmlspecialchars($current->plan->priceLabel(), ENT_QUOTES, 'UTF-8') ?> <?= htmlspecialchars($current->plan->period, ENT_QUOTES, 'UTF-8') ?>
+              <?php if ($current->renewsAt) { ?>
+                &middot; renews <?= htmlspecialchars(date('j M Y', strtotime($current->renewsAt)), ENT_QUOTES, 'UTF-8') ?>
+              <?php } ?>
+            </p>
+          </div>
+          <form method="post" action="../actions/action_cancel_membership.php" class="inline-form">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
+            <button type="submit" class="btn-outline">Cancel membership</button>
+          </form>
+        </div>
+      <?php } else { ?>
+        <h2 class="section-heading">Choose your plan.</h2>
+        <p class="membership-current-meta">You don't have an active membership yet.</p>
+      <?php } ?>
+
+      <div class="pricing-grid">
+        <?php foreach ($plans as $p) {
+          $featured  = $p->featured;
+          $cardClass = 'pricing-card' . ($featured ? ' pricing-card--featured' : '');
+          $isCurrent = $hasActive && $current->planId === $p->id;
+
+          if ($isCurrent)              { $label = 'Current plan'; $btnClass = 'btn-outline'; $disabled = true; }
+          elseif (!$hasActive)         { $label = 'Subscribe';    $btnClass = $featured ? 'btn-primary' : 'btn-outline'; $disabled = false; }
+          elseif ($p->tier > $currentTier) { $label = 'Upgrade';  $btnClass = 'btn-primary'; $disabled = false; }
+          else                         { $label = 'Switch to this'; $btnClass = 'btn-outline'; $disabled = false; }
+        ?>
+          <article class="<?= $cardClass ?>">
+            <p class="pricing-plan-label"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></p>
+            <h3 class="pricing-plan-name"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></h3>
+            <p class="pricing-price"><?= htmlspecialchars($p->priceLabel(), ENT_QUOTES, 'UTF-8') ?></p>
+            <p class="pricing-period"><?= htmlspecialchars($p->period, ENT_QUOTES, 'UTF-8') ?></p>
+            <ul class="pricing-features">
+              <?php foreach (($features[$p->name] ?? []) as $f) { ?>
+                <li><?= htmlspecialchars($f, ENT_QUOTES, 'UTF-8') ?></li>
+              <?php } ?>
+            </ul>
+            <form method="post" action="../actions/action_subscribe.php">
+              <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
+              <input type="hidden" name="plan_id" value="<?= (int)$p->id ?>">
+              <button type="submit" class="<?= $btnClass ?>"<?= $disabled ? ' disabled' : '' ?>><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></button>
+            </form>
+          </article>
+        <?php } ?>
+      </div>
+    </div>
+  </section>
+<?php } ?>
+
 <?php function drawCompareTable(array $features, array $columns) { ?>
   <section class="compare-section">
     <div class="section-inner">
