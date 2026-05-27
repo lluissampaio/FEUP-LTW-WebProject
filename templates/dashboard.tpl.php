@@ -33,7 +33,7 @@
         
         <?php if (!$user || $user->role === 'member') { ?>
           <a href="#workouts"  class="dashboard-nav-link <?= $activePage === 'workouts' ? 'is-active' : '' ?>">Workout history</a>
-          <a href="#nutrition" class="dashboard-nav-link <?= $activePage === 'nutrition' ? 'is-active' : '' ?>">Nutrition plan</a>
+          <a href="nutrition.php" class="dashboard-nav-link <?= $activePage === 'nutrition' ? 'is-active' : '' ?>">Nutrition plan</a>
         <?php } ?>
 
         <a href="profile.php" class="dashboard-nav-link <?= $activePage === 'account' ? 'is-active' : '' ?>">Manage account</a>
