@@ -114,6 +114,7 @@
   }
 
   $session->setName($user->name());
+  $session->setPhoto($user->photo);
   $session->addMessage('success', 'Your profile has been updated.');
   header('Location: ../pages/profile.php');
   exit();

@@ -10,26 +10,33 @@
     return "<a href=\"$href\"$active>$label</a>";
   }
 
-  function isAdminUser(Session $session) : bool {
-    if (!$session->isLoggedIn()) return false;
+  // Role lookups are cached in the session at login time. For accounts that
+  // existed before this cache was added we fall back to a single BD query
+  // and then promote the value into the session.
+  function sessionRole(Session $session) : ?string {
+    if (!$session->isLoggedIn()) return null;
+    $role = $session->getRole();
+    if ($role !== null) return $role;
     try {
-      $db = getDatabaseConnection();
+      $db   = getDatabaseConnection();
       $stmt = $db->prepare('SELECT Role FROM User WHERE UserId = ?');
       $stmt->execute([$session->getId()]);
-      $row = $stmt->fetch();
-      return $row && $row['Role'] === 'admin';
-    } catch (Throwable $e) { return false; }
+      $row  = $stmt->fetch();
+      if ($row) { $session->setRole($row['Role']); return $row['Role']; }
+    } catch (Throwable $e) {}
+    return null;
+  }
+
+  function isAdminUser(Session $session) : bool {
+    return sessionRole($session) === 'admin';
   }
 
   function isMemberUser(Session $session) : bool {
-    if (!$session->isLoggedIn()) return false;
-    try {
-      $db = getDatabaseConnection();
-      $stmt = $db->prepare('SELECT Role FROM User WHERE UserId = ?');
-      $stmt->execute([$session->getId()]);
-      $row = $stmt->fetch();
-      return $row && $row['Role'] === 'member';
-    } catch (Throwable $e) { return false; }
+    return sessionRole($session) === 'member';
+  }
+
+  function isTrainerUser(Session $session) : bool {
+    return sessionRole($session) === 'trainer';
   }
 ?>
 
@@ -75,7 +82,11 @@
             <span class="nav-bell-count"><?= (int)$unread ?></span>
           <?php } ?>
         </a>
-        <a href="dashboard.php" class="nav-cta"><?= htmlspecialchars($session->getName() ?? 'Member', ENT_QUOTES, 'UTF-8') ?></a>
+        <?php
+          $fullName  = $session->getName() ?? 'Member';
+          $firstName = explode(' ', $fullName)[0];
+        ?>
+        <a href="dashboard.php" class="nav-cta" title="<?= htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?></a>
       <?php } else { ?>
         <a href="<?= htmlspecialchars($ctaHref, ENT_QUOTES, 'UTF-8') ?>" class="nav-cta"><?= htmlspecialchars($ctaLabel, ENT_QUOTES, 'UTF-8') ?></a>
       <?php } ?>
