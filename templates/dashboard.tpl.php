@@ -47,6 +47,7 @@
         <?php if ($user && $user->role === 'trainer') { ?>
           <a href="trainer_analytics.php" class="dashboard-nav-link <?= $activePage === 'trainer_analytics' ? 'is-active' : '' ?>">Analytics</a>
           <a href="trainer_classes.php" class="dashboard-nav-link <?= $activePage === 'trainer_classes' ? 'is-active' : '' ?>">My Classes & Roster</a>
+          <a href="trainer_clients.php" class="dashboard-nav-link <?= $activePage === 'trainer_clients' ? 'is-active' : '' ?>">Member Nutrition</a>
           <a href="bookings.php" class="dashboard-nav-link <?= $activePage === 'bookings' ? 'is-active' : '' ?>">Personal training</a>
           <a href="edit_trainer.php" class="dashboard-nav-link <?= $activePage === 'edit_trainer' ? 'is-active' : '' ?>">Edit public profile</a>
         <?php } ?>

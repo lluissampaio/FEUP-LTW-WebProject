@@ -1,24 +1,30 @@
 <?php
   declare(strict_types = 1);
 
-  function drawNutritionPlan(?NutritionPlan $plan, Session $session) {
+  function drawNutritionPlan(?NutritionPlan $plan, Session $session, ?User $targetUser = null) {
     $dietType      = $plan ? $plan->dietType : '';
     $dailyCalories = $plan ? $plan->dailyCalories : 2000;
     $protein       = $plan ? $plan->protein : 150;
     $carbs         = $plan ? $plan->carbs : 200;
     $fats          = $plan ? $plan->fats : 65;
     $guidelines    = $plan ? $plan->guidelines : '';
+
+    $title = $targetUser ? htmlspecialchars($targetUser->firstName . '\'s Nutrition Plan', ENT_QUOTES, 'UTF-8') : 'Your Nutrition Plan';
+    $subtitle = $targetUser ? 'Manage dietary goals and macros for your client.' : 'Manage your daily macros and dietary goals.';
 ?>
   <main class="dashboard-main">
     <header class="dashboard-header">
       <p class="dashboard-eyebrow">Nutrition</p>
-      <h1 class="dashboard-heading">Your Nutrition Plan</h1>
-      <p class="dashboard-sub">Manage your daily macros and dietary goals.</p>
+      <h1 class="dashboard-heading"><?= $title ?></h1>
+      <p class="dashboard-sub"><?= $subtitle ?></p>
     </header>
 
     <section class="admin-section">
       <form class="admin-form" method="post" action="../actions/action_save_nutrition.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($session->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+        <?php if ($targetUser) { ?>
+          <input type="hidden" name="target_user_id" value="<?= (int)$targetUser->id ?>">
+        <?php } ?>
         
         <div class="form-field">
           <label for="n-diet">Diet Type</label>
