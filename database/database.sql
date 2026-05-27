@@ -251,6 +251,25 @@ CREATE TABLE Dispute (
 );
 
 /*******************************************************************************
+   Nutrition Plan (member goals and macros)
+********************************************************************************/
+
+CREATE TABLE NutritionPlan (
+    PlanId       INTEGER       NOT NULL,
+    UserId       INTEGER       NOT NULL,
+    DietType     NVARCHAR(60)  NOT NULL,
+    DailyCalories INTEGER      NOT NULL,
+    Protein      INTEGER       NOT NULL,
+    Carbs        INTEGER       NOT NULL,
+    Fats         INTEGER       NOT NULL,
+    Guidelines   TEXT          NOT NULL,
+    CreatedAt    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_NutritionPlan PRIMARY KEY (PlanId),
+    CONSTRAINT UQ_NutritionPlan_User UNIQUE (UserId),
+    FOREIGN KEY (UserId) REFERENCES User (UserId) ON DELETE CASCADE
+);
+
+/*******************************************************************************
    Create Indexes (foreign-key access paths)
 ********************************************************************************/
 
@@ -273,6 +292,7 @@ CREATE INDEX IFK_BookingUser         ON Booking             (UserId);
 CREATE INDEX IFK_BookingTrainer      ON Booking             (TrainerId);
 CREATE INDEX IFK_BookingAvailability ON Booking             (AvailabilityId);
 CREATE INDEX IFK_DisputeUser         ON Dispute             (UserId);
+CREATE INDEX IFK_NutritionPlanUser   ON NutritionPlan       (UserId);
 
 /*******************************************************************************
    Populate Tables

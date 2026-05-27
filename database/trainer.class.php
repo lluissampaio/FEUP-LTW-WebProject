@@ -87,5 +87,26 @@
       ');
       $stmt->execute(array($userId, $bio, $specialty, $certifications));
     }
+
+    public static function getClients(PDO $db, int $trainerId) : array {
+      $stmt = $db->prepare("
+        SELECT DISTINCT u.UserId, u.FirstName, u.LastName, u.Email, u.Photo, u.JoinDate
+        FROM User u
+        WHERE u.UserId IN (
+            SELECT e.UserId
+            FROM Enrollment e
+            JOIN Schedule s ON e.ScheduleId = s.ScheduleId
+            JOIN Class c ON s.ClassId = c.ClassId
+            WHERE c.TrainerId = ? AND e.Status = 'enrolled'
+            UNION
+            SELECT b.UserId
+            FROM Booking b
+            WHERE b.TrainerId = ? AND b.Status != 'cancelled'
+        )
+        ORDER BY u.FirstName, u.LastName
+      ");
+      $stmt->execute(array($trainerId, $trainerId));
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
   }
 ?>
