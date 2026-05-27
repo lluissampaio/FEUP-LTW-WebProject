@@ -21,14 +21,10 @@
 ?>
 
   <section class="dashboard">
-    <?php drawDashboardSidebar($user, 'disputes'); ?>
+    <?php drawDashboardSidebar($user, 'disputes', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
-      <header class="dashboard-header">
-        <p class="dashboard-eyebrow">Support</p>
-        <h1 class="dashboard-heading">Disputes & feedback</h1>
-        <p class="dashboard-sub">Report an equipment fault, a class issue, or a billing query. Our team responds in confidence.</p>
-      </header>
+      <?php drawDashboardPageHeader('Support', 'Disputes & feedback', 'Report an equipment fault, a class issue, or a billing query. Our team responds in confidence.'); ?>
 
       <?php drawDisputeForm($csrf); ?>
       <?php drawMemberDisputes($disputes); ?>

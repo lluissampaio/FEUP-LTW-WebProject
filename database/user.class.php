@@ -28,6 +28,21 @@
       return $this->firstName . ' ' . $this->lastName;
     }
 
+    public function getRoleDisplay() : string {
+      if ($this->role === 'trainer') return 'Trainer';
+      if ($this->role === 'admin') return 'Administrator';
+      if (!empty($this->joinDate)) return 'Member since ' . date('Y', strtotime($this->joinDate));
+      return 'Member';
+    }
+
+    public function getPhotoUrl() : string {
+      if (!empty($this->photo)) {
+        $photoFile = __DIR__ . '/../uploads/' . $this->photo;
+        if (is_file($photoFile)) return '../uploads/' . $this->photo;
+      }
+      return '';
+    }
+
     public function save(PDO $db) : void {
       $stmt = $db->prepare('
         UPDATE User SET FirstName = ?, LastName = ?, Username = ?, Email = ?, Photo = ?, Role = ?, Active = ?

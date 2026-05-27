@@ -50,8 +50,11 @@
 ?>
 
   <section class="dashboard">
-    <?php drawDashboardSidebar($user, 'trainer_clients'); ?>
-    <?php drawNutritionPlan($plan, $session, $targetUser); ?>
+    <?php drawDashboardSidebar($user, 'trainer_clients', $session->csrfToken()); ?>
+    <main class="dashboard-main">
+      <?php drawDashboardPageHeader('Nutrition', htmlspecialchars($targetUser->firstName . '\'s Nutrition Plan', ENT_QUOTES, 'UTF-8'), 'Manage dietary goals and macros for your client.'); ?>
+      <?php drawNutritionPlan($plan, $session, $targetUser); ?>
+    </main>
   </section>
 
 <?php drawFooter(); ?>
