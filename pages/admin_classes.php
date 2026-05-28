@@ -36,9 +36,7 @@
 
   // Quick lookup: how many sessions each class has (so admins can spot
   // classes that won't show on the public schedule page yet).
-  $sessionCounts = [];
-  $stmt = $db->query('SELECT ClassId, COUNT(*) AS n FROM Schedule GROUP BY ClassId');
-  while ($row = $stmt->fetch()) $sessionCounts[(int)$row['ClassId']] = (int)$row['n'];
+  $sessionCounts = Schedule::getSessionCountsPerClass($db);
 
   drawHeader($session, '', 'Admin · Classes — Iron Haven');
 ?>
