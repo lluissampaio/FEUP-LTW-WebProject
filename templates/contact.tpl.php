@@ -27,7 +27,7 @@
 <?php } ?>
 
 <?php function drawContactForm() { ?>
-  <form class="contact-form" action="../actions/action_enquiry.php" method="post">
+  <form class="contact-form" action="../actions/action_enquiry.php" method="post" data-validate>
 
     <div class="form-row">
       <div class="form-field">
@@ -78,13 +78,15 @@
 
     <div class="form-field">
       <label for="message">A little about you</label>
-      <textarea id="message" name="message" rows="4" required></textarea>
+      <textarea id="message" name="message" rows="4" required data-counter="600"></textarea>
     </div>
 
     <button type="submit" class="btn-primary">Send enquiry</button>
     <p class="form-disclaimer">By submitting, you consent to Iron Haven contacting you in confidence about your enquiry. We do not share, sell, or publish any applicant information.</p>
 
   </form>
+
+  <script src="../javascript/form-validate.js" defer></script>
 <?php } ?>
 
 <?php function drawLocations(array $locations) { ?>

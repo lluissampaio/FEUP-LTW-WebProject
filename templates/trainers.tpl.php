@@ -1,14 +1,40 @@
 <?php declare(strict_types = 1); ?>
 
-<?php function drawTrainerGrid(array $trainers) { ?>
+<?php function drawTrainerGrid(array $trainers) {
+    // Distinct, sorted specialties for the filter dropdown.
+    $specialties = [];
+    foreach ($trainers as $t) {
+      if ($t->specialty) $specialties[$t->specialty] = true;
+    }
+    $specialties = array_keys($specialties);
+    sort($specialties);
+?>
   <section class="trainers-section">
     <div class="section-inner">
       <p class="section-label">01 &mdash; Coaches</p>
       <h2 class="section-heading">Our Trainers</h2>
 
+      <div class="trainer-search" id="trainer-search">
+        <div class="filter-field">
+          <label for="trainer-q">Search</label>
+          <input type="search" id="trainer-q" placeholder="Search by name&hellip;" autocomplete="off">
+        </div>
+        <div class="filter-field">
+          <label for="trainer-spec">Specialty</label>
+          <select id="trainer-spec">
+            <option value="">All specialties</option>
+            <?php foreach ($specialties as $s) { ?>
+              <option value="<?= htmlspecialchars($s, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($s, ENT_QUOTES, 'UTF-8') ?></option>
+            <?php } ?>
+          </select>
+        </div>
+      </div>
+
       <div class="trainer-grid">
         <?php foreach ($trainers as $t) { ?>
-          <article class="trainer-card">
+          <article class="trainer-card"
+                   data-name="<?= htmlspecialchars(strtolower($t->name()), ENT_QUOTES, 'UTF-8') ?>"
+                   data-specialty="<?= htmlspecialchars($t->specialty ?? '', ENT_QUOTES, 'UTF-8') ?>">
             <a href="trainer.php?id=<?= (int)$t->id ?>" class="img-real-wrap trainer-photo">
               <?php if ($t->photo) { ?>
                 <img class="img-real" src="../images/<?= htmlspecialchars($t->photo, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($t->name(), ENT_QUOTES, 'UTF-8') ?>">
@@ -31,8 +57,12 @@
           </article>
         <?php } ?>
       </div>
+
+      <p class="empty-state" id="trainer-empty" hidden>No trainers match your search.</p>
     </div>
   </section>
+
+  <script src="../javascript/trainer-search.js" defer></script>
 <?php } ?>
 
 <?php function drawTrainerProfile(Trainer $t, array $classes) { ?>

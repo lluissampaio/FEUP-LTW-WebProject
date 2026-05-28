@@ -3,7 +3,7 @@
 <?php function drawEquipmentFilters(array $locations, array $types, ?int $locationId, string $type) { ?>
   <section class="filter-section" aria-label="Filter equipment">
     <div class="section-inner">
-      <form class="filter-form" method="get" action="equipment.php">
+      <form class="filter-form" id="equipment-filter-form" method="get" action="equipment.php">
         <div class="filter-field">
           <label for="eq-location">Location</label>
           <select id="eq-location" name="location">
@@ -35,36 +35,40 @@
   <section class="equipment-section" aria-labelledby="equipment-heading">
     <div class="section-inner">
       <p class="section-label">01 &mdash; Inventory</p>
-      <h2 class="section-heading" id="equipment-heading">Equipment (<?= count($items) ?>)</h2>
+      <h2 class="section-heading" id="equipment-heading">Equipment (<span id="equipment-count"><?= count($items) ?></span>)</h2>
 
-      <?php if (count($items) === 0) { ?>
-        <p class="empty-state">No equipment matches your filters.</p>
-      <?php } else { ?>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Type</th>
-              <th scope="col">Location</th>
-              <th scope="col">Available</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($items as $e) {
-              $statusClass = 'status-tag status-tag--' . htmlspecialchars(str_replace('_', '-', $e->status), ENT_QUOTES, 'UTF-8');
-            ?>
+      <div id="equipment-results">
+        <?php if (count($items) === 0) { ?>
+          <p class="empty-state">No equipment matches your filters.</p>
+        <?php } else { ?>
+          <table class="data-table">
+            <thead>
               <tr>
-                <td><?= htmlspecialchars($e->name, ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars($e->type, ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars($e->locationName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= (int)$e->available ?> / <?= (int)$e->quantity ?></td>
-                <td><span class="<?= $statusClass ?>"><?= htmlspecialchars(str_replace('_', ' ', $e->status), ENT_QUOTES, 'UTF-8') ?></span></td>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Location</th>
+                <th scope="col">Available</th>
+                <th scope="col">Status</th>
               </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      <?php } ?>
+            </thead>
+            <tbody>
+              <?php foreach ($items as $e) {
+                $statusClass = 'status-tag status-tag--' . htmlspecialchars(str_replace('_', '-', $e->status), ENT_QUOTES, 'UTF-8');
+              ?>
+                <tr>
+                  <td><?= htmlspecialchars($e->name, ENT_QUOTES, 'UTF-8') ?></td>
+                  <td><?= htmlspecialchars($e->type, ENT_QUOTES, 'UTF-8') ?></td>
+                  <td><?= htmlspecialchars($e->locationName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                  <td><?= (int)$e->available ?> / <?= (int)$e->quantity ?></td>
+                  <td><span class="<?= $statusClass ?>"><?= htmlspecialchars(str_replace('_', ' ', $e->status), ENT_QUOTES, 'UTF-8') ?></span></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        <?php } ?>
+      </div>
     </div>
   </section>
+
+  <script src="../javascript/equipment-filter.js" defer></script>
 <?php } ?>

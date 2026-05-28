@@ -4,7 +4,7 @@
   <section class="filter-section" aria-labelledby="filter-heading">
     <div class="section-inner">
       <h2 class="visually-hidden" id="filter-heading">Filter classes</h2>
-      <form class="filter-form" method="get" action="classes.php">
+      <form class="filter-form" id="class-filter-form" method="get" action="classes.php">
         <div class="filter-field">
           <label for="f-type">Type</label>
           <select id="f-type" name="type">
@@ -63,13 +63,11 @@
   <section class="schedule-list-section" aria-labelledby="schedule-list-heading">
     <div class="section-inner">
       <p class="section-label">01 &mdash; This Week</p>
-      <h2 class="section-heading" id="schedule-list-heading">Schedule (<?= count($schedules) ?>)</h2>
+      <h2 class="section-heading" id="schedule-list-heading">Schedule (<span id="schedule-count"><?= count($schedules) ?></span>)</h2>
 
-      <?php if (count($schedules) === 0) { ?>
-        <p class="empty-state">No classes match your filters.</p>
-      <?php } ?>
+      <p class="empty-state" id="schedule-empty"<?= count($schedules) === 0 ? '' : ' hidden' ?>>No classes match your filters.</p>
 
-      <ul class="schedule-cards" data-csrf="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
+      <ul class="schedule-cards" data-csrf="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>" data-logged-in="<?= $isLoggedIn ? '1' : '0' ?>">
         <?php foreach ($schedules as $s) {
           $enrolled = isset($myEnrolled[$s->id]);
           $waiting  = isset($myWaiting[$s->id]);
@@ -131,5 +129,5 @@
     </div>
   </section>
 
-  <script src="../javascript/enroll.js" defer></script>
+  <script src="../javascript/schedule.js" defer></script>
 <?php } ?>
