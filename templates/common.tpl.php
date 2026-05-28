@@ -10,34 +10,6 @@
     return "<a href=\"$href\"$active>$label</a>";
   }
 
-  // Role lookups are cached in the session at login time. For accounts that
-  // existed before this cache was added we fall back to a single BD query
-  // and then promote the value into the session.
-  function sessionRole(Session $session) : ?string {
-    if (!$session->isLoggedIn()) return null;
-    $role = $session->getRole();
-    if ($role !== null) return $role;
-    try {
-      $db   = getDatabaseConnection();
-      $stmt = $db->prepare('SELECT Role FROM User WHERE UserId = ?');
-      $stmt->execute([$session->getId()]);
-      $row  = $stmt->fetch();
-      if ($row) { $session->setRole($row['Role']); return $row['Role']; }
-    } catch (Throwable $e) {}
-    return null;
-  }
-
-  function isAdminUser(Session $session) : bool {
-    return sessionRole($session) === 'admin';
-  }
-
-  function isMemberUser(Session $session) : bool {
-    return sessionRole($session) === 'member';
-  }
-
-  function isTrainerUser(Session $session) : bool {
-    return sessionRole($session) === 'trainer';
-  }
 ?>
 
 <?php function drawHeader(Session $session, string $current = '', string $title = 'Iron Haven — Private Members Gym', string $ctaLabel = 'JOIN', string $ctaHref = 'membership.php') { ?>

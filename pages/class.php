@@ -36,12 +36,7 @@
     foreach (Enrollment::getForUser($db, $session->getId(), 'enrolled') as $e) $myEnrolled[$e->scheduleId] = true;
     foreach (Waitlist::getForUser($db, $session->getId())               as $w) $myWaiting[$w->scheduleId]  = true;
     // Allow review if user has any enrollment (enrolled or attended) for this class
-    $stmt = $db->prepare("
-      SELECT COUNT(*) AS n FROM Enrollment e JOIN Schedule s ON s.ScheduleId = e.ScheduleId
-      WHERE e.UserId = ? AND s.ClassId = ? AND e.Status IN ('enrolled','attended')
-    ");
-    $stmt->execute([$session->getId(), $class->id]);
-    $canReview = ((int)$stmt->fetch()['n']) > 0;
+    $canReview = Enrollment::hasEnrolledInClass($db, $session->getId(), $class->id);
     foreach ($reviews as $r) if ($r->userId === $session->getId()) { $myReview = $r; break; }
   }
 

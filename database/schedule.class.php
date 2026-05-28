@@ -112,6 +112,13 @@
       return $items;
     }
 
+    public static function getSessionCountsPerClass(PDO $db) : array {
+      $counts = [];
+      $stmt = $db->query('SELECT ClassId, COUNT(*) AS n FROM Schedule GROUP BY ClassId');
+      while ($row = $stmt->fetch()) $counts[(int)$row['ClassId']] = (int)$row['n'];
+      return $counts;
+    }
+
     public static function create(PDO $db, int $classId, string $dayOfWeek, string $startTime, int $duration) : int {
       $stmt = $db->prepare('INSERT INTO Schedule (ClassId, DayOfWeek, StartTime, Duration) VALUES (?, ?, ?, ?)');
       $stmt->execute(array($classId, $dayOfWeek, $startTime, $duration));

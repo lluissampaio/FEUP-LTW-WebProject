@@ -6,6 +6,8 @@
 
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/home.tpl.php');
+  require_once(__DIR__ . '/../database/connection.db.php');
+  require_once(__DIR__ . '/../database/plan.class.php');
 
   $stats = [
     ['number' => '4',      'label' => 'Locations'],
@@ -47,53 +49,21 @@
     ],
   ];
 
-  $plans = [
-    [
-      'label'    => 'Plan 01',
-      'name'     => 'Essential',
-      'price'    => '$450',
-      'period'   => 'per month',
-      'featured' => false,
-      'features' => [
-        'Full gym floor access',
-        'Group classes (60+ weekly)',
-        'Locker & towel service',
-        'Access to one location',
-        'Member app access',
-      ],
-    ],
-    [
-      'label'    => 'Plan 02 — Most Popular',
-      'name'     => 'Premium',
-      'price'    => '$950',
-      'period'   => 'per month',
-      'featured' => true,
-      'features' => [
-        'Everything in Essential',
-        '4 personal training sessions',
-        'Recovery & spa access',
-        'Multi-location access',
-        'Guest privileges (2/month)',
-        'Priority class booking',
-      ],
-    ],
-    [
-      'label'    => 'Plan 03',
-      'name'     => 'Elite',
-      'price'    => '$2,400',
-      'period'   => 'per month',
-      'featured' => false,
-      'features' => [
-        'Everything in Premium',
-        'Unlimited personal training',
-        'Private suite reservation',
-        'Dedicated concierge',
-        'All-location global access',
-        'Invite-only members events',
-        'Nutritionist consultation',
-      ],
-    ],
-  ];
+  $db = getDatabaseConnection();
+  $plansFromDB = Plan::getPlans($db);
+
+  $plans = [];
+  foreach ($plansFromDB as $p) {
+    $features = array_map('trim', explode(',', $p->description ?? ''));
+    $plans[] = [
+      'label'    => 'Plan 0' . $p->tier . ($p->featured ? ' — Most Popular' : ''),
+      'name'     => $p->name,
+      'price'    => '$' . number_format($p->price),
+      'period'   => $p->period,
+      'featured' => $p->featured,
+      'features' => $features,
+    ];
+  }
 
   drawHeader($session, 'home', 'Iron Haven — Private Members Gym');
   drawHomeHero();

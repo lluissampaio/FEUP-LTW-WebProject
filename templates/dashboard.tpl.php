@@ -241,10 +241,10 @@
           <tbody>
             <?php foreach ($workouts as $w) { ?>
               <tr>
-                <td><?= htmlspecialchars(date('d/m/Y', strtotime($w['Date'])), ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars($w['WorkoutType'], ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= (int)$w['DurationMinutes'] ?> min</td>
-                <td><span class="status-tag status-tag--<?= htmlspecialchars(strtolower($w['Status']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w['Status'], ENT_QUOTES, 'UTF-8') ?></span></td>
+                <td><?= htmlspecialchars(date('d/m/Y', strtotime($w->date)), ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($w->workoutType, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= (int)$w->durationMinutes ?> min</td>
+                <td><span class="status-tag status-tag--<?= htmlspecialchars(strtolower($w->status), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w->status, ENT_QUOTES, 'UTF-8') ?></span></td>
               </tr>
             <?php } ?>
             <?php if (empty($workouts)) { ?>
