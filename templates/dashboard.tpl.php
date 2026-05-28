@@ -177,7 +177,7 @@
 ?>
 
 <?php
-  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, array $workouts, string $csrf) {
+  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null) {
 ?>
     <section class="dashboard-stats" aria-label="Your statistics">
       <article class="stat-card">
@@ -201,6 +201,30 @@
         <p class="stat-card-note">Days this week</p>
       </article>
     </section>
+
+    <?php if ($nutritionPlan) { ?>
+      <section class="dashboard-activity">
+        <h2 class="dashboard-section-heading">My Nutrition Plan - <?= htmlspecialchars($nutritionPlan->dietType, ENT_QUOTES, 'UTF-8') ?></h2>
+        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 24px;">
+          <article class="stat-card">
+            <p class="stat-card-label">Calories</p>
+            <p class="stat-card-value"><?= number_format($nutritionPlan->dailyCalories) ?></p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Protein</p>
+            <p class="stat-card-value"><?= $nutritionPlan->protein ?>g</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Carbs</p>
+            <p class="stat-card-value"><?= $nutritionPlan->carbs ?>g</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-card-label">Fats</p>
+            <p class="stat-card-value"><?= $nutritionPlan->fats ?>g</p>
+          </article>
+        </div>
+      </section>
+    <?php } ?>
 
     <section class="dashboard-activity">
       <h2 class="dashboard-section-heading">Log a workout</h2>

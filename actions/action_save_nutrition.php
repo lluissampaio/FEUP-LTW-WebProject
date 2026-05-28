@@ -49,7 +49,12 @@
       'Guidelines'    => $guidelines
     ]);
 
-    $session->addMessage('success', 'Nutrition plan updated successfully.');
+    if ($user && $user->role === 'trainer'){
+      $session->addMessage('success', 'Nutrition plan updated successfully.');
+    }
+    else{
+      $session->addMessage('success', 'Nutrition plan updated successfully. Check the dashboard for the latest updates.');
+    }
   } catch (Throwable $e) {
     $session->addMessage('error', $e->getMessage());
   }
