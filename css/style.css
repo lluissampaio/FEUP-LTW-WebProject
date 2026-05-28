@@ -2423,7 +2423,6 @@ ul {
 
 /* File input ("Choose file") — themed to match btn-outline */
 .form-field input[type="file"] {
-  border-bottom: none;
   font-size: 12px;
   color: var(--color-muted);
   cursor: pointer;
