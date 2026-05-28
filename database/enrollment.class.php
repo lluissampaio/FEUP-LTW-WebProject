@@ -46,6 +46,16 @@
       return (int)$stmt->fetch()['n'];
     }
 
+    /** Returns true if the user has ever enrolled in or attended any session of this class. */
+    public static function hasEnrolledInClass(PDO $db, int $userId, int $classId) : bool {
+      $stmt = $db->prepare("
+        SELECT 1 FROM Enrollment e JOIN Schedule s ON s.ScheduleId = e.ScheduleId
+        WHERE e.UserId = ? AND s.ClassId = ? AND e.Status IN ('enrolled','attended')
+      ");
+      $stmt->execute(array($userId, $classId));
+      return (bool)$stmt->fetch();
+    }
+
     /**
      * Enrol a user into a schedule, respecting capacity. Throws on full / duplicate.
      */
