@@ -10,6 +10,7 @@
   require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
+  require_once(__DIR__ . '/../templates/admin_classes.tpl.php');
 
   $session = new Session();
   $session->requireLogin('login.php');
