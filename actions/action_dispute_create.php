@@ -23,8 +23,11 @@
   try {
     Dispute::create($db, $session->getId(), $category, $subject, $message);
     $session->addMessage('success', 'Your report has been submitted. Our team will respond shortly.');
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_dispute_create: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/disputes.php');

@@ -55,8 +55,11 @@
     else{
       $session->addMessage('success', 'Nutrition plan updated successfully. Check the dashboard for the latest updates.');
     }
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_save_nutrition: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   if (isset($user) && $user->role === 'trainer' && isset($targetUserId) && $targetUserId !== $session->getId()) {

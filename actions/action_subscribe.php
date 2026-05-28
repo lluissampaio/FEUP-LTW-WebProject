@@ -28,8 +28,11 @@
       'Your membership is now: ' . ($plan ? $plan->name : 'updated') . '.',
       'membership.php'
     );
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_subscribe: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/membership.php');

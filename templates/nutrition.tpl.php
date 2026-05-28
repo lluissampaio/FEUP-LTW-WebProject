@@ -24,22 +24,22 @@
 
         <div class="form-field">
           <label for="n-cals">Daily Calories</label>
-          <input type="number" id="n-cals" name="daily_calories" required min="0" max="10000" value="<?= $dailyCalories ?>">
+          <input type="number" id="n-cals" name="daily_calories" required min="0" max="10000" value="<?= htmlspecialchars((string)$dailyCalories, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
         <div class="form-field">
           <label for="n-protein">Protein (g)</label>
-          <input type="number" id="n-protein" name="protein" required min="0" value="<?= $protein ?>">
+          <input type="number" id="n-protein" name="protein" required min="0" value="<?= htmlspecialchars((string)$protein, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
         <div class="form-field">
           <label for="n-carbs">Carbs (g)</label>
-          <input type="number" id="n-carbs" name="carbs" required min="0" value="<?= $carbs ?>">
+          <input type="number" id="n-carbs" name="carbs" required min="0" value="<?= htmlspecialchars((string)$carbs, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
         <div class="form-field">
           <label for="n-fats">Fats (g)</label>
-          <input type="number" id="n-fats" name="fats" required min="0" value="<?= $fats ?>">
+          <input type="number" id="n-fats" name="fats" required min="0" value="<?= htmlspecialchars((string)$fats, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
         <div class="form-field" style="grid-column: 1 / -1;">

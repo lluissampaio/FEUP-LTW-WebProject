@@ -35,8 +35,11 @@
       'Your report "' . $dispute->subject . '" is now marked ' . str_replace('_', ' ', $status) . '.',
       'disputes.php'
     );
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_dispute_respond: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/admin_disputes.php');

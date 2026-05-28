@@ -9,6 +9,8 @@
 
     /** Counts of rows in key tables for the admin dashboard. */
     public static function getDashboardCounts(PDO $db) : array {
+      // Table names cannot be PDO-parameterised, so the list below is the
+      // explicit whitelist of identifiers that may be interpolated.
       $counts = [];
       foreach (['User','Class','Schedule','Enrollment','Equipment','Waitlist','Review'] as $t) {
         $counts[$t] = (int)$db->query("SELECT COUNT(*) FROM $t")->fetchColumn();

@@ -29,8 +29,11 @@
       'You are enrolled in ' . $schedule->className . ' on ' . $schedule->dayOfWeek . ' at ' . $schedule->startTime . '.',
       'class.php?id=' . $schedule->classId
     );
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_enroll: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/classes.php');

@@ -25,8 +25,11 @@
       'You joined the waitlist for ' . ($schedule->className ?? 'this class') . '. You will be notified if a spot opens.',
       'classes.php'
     );
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_waitlist_join: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/classes.php');
