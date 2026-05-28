@@ -27,8 +27,12 @@
 ?>
 
   <section class="dashboard">
-    <?php drawDashboardSidebar($user, 'trainer_clients'); ?>
-    <?php drawTrainerClients($clients); ?>
+    <?php drawDashboardSidebar($user, 'trainer_clients', $session->csrfToken()); ?>
+    
+    <main class="dashboard-main">
+      <?php drawDashboardPageHeader('Trainer Management', 'Member Nutrition', 'Manage nutrition plans for your class members and personal training clients.'); ?>
+      <?php drawTrainerClients($clients); ?>
+    </main>
   </section>
 
 <?php drawFooter(); ?>

@@ -1,6 +1,41 @@
 <?php declare(strict_types = 1); ?>
 
 <?php
+  /** Trainer's one-on-one sessions roster. */
+  function drawTrainerRoster(array $roster) {
+?>
+  <section class="booking-block">
+    <div class="activity-table-wrap">
+      <table class="activity-table">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Member</th>
+            <th scope="col">Time</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($roster as $b) { ?>
+            <tr>
+              <td><?= htmlspecialchars(date('D j M', strtotime($b->bookingDate)), ENT_QUOTES, 'UTF-8') ?></td>
+              <td><?= htmlspecialchars($b->memberName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+              <td><?= htmlspecialchars((string)$b->startTime, ENT_QUOTES, 'UTF-8') ?></td>
+              <td><?= (int)$b->duration ?> min</td>
+              <td><?= htmlspecialchars($b->notes ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
+            </tr>
+          <?php } ?>
+          <?php if (empty($roster)) { ?>
+            <tr><td colspan="5" class="activity-empty">No personal training sessions booked yet.</td></tr>
+          <?php } ?>
+        </tbody>
+      </table>
+    </div>
+  </section>
+<?php } ?>
+
+<?php
   /** Member's upcoming one-on-one sessions, with cancel controls. */
   function drawMyBookings(array $bookings, string $csrf) {
 ?>

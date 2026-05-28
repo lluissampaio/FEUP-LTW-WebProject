@@ -31,14 +31,10 @@
 ?>
 
   <section class="dashboard">
-    <?php drawDashboardSidebar($user, 'disputes'); ?>
+    <?php drawDashboardSidebar($user, 'disputes', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
-      <header class="dashboard-header">
-        <p class="dashboard-eyebrow">Admin</p>
-        <h1 class="dashboard-heading">Disputes & feedback</h1>
-        <p class="dashboard-sub">Triage member reports and respond. <?= (int)$counts['open'] ?> open &middot; <?= (int)$counts['in_review'] ?> in review &middot; <?= (int)$counts['resolved'] ?> resolved.</p>
-      </header>
+      <?php drawDashboardPageHeader('Admin', 'Disputes & feedback', 'Triage member reports and respond. ' . (int)$counts['open'] . ' open · ' . (int)$counts['in_review'] . ' in review · ' . (int)$counts['resolved'] . ' resolved.'); ?>
 
       <nav class="dispute-filter" aria-label="Filter disputes">
         <a href="admin_disputes.php" class="<?= $filter === null ? 'is-active' : '' ?>">All</a>

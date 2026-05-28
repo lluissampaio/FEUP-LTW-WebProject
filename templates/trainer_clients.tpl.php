@@ -3,13 +3,6 @@
 
   function drawTrainerClients(array $clients) {
 ?>
-    <main class="dashboard-main">
-      <header class="dashboard-header">
-        <p class="dashboard-eyebrow">Trainer Management</p>
-        <h1 class="dashboard-heading">Member Nutrition</h1>
-        <p class="dashboard-sub">Manage nutrition plans for your class members and personal training clients.</p>
-      </header>
-
       <section class="dashboard-activity">
         <div class="activity-table-wrap">
           <table class="activity-table">
@@ -39,7 +32,6 @@
           </table>
         </div>
       </section>
-    </main>
 <?php
   }
 ?>

@@ -10,6 +10,7 @@
   require_once(__DIR__ . '/../database/trainer.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
+  require_once(__DIR__ . '/../templates/edit_trainer.tpl.php');
 
   $db = getDatabaseConnection();
   $user = User::getUser($db, $session->getId());
@@ -26,42 +27,11 @@
 ?>
 
   <section class="dashboard">
-    <?php drawDashboardSidebar($user, 'edit_trainer'); ?>
+    <?php drawDashboardSidebar($user, 'edit_trainer', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
-      <header class="dashboard-header">
-        <p class="dashboard-eyebrow">Trainer Management</p>
-        <h1 class="dashboard-heading">Edit Profile</h1>
-        <p class="dashboard-sub">Update your public trainer profile information.</p>
-      </header>
-
-      <section class="dashboard-activity">
-        <form action="../actions/action_edit_trainer.php" method="post" class="auth-form" style="max-width: 600px;">
-          <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($session->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
-
-          <div class="form-group">
-            <label class="form-label" for="specialty">Specialty</label>
-            <input class="form-input" type="text" id="specialty" name="specialty" 
-                   value="<?= htmlspecialchars($trainer->specialty ?? '', ENT_QUOTES, 'UTF-8') ?>" 
-                   placeholder="e.g. Strength, Mobility, Pilates">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="certifications">Certifications</label>
-            <input class="form-input" type="text" id="certifications" name="certifications" 
-                   value="<?= htmlspecialchars($trainer->certifications ?? '', ENT_QUOTES, 'UTF-8') ?>" 
-                   placeholder="e.g. NASM-CPT, CSCS">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="bio">Bio</label>
-            <textarea class="form-input" id="bio" name="bio" rows="5" 
-                      placeholder="Tell us about yourself..."><?= htmlspecialchars($trainer->bio ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
-          </div>
-
-          <button type="submit" class="btn auth-btn">Save Changes</button>
-        </form>
-      </section>
+      <?php drawDashboardPageHeader('Trainer Management', 'Edit Profile', 'Update your public trainer profile information.'); ?>
+      <?php drawEditTrainerForm($trainer, $session->csrfToken()); ?>
     </main>
   </section>
 
