@@ -1362,26 +1362,8 @@ ul {
   color: var(--color-muted);
 }
 
-.form-field input,
-.form-field select,
-.form-field textarea {
-  font-family: var(--font-body);
-  font-size: 13px;
-  color: var(--color-text);
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid var(--color-border);
-  padding: 10px 0;
-  outline: none;
-  transition: border-color 0.2s ease;
-  width: 100%;
-}
-
-.form-field input:focus,
-.form-field select:focus,
-.form-field textarea:focus {
-  border-bottom-color: var(--color-accent);
-}
+/* Control box styling (border, padding, background) is defined once in the
+   shared .filter-field / .form-field rule further down. */
 
 .form-field textarea {
   resize: vertical;
@@ -2067,6 +2049,7 @@ ul {
   color: var(--color-text);
   font: inherit;
   border-radius: 2px;
+  transition: border-color 0.2s ease;
 }
 .filter-field select:focus,
 .filter-field input:focus,
