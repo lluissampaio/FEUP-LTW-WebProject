@@ -223,6 +223,13 @@
             <p class="stat-card-value"><?= $nutritionPlan->fats ?>g</p>
           </article>
         </div>
+        
+        <?php if (!empty(trim($nutritionPlan->guidelines))) { ?>
+          <div class="dashboard-notes">
+            <h3 class="dashboard-notes-heading">Guidelines & Notes</h3>
+            <p class="dashboard-notes-body"><?= htmlspecialchars(trim($nutritionPlan->guidelines), ENT_QUOTES, 'UTF-8') ?></p>
+          </div>
+        <?php } ?>
       </section>
     <?php } ?>
 

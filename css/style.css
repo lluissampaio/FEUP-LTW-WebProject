@@ -1915,6 +1915,34 @@ ul {
   margin: 0;
 }
 
+.dashboard-notes {
+  margin-bottom: 24px;
+  padding: 24px;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.dashboard-notes-heading {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 12px 0;
+}
+
+.dashboard-notes-body {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-text);
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+
 .dashboard-activity {
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
