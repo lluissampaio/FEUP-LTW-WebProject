@@ -4,7 +4,7 @@
   function drawProfileForm(User $user, ?string $photoUrl, string $csrf) {
 ?>
   <section class="profile-section">
-    <form class="profile-form" method="post" action="../actions/action_edit_profile.php" enctype="multipart/form-data">
+    <form class="profile-form" method="post" action="../actions/action_edit_profile.php" enctype="multipart/form-data" data-validate>
       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
       <div class="profile-photo-row">
@@ -49,7 +49,7 @@
         <div class="form-grid">
           <div class="form-field">
             <label for="profile-new-password">New password</label>
-            <input type="password" id="profile-new-password" name="new_password" minlength="8" autocomplete="new-password">
+            <input type="password" id="profile-new-password" name="new_password" minlength="8" autocomplete="new-password" data-strength>
           </div>
           <div class="form-field">
             <label for="profile-confirm-password">Confirm new password</label>
@@ -61,6 +61,8 @@
       <button type="submit" class="btn-primary">Save changes</button>
     </form>
   </section>
+
+  <script src="../javascript/form-validate.js" defer></script>
 <?php
   }
 ?>

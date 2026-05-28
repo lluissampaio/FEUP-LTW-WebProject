@@ -39,7 +39,7 @@
       <h1 class="auth-heading">Join the Haven.</h1>
       <p class="auth-sub">Create your account to begin.</p>
 
-      <form class="auth-form" method="post" action="../actions/action_register.php">
+      <form class="auth-form" method="post" action="../actions/action_register.php" data-validate>
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
         <div class="form-field">
@@ -54,7 +54,7 @@
 
         <div class="form-field">
           <label for="register-password">Password</label>
-          <input type="password" id="register-password" name="password" required minlength="8" autocomplete="new-password">
+          <input type="password" id="register-password" name="password" required minlength="8" autocomplete="new-password" data-strength>
         </div>
 
         <div class="form-field">
@@ -68,6 +68,8 @@
       <p class="auth-alt">Already a member? <a href="login.php">Sign in</a></p>
     </div>
   </section>
+
+  <script src="../javascript/form-validate.js" defer></script>
 <?php
   }
 ?>
