@@ -25,22 +25,20 @@
   $trainerStats  = [];
 
   if ($isAdmin) {
-    foreach (['User','Class','Schedule','Enrollment','Equipment','Waitlist','Review'] as $t) {
-      $adminCounts[$t] = (int)$db->query("SELECT COUNT(*) FROM $t")->fetchColumn();
-    }
+    require_once(__DIR__ . '/../database/admin_analytics.class.php');
+    $adminCounts = AdminAnalytics::getDashboardCounts($db);
   } elseif ($isTrainer) {
     require_once(__DIR__ . '/../database/analytics.class.php');
     $trainerStats = TrainerAnalytics::getOverallStats($db, $user->id);
   } else {
-    $stmt = $db->prepare('SELECT WorkoutId, WorkoutType, DurationMinutes, Calories, Date, Status FROM Workout WHERE UserId = ? ORDER BY Date DESC');
-    $stmt->execute([$session->getId()]);
-    $workouts = $stmt->fetchAll();
+    require_once(__DIR__ . '/../database/workout.class.php');
+    $workouts = Workout::getForUser($db, $session->getId(), 1000);
 
     $totalWorkouts = count($workouts);
     foreach ($workouts as $w) {
-      if ($w['Status'] === 'Completed') {
-        $totalCalories += (int)($w['Calories'] ?? 0);
-        $totalDuration += (int)($w['DurationMinutes'] ?? 0);
+      if ($w->status === 'Completed') {
+        $totalCalories += (int)($w->calories ?? 0);
+        $totalDuration += (int)($w->durationMinutes ?? 0);
       }
     }
     $activeHours = round($totalDuration / 60, 1);

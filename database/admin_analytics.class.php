@@ -7,6 +7,15 @@
    */
   class AdminAnalytics {
 
+    /** Counts of rows in key tables for the admin dashboard. */
+    public static function getDashboardCounts(PDO $db) : array {
+      $counts = [];
+      foreach (['User','Class','Schedule','Enrollment','Equipment','Waitlist','Review'] as $t) {
+        $counts[$t] = (int)$db->query("SELECT COUNT(*) FROM $t")->fetchColumn();
+      }
+      return $counts;
+    }
+
     /** Headline counts for the dashboard cards. */
     public static function getOverview(PDO $db) : array {
       $members      = (int)$db->query("SELECT COUNT(*) FROM User WHERE Role = 'member'")->fetchColumn();
