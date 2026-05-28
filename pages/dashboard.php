@@ -9,6 +9,7 @@
   require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
+  require_once(__DIR__ . '/../database/nutrition.class.php');
 
   $db        = getDatabaseConnection();
   $user      = User::getUser($db, $session->getId());
@@ -33,6 +34,7 @@
   } else {
     require_once(__DIR__ . '/../database/workout.class.php');
     $workouts = Workout::getForUser($db, $session->getId(), 1000);
+    $nutritionPlan = NutritionPlan::getPlanByUserId($db, $session->getId());
 
     $totalWorkouts = count($workouts);
     foreach ($workouts as $w) {
@@ -63,7 +65,7 @@
         <?php drawTrainerDashboard($trainerStats); ?>
       <?php } else { ?>
         <?php drawDashboardPageHeader('Member dashboard', "Welcome back, $firstName.", 'Today is a great day to train.'); ?>
-        <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, $workouts, $session->csrfToken()); ?>
+        <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, $workouts, $session->csrfToken(), $nutritionPlan); ?>
       <?php } ?>
     </main>
   </section>
