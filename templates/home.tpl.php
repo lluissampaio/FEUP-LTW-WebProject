@@ -1,7 +1,23 @@
 <?php declare(strict_types = 1); ?>
 
-<?php function drawHomeHero() { ?>
+<?php function drawHomeHero() {
+  $heroPhotos = [
+    'location-new-york.jpg',
+    'location-lisbon.jpg',
+    'location-porto.jpg',
+    'location-viseu.jpg',
+  ];
+  // Duplicate the set so the horizontal scroll loops seamlessly.
+  $heroSlides = array_merge($heroPhotos, $heroPhotos);
+?>
   <section class="hero" id="home" aria-labelledby="hero-heading">
+    <div class="hero-carousel" aria-hidden="true">
+      <div class="hero-carousel-track">
+        <?php foreach ($heroSlides as $file) { ?>
+          <div class="hero-slide" style="background-image:url('../images/<?= htmlspecialchars($file, ENT_QUOTES, 'UTF-8') ?>')"></div>
+        <?php } ?>
+      </div>
+    </div>
     <div class="hero-inner">
       <p class="hero-eyebrow">New York &middot; Lisbon &middot; Porto &middot; Viseu</p>
       <h1 class="hero-heading" id="hero-heading">The Haven<br>You Deserve.</h1>
