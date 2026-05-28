@@ -1,6 +1,11 @@
 <?php
   declare(strict_types = 1);
 
+  // Keep error details out of HTTP responses; route them to the server log instead.
+  ini_set('display_errors', '0');
+  ini_set('log_errors', '1');
+  error_reporting(E_ALL);
+
   class Session {
     private array $messages;
 
@@ -25,6 +30,8 @@
     }
 
     public function logout() : void {
+      $_SESSION = array();
+      session_regenerate_id(true);
       session_destroy();
     }
 

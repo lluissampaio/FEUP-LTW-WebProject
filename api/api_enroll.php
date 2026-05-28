@@ -73,7 +73,10 @@
       'capacity'       => $fresh ? $fresh->capacity      : null,
       'full'           => $fresh ? $fresh->isFull()      : null,
     ]);
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     jsend(400, ['ok' => false, 'error' => $e->getMessage()]);
+  } catch (Throwable $e) {
+    error_log('api_enroll: ' . $e->getMessage());
+    jsend(500, ['ok' => false, 'error' => 'Something went wrong. Please try again.']);
   }
 ?>

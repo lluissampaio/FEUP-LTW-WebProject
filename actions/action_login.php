@@ -21,6 +21,7 @@
   $user = User::authenticate($db, $identifier, $password);
 
   if ($user) {
+    session_regenerate_id(true);
     $session->setId($user->id);
     $session->setName($user->name());
     $session->setRole($user->role);

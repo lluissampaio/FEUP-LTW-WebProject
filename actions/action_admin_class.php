@@ -62,8 +62,11 @@
     } else {
       $session->addMessage('error', 'Unknown action.');
     }
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_admin_class: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/admin_classes.php');

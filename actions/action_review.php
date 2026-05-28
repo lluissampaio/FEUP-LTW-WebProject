@@ -35,8 +35,11 @@
       'Review submitted',
       'Your review was submitted. Thank you for the feedback.',
       'class.php?id=' . $classId);
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_review: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/class.php?id=' . $classId . '#reviews');

@@ -148,7 +148,7 @@
       </article>
       <article class="stat-card">
         <p class="stat-card-label">Average Rating</p>
-        <p class="stat-card-value"><?= $trainerStats['AverageRating'] ?? '—' ?><span style="font-size: 1.2rem;">/5</span></p>
+        <p class="stat-card-value"><?= htmlspecialchars((string)($trainerStats['AverageRating'] ?? '—'), ENT_QUOTES, 'UTF-8') ?><span style="font-size: 1.2rem;">/5</span></p>
         <p class="stat-card-note">From <?= (int)$trainerStats['TotalReviews'] ?> reviews</p>
       </article>
     </section>

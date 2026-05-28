@@ -23,8 +23,11 @@
       'Your one-on-one session is confirmed for ' . date('l j M', strtotime($booking->bookingDate)) . '.',
       'bookings.php'
     );
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_book_trainer: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/bookings.php');

@@ -55,7 +55,7 @@
     }
 
     public function updatePassword(PDO $db, string $plainPassword) : void {
-      $hash = password_hash($plainPassword, PASSWORD_DEFAULT);
+      $hash = password_hash($plainPassword, PASSWORD_DEFAULT, ['cost' => 12]);
       $stmt = $db->prepare('UPDATE User SET Password = ? WHERE UserId = ?');
       $stmt->execute(array($hash, $this->id));
     }
@@ -109,7 +109,7 @@
     }
 
     public static function register(PDO $db, string $firstName, string $lastName, string $username, string $email, string $plainPassword, string $role = 'member') : User {
-      $hash = password_hash($plainPassword, PASSWORD_DEFAULT);
+      $hash = password_hash($plainPassword, PASSWORD_DEFAULT, ['cost' => 12]);
       $stmt = $db->prepare('
         INSERT INTO User (FirstName, LastName, Username, Email, Password, Role)
         VALUES (?, ?, ?, ?, ?, ?)

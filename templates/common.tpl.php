@@ -112,7 +112,7 @@
   <section class="page-hero">
     <div class="page-hero-inner">
       <?php drawBreadcrumb($crumb); ?>
-      <h1 class="page-hero-heading"><?= $heading ?></h1>
+      <h1 class="page-hero-heading"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h1>
       <p class="page-hero-sub"><?= htmlspecialchars($sub, ENT_QUOTES, 'UTF-8') ?></p>
     </div>
   </section>
@@ -121,7 +121,7 @@
 <?php function drawCtaBanner(string $heading, array $actions) { ?>
   <section class="cta-banner">
     <div class="cta-inner">
-      <h2 class="cta-heading"><?= $heading ?></h2>
+      <h2 class="cta-heading"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h2>
       <div class="cta-actions">
         <?php foreach ($actions as $a) { ?>
           <a href="<?= htmlspecialchars($a['href'], ENT_QUOTES, 'UTF-8') ?>" class="<?= htmlspecialchars($a['style'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($a['label'], ENT_QUOTES, 'UTF-8') ?></a>

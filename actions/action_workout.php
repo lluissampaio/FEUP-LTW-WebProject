@@ -25,8 +25,11 @@
       Workout::log($db, $session->getId(), $type, $duration, $calories > 0 ? $calories : null, 'Completed');
       $session->addMessage('success', 'Workout logged.');
     }
-  } catch (Throwable $e) {
+  } catch (RuntimeException $e) {
     $session->addMessage('error', $e->getMessage());
+  } catch (Throwable $e) {
+    error_log('action_workout: ' . $e->getMessage());
+    $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
   header('Location: ../pages/dashboard.php');
