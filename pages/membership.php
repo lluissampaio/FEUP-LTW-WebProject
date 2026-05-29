@@ -111,7 +111,31 @@
     // Functional subscribe / upgrade / cancel for signed-in members.
     $dbPlans = Plan::getPlans($db);
     $current = Membership::getForUser($db, $currentUser->id);
-    drawMembershipManager($dbPlans, $current, $featureBullets, $session->csrfToken());
+    
+    $hasActive = $current && $current->isActive();
+    $currentTier = $hasActive ? $current->plan->tier : 0;
+    
+    $displayPlans = [];
+    foreach ($dbPlans as $p) {
+        $isCurrent = $hasActive && $current->planId === $p->id;
+        $isFeaturedDisplay = $hasActive ? $isCurrent : $p->featured;
+        $cardClass = 'pricing-card' . ($isFeaturedDisplay ? ' pricing-card-featured' : '');
+
+        if ($isCurrent)                  { $label = 'Current plan'; $btnClass = 'btn-outline'; $disabled = true; }
+        elseif (!$hasActive)             { $label = 'Subscribe';    $btnClass = $isFeaturedDisplay ? 'btn-primary' : 'btn-outline'; $disabled = false; }
+        elseif ($p->tier > $currentTier) { $label = 'Upgrade';      $btnClass = 'btn-primary'; $disabled = false; }
+        else                             { $label = 'Switch to this'; $btnClass = 'btn-outline'; $disabled = false; }
+
+        $displayPlans[] = [
+            'plan'      => $p,
+            'cardClass' => $cardClass,
+            'label'     => $label,
+            'btnClass'  => $btnClass,
+            'disabled'  => $disabled
+        ];
+    }
+    
+    drawMembershipManager($displayPlans, $current, $featureBullets, $session->csrfToken());
   } else {
     // Public marketing pricing → routes to the contact/apply flow.
     drawPricing($plans, 'contact.php');
