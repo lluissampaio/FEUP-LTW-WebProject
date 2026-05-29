@@ -5,6 +5,7 @@
    (bcrypt hash: $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi)
 ********************************************************************************/
 
+DROP TABLE IF EXISTS NutritionPlan;
 DROP TABLE IF EXISTS Dispute;
 DROP TABLE IF EXISTS Booking;
 DROP TABLE IF EXISTS TrainerAvailability;

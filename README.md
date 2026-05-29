@@ -1,107 +1,53 @@
-# Iron Haven — ltw12g06
+# ltw12g06 — Iron Haven
 
-## Projeto LTW 2025/26 · FEUP
+## Features
 
-Site de gestão de um ginásio privado. Membros podem navegar e inscrever-se em
-aulas, ver perfis de treinadores, consultar a disponibilidade de equipamento e
-deixar avaliações. Treinadores gerem as suas sessões e veem a lista de
-inscritos. Administradores gerem o catálogo de aulas, equipamento, utilizadores
-e disputas. Inclui sistema de lista de espera automática e notificações in-app.
+**All users:**
+- [x] Register a new account.
+- [x] Log in and out.
+- [x] Edit their profile, including name, username, password, and profile photo.
 
-### Como executar localmente
+**Members:**
+- [x] Browse the schedule of available fitness classes, filtering by type, trainer, day, or time.
+- [x] Enroll in and cancel enrollment from upcoming classes, subject to capacity limits.
+- [x] View trainer profiles, including their specializations and the classes they teach.
+- [x] Check the current availability of equipment in the main training area.
+- [x] Leave ratings and reviews for classes they have attended.
 
-A partir da raiz do repositório:
+**Trainers:**
+- [x] Manage their public profile, including bio, specializations, and certifications.
+- [x] View the roster of members enrolled in their classes.
+- [x] Track and manage their assigned class schedule.
 
-```bash
-php -S localhost:9000
-```
+**Admins:**
+- [x] Manage members and trainers (create, update, and deactivate accounts).
+- [x] Manage the class catalog (create, edit, and remove classes) and assign trainers to them.
+- [x] Manage equipment in the main training area (add, update availability status, and remove items).
+- [x] Elevate a user to admin status.
+- [x] Oversee and ensure the smooth operation of the entire system.
 
-Depois abrir [`http://localhost:9000`](http://localhost:9000) no navegador
-(faz redirect para `pages/`).
+**Extra:**
+- [x] Personal training bookings, membership plans, automatic waitlist with promotion, in-app notifications, nutrition plans, and a member dispute/support channel.
 
-### Inicializar / repor a base de dados
+## Running
 
-O ficheiro SQLite `database/database.db` já vem populado com dados de
-demonstração. Para repor o estado inicial:
+    sqlite3 database/database.db < database/database.sql
+    php -S localhost:9000
 
-```bash
-rm database/database.db
-sqlite3 database/database.db < database/database.sql
-```
+Then open <http://localhost:9000> (redirects to `pages/`).
 
-> Em macOS/Linux o `sqlite3` está disponível por omissão; em Windows usar
-> [https://sqlite.org/download.html](https://sqlite.org/download.html).
+## Credentials
 
-### Contas de demonstração (password: `password`)
+(the password is the same for every seeded account: `password`)
 
-| Tipo    | Email                          |
-| ------- | ------------------------------ |
-| Admin   | `admin@ironhaven.com`          |
-| Trainer | `anika.patel@ironhaven.com`    |
-| Member  | `jordan.miller@example.com`    |
+- `admin` / `password` — administrator
+- `jmiller` / `password` — member
+- `apatel` / `password` — trainer
 
-### Funcionalidades
+Login accepts either the username or the email address
+(e.g. `admin@ironhaven.com`, `jordan.miller@example.com`).
 
-**Members**
-- Procurar aulas com filtros (tipo, treinador, dia, hora, localização)
-- Inscrever/cancelar com verificação de capacidade transacional
-- Lista de espera com **auto-promoção** quando há cancelamento + notificação
-- Avaliar aulas (rating + comentário) — só permitido após inscrição
-- Ver perfis de treinadores e disponibilidade de equipamento
-- Editar perfil (nome, username, password, foto)
-- Reservar sessões individuais com personal trainer
-- Abrir disputas / cancelar membership
-
-**Trainers**
-- Editar bio, especialidade e certificações
-- Criar/apagar sessões das suas aulas
-- Ver roster (lista de membros inscritos) por sessão
-- Aceder a analytics próprias
-
-**Admins**
-- CRUD de aulas (com sessões integradas no edit)
-- CRUD de equipamento (com estado: operational / maintenance / out_of_order)
-- CRUD de utilizadores (promover a trainer/admin, ativar/desativar, apagar)
-- Resolver disputas
-- Ver analytics globais
-
-**Sistema transversal**
-- Notificações in-app (sino no header com contagem por ler)
-- API REST/JSON: `api/api_enroll.php`, `api/api_equipment.php`,
-  `api/api_schedule.php`, `api/api_trainers.php`
-- AJAX progressivo: forms continuam a funcionar sem JavaScript
-
-### Estrutura
-
-```
-├── actions/      # POST handlers (login, register, enrol, review, admin…)
-├── api/          # Endpoints JSON / AJAX
-├── css/          # Folha de estilos única (mobile-first, design tokens)
-├── database/     # Schema SQL, ficheiro SQLite e classes PHP (PDO)
-├── images/       # Fotografias (treinadores, locais, founders)
-├── javascript/   # Scripts client-side (vanilla, sem frameworks)
-├── pages/        # Páginas (controllers + partials)
-├── templates/    # Funções drawX() para renderizar HTML
-├── uploads/      # Fotografias de perfil carregadas pelos utilizadores
-└── utils/        # Helpers (Session, CSRF)
-```
-
-### Segurança
-
-- Senhas com `password_hash` (bcrypt)
-- **Prepared statements** em todas as queries (PDO)
-- **CSRF tokens** em todos os formulários POST (validados com `hash_equals`)
-- `htmlspecialchars` em todos os outputs dinâmicos
-- Validação de MIME real em uploads de imagens
-- Cookies de sessão com `HttpOnly` + `SameSite=Lax`
-- Foreign keys ativas em SQLite (`PRAGMA foreign_keys = ON`)
-
-### Tecnologias
-
-HTML5 semântico · CSS3 (mobile-first, sem frameworks) · PHP 8 (PDO/SQLite)
-· JavaScript vanilla + Ajax/JSON.
-
-### Membros do Grupo
+## Authors — ltw12g06
 
 - José Lopes — up202406360
 - Francisco Mendes — up202407152

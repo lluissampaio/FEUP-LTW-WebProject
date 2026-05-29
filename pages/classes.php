@@ -13,8 +13,9 @@
   require_once(__DIR__ . '/../templates/classes.tpl.php');
 
   $session = new Session();
-  $session->requireLogin('login.php');
-   
+
+  // Public page: anonymous visitors can browse the schedule; the enrol/waitlist
+  // controls (and the API behind them) require login on their own.
   $db      = getDatabaseConnection();
 
   $type       = isset($_GET['type'])     ? trim($_GET['type'])     : '';

@@ -18,6 +18,12 @@
     exit();
   }
 
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $session->addMessage('error', 'Please enter a valid email address.');
+    header('Location: ../pages/register.php');
+    exit();
+  }
+
   if ($password !== $confirm_password) {
     $session->addMessage('error', 'Passwords do not match.');
     header('Location: ../pages/register.php');

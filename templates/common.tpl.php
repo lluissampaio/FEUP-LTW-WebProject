@@ -10,6 +10,13 @@
     return "<a href=\"$href\"$active>$label</a>";
   }
 
+  // Escape a hand-authored heading while preserving intentional <br> line breaks.
+  // Headings are developer constants (never user input), so allowing <br> is safe.
+  function escapeHeading(string $text) : string {
+    $escaped = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    return str_replace(['&lt;br&gt;', '&lt;br/&gt;', '&lt;br /&gt;'], '<br>', $escaped);
+  }
+
 ?>
 
 <?php function drawHeader(Session $session, string $current = '', string $title = 'Iron Haven — Private Members Gym', string $ctaLabel = 'JOIN', string $ctaHref = 'membership.php', bool $includeMain = true) { 
@@ -124,7 +131,7 @@
   <section class="page-hero">
     <div class="page-hero-inner">
       <?php drawBreadcrumb($crumb); ?>
-      <h1 class="page-hero-heading"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h1>
+      <h1 class="page-hero-heading"><?= escapeHeading($heading) ?></h1>
       <p class="page-hero-sub"><?= htmlspecialchars($sub, ENT_QUOTES, 'UTF-8') ?></p>
     </div>
   </section>
@@ -133,7 +140,7 @@
 <?php function drawCtaBanner(string $heading, array $actions) { ?>
   <section class="cta-banner">
     <div class="cta-inner">
-      <h2 class="cta-heading"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h2>
+      <h2 class="cta-heading"><?= escapeHeading($heading) ?></h2>
       <div class="cta-actions">
         <?php foreach ($actions as $a) { ?>
           <a href="<?= htmlspecialchars($a['href'], ENT_QUOTES, 'UTF-8') ?>" class="<?= htmlspecialchars($a['style'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($a['label'], ENT_QUOTES, 'UTF-8') ?></a>
