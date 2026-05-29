@@ -50,6 +50,33 @@
     } elseif ($action === 'delete') {
       User::delete($db, $userId);
       $session->addMessage('success', 'Account deleted.');
+    } elseif ($action === 'create') {
+      $firstName = trim((string)($_POST['first_name'] ?? ''));
+      $lastName  = trim((string)($_POST['last_name']  ?? ''));
+      $username  = trim((string)($_POST['username']   ?? ''));
+      $email     = trim((string)($_POST['email']      ?? ''));
+      $password  = (string)($_POST['password'] ?? '');
+      $newRole   = (string)($_POST['role'] ?? 'member');
+
+      if ($firstName === '' || $lastName === '' || $username === '' || $email === '' || $password === '') {
+        throw new RuntimeException('All fields are required to create an account.');
+      }
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        throw new RuntimeException('Please enter a valid email address.');
+      }
+      if (strlen($password) < 8) {
+        throw new RuntimeException('Password must be at least 8 characters.');
+      }
+      if (!in_array($newRole, $allowedRoles, true)) {
+        throw new RuntimeException('Invalid role.');
+      }
+      try {
+        $created = User::register($db, $firstName, $lastName, $username, $email, $password, $newRole);
+      } catch (PDOException $e) {
+        // UNIQUE violation on Username or Email — keep the SQL detail out of the response.
+        throw new RuntimeException('That username or email is already taken.');
+      }
+      $session->addMessage('success', 'Account created for ' . $created->name() . ' (' . $newRole . ').');
     } else {
       $session->addMessage('error', 'Unknown action.');
     }

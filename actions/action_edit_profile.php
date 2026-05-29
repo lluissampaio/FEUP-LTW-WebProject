@@ -73,7 +73,7 @@
     $mime    = $finfo->file($file['tmp_name']);
 
     if (!isset($allowed[$mime])) {
-      $session->addMessage('error', 'Photo must be a JP, PNG or WebP image.');
+      $session->addMessage('error', 'Photo must be a JPG, PNG or WebP image.');
       header('Location: ../pages/profile.php');
       exit();
     }

@@ -17,6 +17,45 @@
         </div>
       </form>
 
+      <h2 class="section-heading">Create a new account</h2>
+      <form method="post" action="../actions/action_admin_user.php" class="admin-form">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
+        <input type="hidden" name="action" value="create">
+
+        <div class="form-field">
+          <label for="new-first">First name</label>
+          <input type="text" id="new-first" name="first_name" required maxlength="40">
+        </div>
+        <div class="form-field">
+          <label for="new-last">Last name</label>
+          <input type="text" id="new-last" name="last_name" required maxlength="40">
+        </div>
+        <div class="form-field">
+          <label for="new-username">Username</label>
+          <input type="text" id="new-username" name="username" required maxlength="40">
+        </div>
+        <div class="form-field">
+          <label for="new-email">Email</label>
+          <input type="email" id="new-email" name="email" required maxlength="120">
+        </div>
+        <div class="form-field">
+          <label for="new-password">Temporary password</label>
+          <input type="password" id="new-password" name="password" required minlength="8" autocomplete="new-password">
+        </div>
+        <div class="form-field">
+          <label for="new-role">Role</label>
+          <select id="new-role" name="role">
+            <option value="member">Member</option>
+            <option value="trainer">Trainer</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Create account</button>
+        </div>
+      </form>
+
       <h2 class="section-heading">All users (<?= count($users) ?>)</h2>
       <div class="table-scroll">
       <table class="data-table">
