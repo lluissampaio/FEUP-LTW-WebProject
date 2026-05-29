@@ -5,6 +5,8 @@
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/booking.class.php');
   require_once(__DIR__ . '/../database/notification.class.php');
+  require_once(__DIR__ . '/../database/membership.class.php');
+  require_once(__DIR__ . '/../database/plan.class.php');
 
   $session = new Session();
   $session->requireLogin('../pages/login.php');
@@ -16,6 +18,31 @@
 
   $db = getDatabaseConnection();
   try {
+    $membership = Membership::getForUser($db, $session->getId());
+    if (!$membership || !$membership->isActive()) {
+      throw new RuntimeException('You must have an active membership to book personal training.');
+    }
+    
+    $limit = $membership->plan->ptSessionsLimit;
+    if ($limit === 0) {
+      throw new RuntimeException('Your current plan does not include personal training sessions. Please upgrade to book.');
+    }
+
+    if ($limit > 0) {
+      $stmt = $db->prepare('SELECT DayOfWeek FROM TrainerAvailability WHERE AvailabilityId = ?');
+      $stmt->execute([$availabilityId]);
+      $slot = $stmt->fetch();
+      if (!$slot) throw new RuntimeException('That availability slot no longer exists.');
+      
+      $date = Booking::nextDateFor($slot['DayOfWeek']);
+      $yearMonth = substr($date, 0, 7); // YYYY-MM
+      
+      $bookedThisMonth = Booking::countSessionsInMonth($db, $session->getId(), $yearMonth);
+      if ($bookedThisMonth >= $limit) {
+        throw new RuntimeException('You have reached your limit of ' . $limit . ' personal training sessions for the month of ' . date('F', strtotime($date)) . '.');
+      }
+    }
+
     $booking = Booking::book($db, $session->getId(), $availabilityId, $notes);
     $session->addMessage('success', 'Personal training session booked for ' . date('l j M', strtotime($booking->bookingDate)) . '.');
     Notification::send(

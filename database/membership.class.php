@@ -31,7 +31,7 @@
       if (isset($r['Name'])) {
         $plan = new Plan(
           (int)$r['PlanId'], (string)$r['Name'], (int)$r['Tier'], (int)$r['Price'],
-          (string)$r['Period'], $r['Description'], (bool)$r['Featured']
+          (string)$r['Period'], $r['Description'], (bool)$r['Featured'], (int)$r['PTSessionsLimit']
         );
       }
       return new Membership(
@@ -49,7 +49,7 @@
     public static function getForUser(PDO $db, int $userId) : ?Membership {
       $stmt = $db->prepare('
         SELECT m.MembershipId, m.UserId, m.PlanId, m.Status, m.StartedAt, m.RenewsAt,
-               p.Name, p.Tier, p.Price, p.Period, p.Description, p.Featured
+               p.Name, p.Tier, p.Price, p.Period, p.Description, p.Featured, p.PTSessionsLimit
         FROM Membership m JOIN Plan p ON p.PlanId = m.PlanId
         WHERE m.UserId = ?
       ');

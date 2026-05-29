@@ -177,6 +177,7 @@ CREATE TABLE Plan (
     Period       NVARCHAR(40)   NOT NULL DEFAULT 'per month',
     Description  TEXT,
     Featured     INTEGER        NOT NULL DEFAULT 0,
+    PTSessionsLimit INTEGER     NOT NULL DEFAULT 0,
     CONSTRAINT PK_Plan PRIMARY KEY (PlanId),
     CONSTRAINT UQ_Plan_Name UNIQUE (Name),
     CONSTRAINT UQ_Plan_Tier UNIQUE (Tier)
@@ -413,10 +414,10 @@ INSERT INTO Workout (WorkoutId, UserId, WorkoutType, DurationMinutes, Calories, 
 (5, 14, 'Recovery',  60, 180, 'Completed');
 
 -- Membership plans ------------------------------------------------------------
-INSERT INTO Plan (PlanId, Name, Tier, Price, Period, Description, Featured) VALUES
-(1, 'Essential', 1, 450,  'per month', 'Full gym floor access, group classes, locker & towel service at one home location.', 0),
-(2, 'Premium',   2, 950,  'per month', 'Everything in Essential plus personal training, recovery & spa access, and multi-location access.', 1),
-(3, 'Elite',     3, 2400, 'per month', 'Unlimited personal training, private suite reservation, dedicated concierge and global access.', 0);
+INSERT INTO Plan (PlanId, Name, Tier, Price, Period, Description, Featured, PTSessionsLimit) VALUES
+(1, 'Essential', 1, 450,  'per month', 'Full gym floor access, group classes, locker & towel service at one home location.', 0, 0),
+(2, 'Premium',   2, 950,  'per month', 'Everything in Essential plus personal training, recovery & spa access, and multi-location access.', 1, 4),
+(3, 'Elite',     3, 2400, 'per month', 'Unlimited personal training, private suite reservation, dedicated concierge and global access.', 0, -1);
 
 -- Current member subscriptions ------------------------------------------------
 INSERT INTO Membership (MembershipId, UserId, PlanId, Status, RenewsAt) VALUES

@@ -83,7 +83,8 @@
    * Browse trainer availability and book a slot.
    * $trainers : array of Trainer ; $slotsByTrainer : [trainerId => availability rows]
    */
-  function drawTrainerAvailability(array $trainers, array $slotsByTrainer, string $csrf) {
+  function drawTrainerAvailability(array $trainers, array $slotsByTrainer, ?Membership $membership, string $csrf) {
+    $limit = $membership && $membership->plan ? $membership->plan->ptSessionsLimit : 0;
 ?>
   <section class="booking-block">
     <h2 class="dashboard-section-heading">Book a trainer</h2>
@@ -108,6 +109,10 @@
                 </span>
                 <?php if (!empty($s['IsBooked'])) { ?>
                   <span class="booking-slot-taken">Booked</span>
+                <?php } else if ($limit === 0) { ?>
+                  <span class="booking-slot-taken" style="color:var(--text-muted, #888); border-color:var(--border-color, #444);">Upgrade Plan</span>
+                <?php } else if ($limit > 0 && isset($s['MonthUsage']) && $s['MonthUsage'] >= $limit) { ?>
+                  <span class="booking-slot-taken" style="color:var(--text-muted, #888); border-color:var(--border-color, #444);">Limit Reached</span>
                 <?php } else { ?>
                   <form method="post" action="../actions/action_book_trainer.php" class="inline-form">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
