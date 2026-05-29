@@ -27,10 +27,10 @@
   $disputes = Dispute::getAll($db, $filter);
   $counts   = Dispute::countByStatus($db);
 
-  drawHeader($session, 'admin', 'Admin · Disputes — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, 'admin', 'Admin · Disputes — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'disputes', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
@@ -45,6 +45,6 @@
 
       <?php drawAdminDisputes($disputes, $csrf); ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

@@ -39,16 +39,15 @@
   // classes that won't show on the public schedule page yet).
   $sessionCounts = Schedule::getSessionCountsPerClass($db);
 
-  drawHeader($session, '', 'Admin · Classes — Iron Haven');
+  drawHeader($session, '', 'Admin · Classes — Iron Haven', includeMain: false);
 ?>
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'admin', $session->csrfToken()); ?>
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Admin', 'Class catalog', 'Create, edit or remove classes and assign trainers.'); ?>
-
       <?php drawAdminClasses($classes, $trainers, $locations, $csrf, $days, $editing, $editingSchedules, $sessionCounts); ?>
     </main>
-  </section>
+  </div>
 <?php
-  drawFooter();
+  drawFooter(false);
 ?>

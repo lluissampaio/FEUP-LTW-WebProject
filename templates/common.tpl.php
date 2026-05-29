@@ -12,7 +12,17 @@
 
 ?>
 
-<?php function drawHeader(Session $session, string $current = '', string $title = 'Iron Haven — Private Members Gym', string $ctaLabel = 'JOIN', string $ctaHref = 'membership.php') { ?>
+<?php function drawHeader(Session $session, string $current = '', string $title = 'Iron Haven — Private Members Gym', string $ctaLabel = 'JOIN', string $ctaHref = 'membership.php', bool $includeMain = true) { 
+  $unread = 0;
+  $firstName = '';
+  $fullName = 'Member';
+  
+  if ($session->isLoggedIn()) {
+    try { $unread = Notification::unreadCount(getDatabaseConnection(), $session->getId()); } catch (Throwable $e) {}
+    $fullName = $session->getName() ?? 'Member';
+    $firstName = explode(' ', $fullName)[0];
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,20 +54,12 @@
         <?php } ?>
       </nav>
       <?php if ($session->isLoggedIn()) { ?>
-        <?php
-          $unread = 0;
-          try { $unread = Notification::unreadCount(getDatabaseConnection(), $session->getId()); } catch (Throwable $e) {}
-        ?>
         <a href="notifications.php" class="nav-bell" aria-label="Notifications">
           <span aria-hidden="true">&#9788;</span>
           <?php if ($unread > 0) { ?>
             <span class="nav-bell-count"><?= (int)$unread ?></span>
           <?php } ?>
         </a>
-        <?php
-          $fullName  = $session->getName() ?? 'Member';
-          $firstName = explode(' ', $fullName)[0];
-        ?>
         <a href="dashboard.php" class="nav-cta" title="<?= htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?></a>
       <?php } else { ?>
         <a href="<?= htmlspecialchars($ctaHref, ENT_QUOTES, 'UTF-8') ?>" class="nav-cta"><?= htmlspecialchars($ctaLabel, ENT_QUOTES, 'UTF-8') ?></a>
@@ -80,11 +82,15 @@
     </section>
   <?php } ?>
 
+  <?php if ($includeMain) { ?>
   <main>
+  <?php } ?>
 <?php } ?>
 
-<?php function drawFooter() { ?>
+<?php function drawFooter(bool $includeMain = true) { ?>
+  <?php if ($includeMain) { ?>
   </main>
+  <?php } ?>
 
   <footer class="site-footer">
     <div class="footer-inner">
