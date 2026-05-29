@@ -30,10 +30,10 @@
     }
   }
 
-  drawHeader($session, '', 'Personal Training — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, '', 'Personal Training — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'bookings', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
@@ -46,6 +46,6 @@
         <?php drawTrainerAvailability($trainers, $slotsByTrainer, $csrf); ?>
       <?php } ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

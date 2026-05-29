@@ -32,16 +32,15 @@
 
   $days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
-  drawHeader($session, '', 'My Classes & Roster — Iron Haven', 'DASHBOARD', 'dashboard.php');
+  drawHeader($session, '', 'My Classes & Roster — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'trainer_classes', $session->csrfToken()); ?>
-
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Trainer Management', 'My Classes & Roster', 'View your schedule and enrolled members.'); ?>
       <?php drawTrainerClasses($classes, $schedules, $rosters, $days, $session->csrfToken()); ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

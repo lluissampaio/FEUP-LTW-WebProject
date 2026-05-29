@@ -49,14 +49,13 @@
   $name      = $user ? $user->name() : ($session->getName() ?? 'Member');
   $firstName = explode(' ', $name)[0];
 
-  drawHeader($session, '', 'Dashboard — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, '', 'Dashboard — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'dashboard', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
-
       <?php if ($isAdmin) { ?>
         <?php drawDashboardPageHeader('Admin dashboard', "Welcome back, $firstName.", 'Manage gym operations, classes, and members.'); ?>
         <?php drawAdminDashboard($adminCounts); ?>
@@ -68,6 +67,6 @@
         <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, $workouts, $session->csrfToken(), $nutritionPlan); ?>
       <?php } ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

@@ -23,16 +23,15 @@
 
   $trainer = Trainer::getTrainer($db, $session->getId());
 
-  drawHeader($session, '', 'Edit Profile — Iron Haven', 'DASHBOARD', 'dashboard.php');
+  drawHeader($session, '', 'Edit Profile — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'edit_trainer', $session->csrfToken()); ?>
-
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Trainer Management', 'Edit Profile', 'Update your public trainer profile information.'); ?>
       <?php drawEditTrainerForm($trainer, $session->csrfToken()); ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>
