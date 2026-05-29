@@ -31,7 +31,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.php" class="site-logo">IRON HAVEN</a>
-      <nav class="site-nav" aria-label="Primary navigation">
+      <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <?= navLink('index.php',      'Home',       $current, 'home') ?>
         <?= navLink('classes.php',    'Classes',    $current, 'classes') ?>
         <?= navLink('trainers.php',   'Trainers',   $current, 'trainers') ?>
@@ -62,13 +62,18 @@
       <?php } else { ?>
         <a href="<?= htmlspecialchars($ctaHref, ENT_QUOTES, 'UTF-8') ?>" class="nav-cta"><?= htmlspecialchars($ctaLabel, ENT_QUOTES, 'UTF-8') ?></a>
       <?php } ?>
+      <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
     </div>
   </header>
 
   <?php if (count($session->getMessages()) > 0) { ?>
     <section id="messages" aria-label="System messages">
       <?php foreach ($session->getMessages() as $message) { ?>
-        <article class="message message--<?= htmlspecialchars($message['type'], ENT_QUOTES, 'UTF-8') ?>">
+        <article class="message message-<?= htmlspecialchars($message['type'], ENT_QUOTES, 'UTF-8') ?>">
           <?= htmlspecialchars($message['text'], ENT_QUOTES, 'UTF-8') ?>
         </article>
       <?php } ?>
@@ -96,6 +101,7 @@
       </nav>
     </div>
   </footer>
+  <script src="../javascript/nav-toggle.js" defer></script>
 </body>
 </html>
 <?php } ?>

@@ -6,7 +6,7 @@
       <p class="hero-eyebrow">New York &middot; Lisbon &middot; Porto &middot; Viseu</p>
       <h1 class="hero-heading" id="hero-heading">The Haven<br>You Deserve.</h1>
       <p class="hero-sub">Elite training. Uncompromised privacy. A private membership for those who demand discretion and excellence.</p>
-      <a href="membership.php" class="btn-primary" style="width:fit-content">REQUEST MEMBERSHIP</a>
+      <a href="membership.php" class="btn-primary hero-cta">REQUEST MEMBERSHIP</a>
       <div class="hero-locations" aria-label="Locations">
         <span class="location-badge">New York</span>
         <span class="location-badge">Lisbon</span>
@@ -58,10 +58,10 @@
       <h2 class="section-heading" id="testimonials-heading">What Our Members Say</h2>
       <div class="testimonials-grid">
         <?php foreach ($testimonials as $t) { ?>
-          <div class="testimonial-block">
+          <figure class="testimonial-block">
             <blockquote><?= htmlspecialchars($t['quote'], ENT_QUOTES, 'UTF-8') ?></blockquote>
-            <p class="testimonial-author"><?= htmlspecialchars($t['author'], ENT_QUOTES, 'UTF-8') ?></p>
-          </div>
+            <figcaption class="testimonial-author"><?= htmlspecialchars($t['author'], ENT_QUOTES, 'UTF-8') ?></figcaption>
+          </figure>
         <?php } ?>
       </div>
     </div>
@@ -76,7 +76,7 @@
       <div class="pricing-grid">
         <?php foreach ($plans as $p) {
           $featured  = !empty($p['featured']);
-          $cardClass = 'pricing-card' . ($featured ? ' pricing-card--featured' : '');
+          $cardClass = 'pricing-card' . ($featured ? ' pricing-card-featured' : '');
           $btnClass  = $featured ? 'btn-primary' : 'btn-outline';
         ?>
           <article class="<?= $cardClass ?>">

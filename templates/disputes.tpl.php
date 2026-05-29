@@ -59,7 +59,7 @@
           <article class="dispute-card">
             <header class="dispute-card-head">
               <span class="dispute-cat"><?= htmlspecialchars(disputeCategoryLabel($d->category), ENT_QUOTES, 'UTF-8') ?></span>
-              <span class="status-tag status-tag--<?= htmlspecialchars($d->status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(disputeStatusLabel($d->status), ENT_QUOTES, 'UTF-8') ?></span>
+              <span class="status-tag status-tag-<?= htmlspecialchars($d->status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(disputeStatusLabel($d->status), ENT_QUOTES, 'UTF-8') ?></span>
             </header>
             <h3 class="dispute-subject"><?= htmlspecialchars($d->subject, ENT_QUOTES, 'UTF-8') ?></h3>
             <p class="dispute-message"><?= nl2br(htmlspecialchars($d->message, ENT_QUOTES, 'UTF-8')) ?></p>
@@ -90,7 +90,7 @@
           <article class="dispute-card">
             <header class="dispute-card-head">
               <span class="dispute-cat"><?= htmlspecialchars(disputeCategoryLabel($d->category), ENT_QUOTES, 'UTF-8') ?></span>
-              <span class="status-tag status-tag--<?= htmlspecialchars($d->status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(disputeStatusLabel($d->status), ENT_QUOTES, 'UTF-8') ?></span>
+              <span class="status-tag status-tag-<?= htmlspecialchars($d->status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(disputeStatusLabel($d->status), ENT_QUOTES, 'UTF-8') ?></span>
             </header>
             <h3 class="dispute-subject"><?= htmlspecialchars($d->subject, ENT_QUOTES, 'UTF-8') ?></h3>
             <p class="dispute-meta">From <?= htmlspecialchars($d->memberName ?? 'Member', ENT_QUOTES, 'UTF-8') ?> &middot; <?= htmlspecialchars(date('j M Y', strtotime($d->createdAt)), ENT_QUOTES, 'UTF-8') ?></p>

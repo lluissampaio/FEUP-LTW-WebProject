@@ -93,7 +93,7 @@
     const update = () => {
       const len = el.value.length;
       counter.textContent = max ? len + ' / ' + max : String(len);
-      counter.classList.toggle('char-counter--over', max > 0 && len > max);
+      counter.classList.toggle('char-counter-over', max > 0 && len > max);
     };
     el.addEventListener('input', update);
     update();

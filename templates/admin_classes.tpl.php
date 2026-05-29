@@ -45,10 +45,10 @@
         </div>
 
         <?php if (!$editing) { ?>
-          <fieldset class="form-field" style="grid-column: 1 / -1; border: 1px dashed var(--color-border); padding: 16px;">
-            <legend style="padding: 0 8px; color: var(--color-muted); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;">Optional first session</legend>
-            <p class="schedule-card-meta" style="margin-bottom: 8px;">A class only shows up on the schedule page once it has at least one session. Add one here, or add more after creating.</p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+          <fieldset class="form-field form-subsection">
+            <legend>Optional first session</legend>
+            <p class="schedule-card-meta">A class only shows up on the schedule page once it has at least one session. Add one here, or add more after creating.</p>
+            <div class="form-grid-3">
               <div class="form-field">
                 <label for="c-day">Day</label>
                 <select id="c-day" name="schedule_day">
@@ -83,7 +83,7 @@
       <div class="section-inner">
         <h2 class="section-heading">Sessions for &ldquo;<?= htmlspecialchars($editing->name, ENT_QUOTES, 'UTF-8') ?>&rdquo; (<?= count($editingSchedules) ?>)</h2>
 
-        <form class="admin-form" method="post" action="../actions/action_admin_schedule.php" style="margin-bottom: 24px;">
+        <form class="admin-form" method="post" action="../actions/action_admin_schedule.php">
           <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
           <input type="hidden" name="action"     value="create">
           <input type="hidden" name="class_id"   value="<?= (int)$editing->id ?>">
@@ -113,6 +113,7 @@
         <?php if (count($editingSchedules) === 0) { ?>
           <p class="empty-state">No sessions yet. Add one above to make this class visible on the schedule page.</p>
         <?php } else { ?>
+          <div class="table-scroll">
           <table class="data-table">
             <thead><tr><th>Day</th><th>Time</th><th>Duration</th><th>Enrolled</th><th></th></tr></thead>
             <tbody>
@@ -123,7 +124,7 @@
                   <td><?= (int)$s->duration ?> min</td>
                   <td><?= (int)($s->enrolledCount ?? 0) ?> / <?= (int)($s->capacity ?? 0) ?></td>
                   <td class="row-actions">
-                    <form method="post" action="../actions/action_admin_schedule.php" style="display:inline">
+                    <form method="post" action="../actions/action_admin_schedule.php" class="inline-form">
                       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                       <input type="hidden" name="action"      value="delete">
                       <input type="hidden" name="class_id"    value="<?= (int)$editing->id ?>">
@@ -135,6 +136,7 @@
               <?php } ?>
             </tbody>
           </table>
+          </div>
         <?php } ?>
       </div>
     </section>
@@ -143,6 +145,7 @@
   <section class="admin-section">
     <div class="section-inner">
       <h2 class="section-heading">All classes (<?= count($classes) ?>)</h2>
+      <div class="table-scroll">
       <table class="data-table">
         <thead><tr><th>Name</th><th>Type</th><th>Trainer</th><th>Location</th><th>Capacity</th><th>Sessions</th><th></th></tr></thead>
         <tbody>
@@ -157,14 +160,14 @@
               <td><?= (int)$c->capacity ?></td>
               <td>
                 <?php if ($sessions === 0) { ?>
-                  <span class="status-tag status-tag--full">none</span>
+                  <span class="status-tag status-tag-full">none</span>
                 <?php } else { ?>
-                  <span class="status-tag status-tag--open"><?= $sessions ?></span>
+                  <span class="status-tag status-tag-open"><?= $sessions ?></span>
                 <?php } ?>
               </td>
               <td class="row-actions">
                 <a href="admin_classes.php?edit=<?= (int)$c->id ?>" class="btn-outline">Edit</a>
-                <form method="post" action="../actions/action_admin_class.php" style="display:inline">
+                <form method="post" action="../actions/action_admin_class.php" class="inline-form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="action" value="delete">
                   <input type="hidden" name="class_id" value="<?= (int)$c->id ?>">
@@ -175,6 +178,7 @@
           <?php } ?>
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 <?php

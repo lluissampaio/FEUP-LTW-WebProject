@@ -12,7 +12,7 @@
       <?php if ($photoSrc !== '') { ?>
         <img class="dashboard-profile-photo" src="<?= htmlspecialchars($photoSrc, ENT_QUOTES, 'UTF-8') ?>" alt="" aria-hidden="true">
       <?php } else { ?>
-        <div class="dashboard-profile-photo dashboard-profile-photo--placeholder" aria-hidden="true">
+        <div class="dashboard-profile-photo dashboard-profile-photo-placeholder" aria-hidden="true">
           <?= htmlspecialchars(strtoupper(substr($name, 0, 1)), ENT_QUOTES, 'UTF-8') ?>
         </div>
       <?php } ?>
@@ -54,7 +54,7 @@
         
       <form action="../actions/action_logout.php" method="post" class="dashboard-logout">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
-        <button type="submit" class="dashboard-nav-link dashboard-nav-link--signout">Sign out</button>
+        <button type="submit" class="dashboard-nav-link dashboard-nav-link-signout">Sign out</button>
       </form>
     </nav>
   </aside>
@@ -143,12 +143,12 @@
       </article>
       <article class="stat-card">
         <p class="stat-card-label">Attendance Rate</p>
-        <p class="stat-card-value"><?= (int)$trainerStats['AttendanceRate'] ?><span style="font-size: 1.2rem;">%</span></p>
+        <p class="stat-card-value"><?= (int)$trainerStats['AttendanceRate'] ?><span class="stat-unit">%</span></p>
         <p class="stat-card-note">Attended / Enrolled</p>
       </article>
       <article class="stat-card">
         <p class="stat-card-label">Average Rating</p>
-        <p class="stat-card-value"><?= htmlspecialchars((string)($trainerStats['AverageRating'] ?? '—'), ENT_QUOTES, 'UTF-8') ?><span style="font-size: 1.2rem;">/5</span></p>
+        <p class="stat-card-value"><?= htmlspecialchars((string)($trainerStats['AverageRating'] ?? '—'), ENT_QUOTES, 'UTF-8') ?><span class="stat-unit">/5</span></p>
         <p class="stat-card-note">From <?= (int)$trainerStats['TotalReviews'] ?> reviews</p>
       </article>
     </section>
@@ -205,7 +205,7 @@
     <?php if ($nutritionPlan) { ?>
       <section class="dashboard-activity">
         <h2 class="dashboard-section-heading">My Nutrition Plan - <?= htmlspecialchars($nutritionPlan->dietType, ENT_QUOTES, 'UTF-8') ?></h2>
-        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 24px;">
+        <div class="macro-grid">
           <article class="stat-card">
             <p class="stat-card-label">Calories</p>
             <p class="stat-card-value"><?= number_format($nutritionPlan->dailyCalories) ?></p>
@@ -235,7 +235,7 @@
 
     <section class="dashboard-activity">
       <h2 class="dashboard-section-heading">Log a workout</h2>
-      <form class="admin-form" method="post" action="../actions/action_workout.php" style="margin-bottom: 24px;">
+      <form class="admin-form" method="post" action="../actions/action_workout.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="action"     value="log">
         <div class="form-field">
@@ -275,7 +275,7 @@
                 <td><?= htmlspecialchars(date('d/m/Y', strtotime($w->date)), ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($w->workoutType, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= (int)$w->durationMinutes ?> min</td>
-                <td><span class="status-tag status-tag--<?= htmlspecialchars(strtolower($w->status), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w->status, ENT_QUOTES, 'UTF-8') ?></span></td>
+                <td><span class="status-tag status-tag-<?= htmlspecialchars(strtolower($w->status), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w->status, ENT_QUOTES, 'UTF-8') ?></span></td>
               </tr>
             <?php } ?>
             <?php if (empty($workouts)) { ?>

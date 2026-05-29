@@ -3,7 +3,7 @@
 
   function drawTrainerClasses(array $classes, array $schedules, array $rosters, array $days, string $csrf) {
 ?>
-  <section class="dashboard-activity dashboard-activity--gap">
+  <section class="dashboard-activity dashboard-activity-gap">
     <h2 class="dashboard-section-heading">Add a session</h2>
     <?php if (empty($classes)) { ?>
       <p class="activity-empty">You do not have any assigned classes to add sessions to.</p>

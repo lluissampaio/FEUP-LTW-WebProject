@@ -7,7 +7,7 @@
 
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/user.class.php');
-  require_once(__DIR__ . '/../database/analytics.class.php');
+  require_once(__DIR__ . '/../database/trainer_analytics.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
   require_once(__DIR__ . '/../templates/trainer_analytics.tpl.php');

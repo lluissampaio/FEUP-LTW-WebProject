@@ -18,7 +18,7 @@
       <?php } else { ?>
         <ul class="notifications-list">
           <?php foreach ($notifications as $n) { ?>
-            <li class="notification-item notification-item--<?= htmlspecialchars($n->type, ENT_QUOTES, 'UTF-8') ?>">
+            <li class="notification-item notification-item-<?= htmlspecialchars($n->type, ENT_QUOTES, 'UTF-8') ?>">
               <p class="notification-title"><?= htmlspecialchars($n->title, ENT_QUOTES, 'UTF-8') ?></p>
               <p class="notification-message"><?= htmlspecialchars($n->message, ENT_QUOTES, 'UTF-8') ?></p>
               <p class="notification-meta">

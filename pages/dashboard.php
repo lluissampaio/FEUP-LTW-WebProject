@@ -29,7 +29,7 @@
     require_once(__DIR__ . '/../database/admin_analytics.class.php');
     $adminCounts = AdminAnalytics::getDashboardCounts($db);
   } elseif ($isTrainer) {
-    require_once(__DIR__ . '/../database/analytics.class.php');
+    require_once(__DIR__ . '/../database/trainer_analytics.class.php');
     $trainerStats = TrainerAnalytics::getOverallStats($db, $user->id);
   } else {
     require_once(__DIR__ . '/../database/workout.class.php');

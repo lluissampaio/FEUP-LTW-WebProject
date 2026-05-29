@@ -5,7 +5,7 @@
 ?>
   <section class="admin-section">
     <div class="section-inner">
-      <form method="get" class="admin-form" style="margin-bottom: 16px;">
+      <form method="get" class="admin-form">
         <div class="form-field">
           <label for="role-filter">Filter by role</label>
           <select id="role-filter" name="role" onchange="this.form.submit()">
@@ -18,6 +18,7 @@
       </form>
 
       <h2 class="section-heading">All users (<?= count($users) ?>)</h2>
+      <div class="table-scroll">
       <table class="data-table">
         <thead>
           <tr>
@@ -28,14 +29,14 @@
         <tbody>
           <?php foreach ($users as $u) { $isSelf = $u->id === $meId; ?>
             <tr>
-              <td><?= htmlspecialchars($u->name(), ENT_QUOTES, 'UTF-8') ?><?= $isSelf ? ' <span class="status-tag status-tag--open">you</span>' : '' ?></td>
+              <td><?= htmlspecialchars($u->name(), ENT_QUOTES, 'UTF-8') ?><?= $isSelf ? ' <span class="status-tag status-tag-open">you</span>' : '' ?></td>
               <td><?= htmlspecialchars($u->username, ENT_QUOTES, 'UTF-8') ?></td>
               <td><?= htmlspecialchars($u->email, ENT_QUOTES, 'UTF-8') ?></td>
               <td>
                 <?php if ($isSelf) { ?>
-                  <span class="status-tag status-tag--open"><?= htmlspecialchars($u->role, ENT_QUOTES, 'UTF-8') ?></span>
+                  <span class="status-tag status-tag-open"><?= htmlspecialchars($u->role, ENT_QUOTES, 'UTF-8') ?></span>
                 <?php } else { ?>
-                  <form method="post" action="../actions/action_admin_user.php" style="display:inline">
+                  <form method="post" action="../actions/action_admin_user.php" class="inline-form">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="action"     value="role">
                     <input type="hidden" name="user_id"    value="<?= (int)$u->id ?>">
@@ -49,30 +50,30 @@
               </td>
               <td>
                 <?php if ($u->active) { ?>
-                  <span class="status-tag status-tag--open">active</span>
+                  <span class="status-tag status-tag-open">active</span>
                 <?php } else { ?>
-                  <span class="status-tag status-tag--full">disabled</span>
+                  <span class="status-tag status-tag-full">disabled</span>
                 <?php } ?>
               </td>
               <td><?= htmlspecialchars(date('d/m/Y', strtotime($u->joinDate)), ENT_QUOTES, 'UTF-8') ?></td>
               <td class="row-actions">
                 <?php if (!$isSelf) { ?>
                   <?php if ($u->active) { ?>
-                    <form method="post" action="../actions/action_admin_user.php" style="display:inline">
+                    <form method="post" action="../actions/action_admin_user.php" class="inline-form">
                       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                       <input type="hidden" name="action"     value="deactivate">
                       <input type="hidden" name="user_id"    value="<?= (int)$u->id ?>">
                       <button type="submit" class="btn-outline" onclick="return confirm('Deactivate this account?')">Deactivate</button>
                     </form>
                   <?php } else { ?>
-                    <form method="post" action="../actions/action_admin_user.php" style="display:inline">
+                    <form method="post" action="../actions/action_admin_user.php" class="inline-form">
                       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                       <input type="hidden" name="action"     value="activate">
                       <input type="hidden" name="user_id"    value="<?= (int)$u->id ?>">
                       <button type="submit" class="btn-outline">Activate</button>
                     </form>
                   <?php } ?>
-                  <form method="post" action="../actions/action_admin_user.php" style="display:inline">
+                  <form method="post" action="../actions/action_admin_user.php" class="inline-form">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="action"     value="delete">
                     <input type="hidden" name="user_id"    value="<?= (int)$u->id ?>">
@@ -87,6 +88,7 @@
           <?php } ?>
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 <?php

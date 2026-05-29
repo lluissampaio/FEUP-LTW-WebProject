@@ -8,7 +8,7 @@
       <div class="pricing-grid">
         <?php foreach ($plans as $p) {
           $featured  = !empty($p['featured']);
-          $cardClass = 'pricing-card' . ($featured ? ' pricing-card--featured' : '');
+          $cardClass = 'pricing-card' . ($featured ? ' pricing-card-featured' : '');
           $btnClass  = $featured ? 'btn-primary' : 'btn-outline';
         ?>
           <article class="<?= $cardClass ?>">
@@ -68,7 +68,7 @@
       <div class="pricing-grid">
         <?php foreach ($plans as $p) {
           $featured  = $p->featured;
-          $cardClass = 'pricing-card' . ($featured ? ' pricing-card--featured' : '');
+          $cardClass = 'pricing-card' . ($featured ? ' pricing-card-featured' : '');
           $isCurrent = $hasActive && $current->planId === $p->id;
 
           if ($isCurrent)              { $label = 'Current plan'; $btnClass = 'btn-outline'; $disabled = true; }
@@ -104,6 +104,7 @@
       <p class="section-label">02 &mdash; Compare</p>
       <h2 class="section-heading">All Features</h2>
 
+      <div class="table-scroll">
       <table class="compare-table">
         <thead>
           <tr>
@@ -134,6 +135,7 @@
           <?php } ?>
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 <?php } ?>

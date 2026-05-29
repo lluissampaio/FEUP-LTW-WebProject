@@ -19,7 +19,7 @@
                   <td><?= htmlspecialchars($c['FirstName'] . ' ' . $c['LastName'], ENT_QUOTES, 'UTF-8') ?></td>
                   <td><?= htmlspecialchars($c['Email'], ENT_QUOTES, 'UTF-8') ?></td>
                   <td>
-                    <a href="trainer_nutrition.php?member_id=<?= (int)$c['UserId'] ?>" class="btn-outline" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; text-decoration: none;">Manage Plan</a>
+                    <a href="trainer_nutrition.php?member_id=<?= (int)$c['UserId'] ?>" class="btn-outline btn-sm">Manage Plan</a>
                   </td>
                 </tr>
               <?php } ?>
