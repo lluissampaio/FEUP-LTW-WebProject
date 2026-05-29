@@ -32,15 +32,15 @@
 <?php
   /**
    * Logged-in member view: current subscription + actionable plan cards.
-   * $plans   : array of Plan objects (from the DB)
+   * $displayPlans: array of plans with precomputed presentation properties
    * $current : ?Membership (current subscription, plan joined)
    * $features: [planName => string[]] feature bullets for display
    */
-  function drawMembershipManager(array $plans, ?Membership $current, array $features, string $csrf) {
+  function drawMembershipManager(array $displayPlans, ?Membership $current, array $features, string $csrf) {
     $hasActive   = $current && $current->isActive();
     $currentTier = $hasActive && $current->plan ? $current->plan->tier : 0;
 ?>
-  <section class="pricing">
+  <section class="section" style="padding-top: 0;">
     <div class="section-inner">
       <p class="section-label">01 &mdash; Your membership</p>
 
@@ -66,17 +66,10 @@
       <?php } ?>
 
       <div class="pricing-grid">
-        <?php foreach ($plans as $p) {
-          $featured  = $p->featured;
-          $cardClass = 'pricing-card' . ($featured ? ' pricing-card-featured' : '');
-          $isCurrent = $hasActive && $current->planId === $p->id;
-
-          if ($isCurrent)              { $label = 'Current plan'; $btnClass = 'btn-outline'; $disabled = true; }
-          elseif (!$hasActive)         { $label = 'Subscribe';    $btnClass = $featured ? 'btn-primary' : 'btn-outline'; $disabled = false; }
-          elseif ($p->tier > $currentTier) { $label = 'Upgrade';  $btnClass = 'btn-primary'; $disabled = false; }
-          else                         { $label = 'Switch to this'; $btnClass = 'btn-outline'; $disabled = false; }
+        <?php foreach ($displayPlans as $dp) {
+          $p = $dp['plan'];
         ?>
-          <article class="<?= $cardClass ?>">
+          <article class="<?= $dp['cardClass'] ?>">
             <p class="pricing-plan-label"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></p>
             <h3 class="pricing-plan-name"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></h3>
             <p class="pricing-price"><?= htmlspecialchars($p->priceLabel(), ENT_QUOTES, 'UTF-8') ?></p>
@@ -89,7 +82,7 @@
             <form method="post" action="../actions/action_subscribe.php">
               <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
               <input type="hidden" name="plan_id" value="<?= (int)$p->id ?>">
-              <button type="submit" class="<?= $btnClass ?>"<?= $disabled ? ' disabled' : '' ?>><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></button>
+              <button type="submit" class="<?= $dp['btnClass'] ?>"<?= $dp['disabled'] ? ' disabled' : '' ?>><?= htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></button>
             </form>
           </article>
         <?php } ?>
