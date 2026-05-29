@@ -223,12 +223,13 @@ CREATE TABLE Booking (
     Notes          TEXT,
     CreatedAt      DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_Booking PRIMARY KEY (BookingId),
-    CONSTRAINT UQ_Booking_Slot UNIQUE (AvailabilityId, BookingDate),  -- a slot/date can only be taken once
     CONSTRAINT CK_Booking_Status CHECK (Status IN ('booked','cancelled','completed')),
     FOREIGN KEY (UserId)         REFERENCES User                (UserId)         ON DELETE CASCADE,
     FOREIGN KEY (TrainerId)      REFERENCES Trainer             (TrainerId)      ON DELETE CASCADE,
     FOREIGN KEY (AvailabilityId) REFERENCES TrainerAvailability (AvailabilityId) ON DELETE CASCADE
 );
+
+CREATE UNIQUE INDEX UQ_Booking_Active ON Booking (AvailabilityId, BookingDate) WHERE Status = 'booked';
 
 /*******************************************************************************
    Disputes & feedback (member reports, admin responses)
