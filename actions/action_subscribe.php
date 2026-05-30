@@ -4,6 +4,7 @@
   require_once(__DIR__ . '/../utils/session.php');
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/membership.class.php');
+  require_once(__DIR__ . '/../database/application.class.php');
   require_once(__DIR__ . '/../database/notification.class.php');
 
   $session = new Session();
@@ -14,6 +15,10 @@
 
   $db = getDatabaseConnection();
   try {
+    // You may only subscribe to a plan you have been approved for.
+    if (!MembershipApplication::isApprovedFor($db, $session->getId(), $planId)) {
+      throw new RuntimeException('You need an approved application for this plan. Apply on the membership page and wait for approval.');
+    }
     $current = Membership::getForUser($db, $session->getId());
     $verb    = ($current && $current->isActive())
       ? ($planId > $current->planId ? 'upgraded to' : ($planId < $current->planId ? 'changed to' : 'renewed'))

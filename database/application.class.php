@@ -2,26 +2,29 @@
   declare(strict_types = 1);
 
   /**
-   * Membership applications: people apply to join (via the contact form), an admin
-   * accepts or rejects each one, and only emails of *accepted* applications may
-   * register an account.
+   * Membership applications: a logged-in member applies for a specific plan (with an
+   * optional note), an admin accepts or rejects it, and the member may then subscribe
+   * only to a plan they were approved for.
    */
   class MembershipApplication {
     public int     $id;
-    public string  $firstName;
-    public string  $lastName;
-    public string  $email;
+    public int     $userId;
+    public int     $planId;
     public ?string $message;
     public string  $status;       // 'pending' | 'accepted' | 'rejected'
     public string  $createdAt;
     public ?string $decidedAt;
     public ?int    $decidedBy;
 
-    public function __construct(int $id, string $firstName, string $lastName, string $email, ?string $message, string $status, string $createdAt, ?string $decidedAt, ?int $decidedBy) {
+    // Joined display fields (populated by getAll()).
+    public ?string $memberName  = null;
+    public ?string $memberEmail = null;
+    public ?string $planName    = null;
+
+    public function __construct(int $id, int $userId, int $planId, ?string $message, string $status, string $createdAt, ?string $decidedAt, ?int $decidedBy) {
       $this->id        = $id;
-      $this->firstName = $firstName;
-      $this->lastName  = $lastName;
-      $this->email     = $email;
+      $this->userId    = $userId;
+      $this->planId    = $planId;
       $this->message   = $message;
       $this->status    = $status;
       $this->createdAt = $createdAt;
@@ -29,45 +32,37 @@
       $this->decidedBy = $decidedBy;
     }
 
-    public function name() : string {
-      return $this->firstName . ' ' . $this->lastName;
-    }
-
     private static function fromRow(array $r) : MembershipApplication {
-      return new MembershipApplication(
-        (int)   $r['ApplicationId'],
-        (string)$r['FirstName'],
-        (string)$r['LastName'],
-        (string)$r['Email'],
-                $r['Message'],
-        (string)$r['Status'],
-        (string)$r['CreatedAt'],
-                $r['DecidedAt'],
-        isset($r['DecidedBy']) ? (int)$r['DecidedBy'] : null
+      $a = new MembershipApplication(
+        (int)$r['ApplicationId'], (int)$r['UserId'], (int)$r['PlanId'],
+        $r['Message'], (string)$r['Status'], (string)$r['CreatedAt'],
+        $r['DecidedAt'], isset($r['DecidedBy']) ? (int)$r['DecidedBy'] : null
       );
+      $a->memberName  = $r['MemberName']  ?? null;
+      $a->memberEmail = $r['MemberEmail'] ?? null;
+      $a->planName    = $r['PlanName']    ?? null;
+      return $a;
     }
 
-    /** Record a new application (status defaults to 'pending'). */
-    public static function create(PDO $db, string $firstName, string $lastName, string $email, ?string $message) : void {
-      $stmt = $db->prepare('
-        INSERT INTO MembershipApplication (FirstName, LastName, Email, Message)
-        VALUES (?, ?, ?, ?)
-      ');
-      $stmt->execute(array($firstName, $lastName, $email, $message));
+    /** A member applies for a plan (a partial unique index blocks duplicate pending apps). */
+    public static function create(PDO $db, int $userId, int $planId, ?string $message = null) : void {
+      $stmt = $db->prepare('INSERT INTO MembershipApplication (UserId, PlanId, Message) VALUES (?, ?, ?)');
+      $stmt->execute(array($userId, $planId, $message));
     }
 
-    /** All applications (optionally filtered by status), pending first then newest. */
+    /** All applications (optionally filtered by status) with member + plan names joined. */
     public static function getAll(PDO $db, ?string $status = null) : array {
-      $sql = '
-        SELECT ApplicationId, FirstName, LastName, Email, Message, Status, CreatedAt, DecidedAt, DecidedBy
-        FROM MembershipApplication
-      ';
+      $sql = "
+        SELECT a.ApplicationId, a.UserId, a.PlanId, a.Message, a.Status, a.CreatedAt, a.DecidedAt, a.DecidedBy,
+               u.FirstName || ' ' || u.LastName AS MemberName, u.Email AS MemberEmail,
+               p.Name AS PlanName
+        FROM MembershipApplication a
+        JOIN User u ON u.UserId = a.UserId
+        JOIN Plan p ON p.PlanId = a.PlanId
+      ";
       $params = array();
-      if ($status !== null) {
-        $sql .= ' WHERE Status = ?';
-        $params[] = $status;
-      }
-      $sql .= " ORDER BY CASE Status WHEN 'pending' THEN 0 ELSE 1 END, CreatedAt DESC";
+      if ($status !== null) { $sql .= ' WHERE a.Status = ?'; $params[] = $status; }
+      $sql .= " ORDER BY CASE a.Status WHEN 'pending' THEN 0 ELSE 1 END, a.CreatedAt DESC";
       $stmt = $db->prepare($sql);
       $stmt->execute($params);
       $out = array();
@@ -88,10 +83,22 @@
       $stmt->execute(array($status, $adminId, $id));
     }
 
-    /** True if this email has an accepted application (gate for registration). */
-    public static function hasAccepted(PDO $db, string $email) : bool {
-      $stmt = $db->prepare("SELECT 1 FROM MembershipApplication WHERE lower(Email) = ? AND Status = 'accepted' LIMIT 1");
-      $stmt->execute(array(strtolower($email)));
+    /** Latest application status for a (user, plan), or null if none. */
+    public static function statusFor(PDO $db, int $userId, int $planId) : ?string {
+      $stmt = $db->prepare('
+        SELECT Status FROM MembershipApplication
+        WHERE UserId = ? AND PlanId = ?
+        ORDER BY CreatedAt DESC LIMIT 1
+      ');
+      $stmt->execute(array($userId, $planId));
+      $row = $stmt->fetch();
+      return $row ? (string)$row['Status'] : null;
+    }
+
+    /** True if the member has an accepted application for this plan (gate for subscribing). */
+    public static function isApprovedFor(PDO $db, int $userId, int $planId) : bool {
+      $stmt = $db->prepare("SELECT 1 FROM MembershipApplication WHERE UserId = ? AND PlanId = ? AND Status = 'accepted' LIMIT 1");
+      $stmt->execute(array($userId, $planId));
       return (bool)$stmt->fetch();
     }
 

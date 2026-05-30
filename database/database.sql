@@ -279,18 +279,22 @@ CREATE TABLE NutritionPlan (
 
 CREATE TABLE MembershipApplication (
     ApplicationId INTEGER       NOT NULL,
-    FirstName     NVARCHAR(40)  NOT NULL,
-    LastName      NVARCHAR(40)  NOT NULL,
-    Email         NVARCHAR(120) NOT NULL,
-    Message       TEXT,
+    UserId        INTEGER       NOT NULL,                    -- the member applying
+    PlanId        INTEGER       NOT NULL,                    -- the plan they applied for
+    Message       TEXT,                                      -- optional note written by the applicant
     Status        NVARCHAR(20)  NOT NULL DEFAULT 'pending',  -- 'pending' | 'accepted' | 'rejected'
     CreatedAt     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     DecidedAt     DATETIME,
     DecidedBy     INTEGER,                                   -- admin UserId who decided
     CONSTRAINT PK_MembershipApplication PRIMARY KEY (ApplicationId),
     CONSTRAINT CK_Application_Status CHECK (Status IN ('pending','accepted','rejected')),
+    FOREIGN KEY (UserId)    REFERENCES User (UserId) ON DELETE CASCADE,
+    FOREIGN KEY (PlanId)    REFERENCES Plan (PlanId) ON DELETE CASCADE,
     FOREIGN KEY (DecidedBy) REFERENCES User (UserId)
 );
+
+-- A member may have only one pending application per plan.
+CREATE UNIQUE INDEX UQ_Application_Pending ON MembershipApplication (UserId, PlanId) WHERE Status = 'pending';
 
 /*******************************************************************************
    Create Indexes (foreign-key access paths)
@@ -316,7 +320,8 @@ CREATE INDEX IFK_BookingTrainer      ON Booking             (TrainerId);
 CREATE INDEX IFK_BookingAvailability ON Booking             (AvailabilityId);
 CREATE INDEX IFK_DisputeUser         ON Dispute             (UserId);
 CREATE INDEX IFK_NutritionPlanUser   ON NutritionPlan       (UserId);
-CREATE INDEX IDX_ApplicationEmail    ON MembershipApplication (Email);
+CREATE INDEX IFK_ApplicationUser     ON MembershipApplication (UserId);
+CREATE INDEX IFK_ApplicationPlan     ON MembershipApplication (PlanId);
 
 /*******************************************************************************
    Populate Tables
@@ -447,11 +452,10 @@ INSERT INTO Membership (MembershipId, UserId, PlanId, Status, RenewsAt) VALUES
 (2, 12, 1, 'active', datetime('now', '+1 month')),
 (3, 13, 3, 'active', datetime('now', '+1 month'));
 
--- Membership applications (apply-to-join leads; admin accepts/rejects) --------
-INSERT INTO MembershipApplication (ApplicationId, FirstName, LastName, Email, Message, Status, DecidedAt, DecidedBy) VALUES
-(1, 'Mara',  'Vance', 'mara.vance@example.com',   'Referred by Jordan Miller. Interested in strength and mobility coaching.', 'pending',  NULL, NULL),
-(2, 'Tomas', 'Reis',  'newapplicant@example.com', 'Looking to join the Lisbon location — mostly endurance training.',         'accepted', CURRENT_TIMESTAMP, 1),
-(3, 'Priya', 'Nair',  'priya.nair@example.com',   'Enquiry about corporate membership.',                                      'rejected', CURRENT_TIMESTAMP, 1);
+-- Membership applications (a member applies for a plan; admin accepts/rejects) -
+-- Beatriz (14) has no active plan: one pending application for Premium to triage.
+INSERT INTO MembershipApplication (ApplicationId, UserId, PlanId, Message, Status, DecidedAt, DecidedBy) VALUES
+(1, 14, 2, 'I''d love to move up to Premium for the personal training sessions.', 'pending', NULL, NULL);
 
 -- Trainer availability (recurring weekly one-on-one slots) --------------------
 INSERT INTO TrainerAvailability (AvailabilityId, TrainerId, DayOfWeek, StartTime, Duration) VALUES
