@@ -8,25 +8,25 @@
     <form action="../actions/action_edit_trainer.php" method="post" class="dashboard-form">
       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
-      <div class="form-field">
-        <label for="specialty">Specialty</label>
+      <label class="form-field">
+        Specialty
         <input type="text" id="specialty" name="specialty"
                value="<?= htmlspecialchars($trainer->specialty ?? '', ENT_QUOTES, 'UTF-8') ?>"
                placeholder="e.g. Strength, Mobility, Pilates">
-      </div>
+      </label>
 
-      <div class="form-field">
-        <label for="certifications">Certifications</label>
+      <label class="form-field">
+        Certifications
         <input type="text" id="certifications" name="certifications"
                value="<?= htmlspecialchars($trainer->certifications ?? '', ENT_QUOTES, 'UTF-8') ?>"
                placeholder="e.g. NASM-CPT, CSCS">
-      </div>
+      </label>
 
-      <div class="form-field">
-        <label for="bio">Bio</label>
+      <label class="form-field">
+        Bio
         <textarea id="bio" name="bio" rows="5"
                   placeholder="Tell members about yourself..."><?= htmlspecialchars($trainer->bio ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
-      </div>
+      </label>
 
       <button type="submit" class="btn-primary">Save changes</button>
     </form>
