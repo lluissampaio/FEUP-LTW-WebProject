@@ -24,7 +24,7 @@
       <a href="dashboard.php" class="dashboard-nav-link <?= $activePage === 'dashboard' ? 'is-active' : '' ?>">Dashboard</a>
       
       <?php if (!$user || $user->role === 'member') { ?>
-        <a href="#workouts"  class="dashboard-nav-link <?= $activePage === 'workouts' ? 'is-active' : '' ?>">Workout history</a>
+        <a href="workouts.php"  class="dashboard-nav-link <?= $activePage === 'workouts' ? 'is-active' : '' ?>">Workout history</a>
         <a href="nutrition.php" class="dashboard-nav-link <?= $activePage === 'nutrition' ? 'is-active' : '' ?>">Nutrition plan</a>
       <?php } ?>
 
@@ -244,7 +244,7 @@
         </div>
         <div class="form-field">
           <label for="w-duration">Duration (min)</label>
-          <input type="number" id="w-duration" name="duration" min="1" max="600" step="5" value="45" required>
+          <input type="number" id="w-duration" name="duration" min="1" max="600" step="1" value="45" required>
         </div>
         <div class="form-field">
           <label for="w-calories">Calories (optional)</label>
@@ -286,6 +286,11 @@
           </tbody>
         </table>
       </div>
+      <?php if ($totalWorkouts > count($workouts)) { ?>
+        <div style="margin-top: var(--spacing-md, 1.5rem); text-align: center;">
+          <a href="workouts.php" class="btn-outline btn-sm">View all history</a>
+        </div>
+      <?php } ?>
     </section>
 <?php
   }
