@@ -13,30 +13,30 @@
         <input type="hidden" name="action" value="create">
 
         <div class="schedule-add-grid">
-          <div class="form-field">
-            <label for="class_id">Class</label>
+          <label class="form-field">
+            Class
             <select id="class_id" name="class_id" required>
               <?php foreach ($classes as $c) { ?>
                 <option value="<?= (int)$c->id ?>"><?= htmlspecialchars($c->name, ENT_QUOTES, 'UTF-8') ?></option>
               <?php } ?>
             </select>
-          </div>
-          <div class="form-field">
-            <label for="schedule_day">Day</label>
+          </label>
+          <label class="form-field">
+            Day
             <select id="schedule_day" name="schedule_day" required>
               <?php foreach ($days as $d) { ?>
                 <option value="<?= htmlspecialchars($d, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($d, ENT_QUOTES, 'UTF-8') ?></option>
               <?php } ?>
             </select>
-          </div>
-          <div class="form-field">
-            <label for="schedule_start">Start</label>
+          </label>
+          <label class="form-field">
+            Start
             <input type="time" id="schedule_start" name="schedule_start" required>
-          </div>
-          <div class="form-field">
-            <label for="schedule_duration">Mins</label>
+          </label>
+          <label class="form-field">
+            Mins
             <input type="number" id="schedule_duration" name="schedule_duration" min="15" max="240" step="5" value="60" required>
-          </div>
+          </label>
         </div>
         <button type="submit" class="btn-primary">Add session</button>
       </form>

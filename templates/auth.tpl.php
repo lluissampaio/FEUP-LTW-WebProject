@@ -12,15 +12,15 @@
       <form class="auth-form" method="post" action="../actions/action_login.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
-        <div class="form-field">
-          <label for="login-id">Email or username</label>
+        <label class="form-field">
+          Email or username
           <input type="text" id="login-id" name="identifier" required autocomplete="username">
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="login-password">Password</label>
+        <label class="form-field">
+          Password
           <input type="password" id="login-password" name="password" required autocomplete="current-password">
-        </div>
+        </label>
 
         <button type="submit" class="btn-primary auth-submit">Sign in</button>
       </form>
@@ -42,30 +42,30 @@
       <form class="auth-form" method="post" action="../actions/action_register.php" data-validate>
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
-        <div class="form-field">
-          <label for="register-name">Full name</label>
+        <label class="form-field">
+          Full name
           <input type="text" id="register-name" name="name" required autocomplete="name">
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="register-username">Username</label>
+        <label class="form-field">
+          Username
           <input type="text" id="register-username" name="username" required autocomplete="username" pattern="[a-zA-Z0-9_]{3,20}" title="3 to 20 letters, numbers, or underscores">
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="register-email">Email</label>
+        <label class="form-field">
+          Email
           <input type="email" id="register-email" name="email" required autocomplete="email">
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="register-password">Password</label>
+        <label class="form-field">
+          Password
           <input type="password" id="register-password" name="password" required minlength="8" autocomplete="new-password" data-strength>
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="register-confirm">Confirm password</label>
+        <label class="form-field">
+          Confirm password
           <input type="password" id="register-confirm" name="confirm_password" required minlength="8" autocomplete="new-password">
-        </div>
+        </label>
 
         <button type="submit" class="btn-primary auth-submit">Create account</button>
       </form>

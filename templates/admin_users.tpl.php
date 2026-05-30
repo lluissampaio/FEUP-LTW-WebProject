@@ -6,15 +6,15 @@
   <section class="admin-section">
     <div class="section-inner">
       <form method="get" class="admin-form">
-        <div class="form-field">
-          <label for="role-filter">Filter by role</label>
+        <label class="form-field">
+          Filter by role
           <select id="role-filter" name="role" data-autosubmit>
             <option value=""        <?= $validRole === null      ? 'selected' : '' ?>>All roles</option>
             <option value="member"  <?= $validRole === 'member'  ? 'selected' : '' ?>>Member</option>
             <option value="trainer" <?= $validRole === 'trainer' ? 'selected' : '' ?>>Trainer</option>
             <option value="admin"   <?= $validRole === 'admin'   ? 'selected' : '' ?>>Admin</option>
           </select>
-        </div>
+        </label>
       </form>
 
       <h2 class="section-heading">Create a new account</h2>
@@ -22,34 +22,34 @@
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="action" value="create">
 
-        <div class="form-field">
-          <label for="new-first">First name</label>
+        <label class="form-field">
+          First name
           <input type="text" id="new-first" name="first_name" required maxlength="40">
-        </div>
-        <div class="form-field">
-          <label for="new-last">Last name</label>
+        </label>
+        <label class="form-field">
+          Last name
           <input type="text" id="new-last" name="last_name" required maxlength="40">
-        </div>
-        <div class="form-field">
-          <label for="new-username">Username</label>
+        </label>
+        <label class="form-field">
+          Username
           <input type="text" id="new-username" name="username" required maxlength="40">
-        </div>
-        <div class="form-field">
-          <label for="new-email">Email</label>
+        </label>
+        <label class="form-field">
+          Email
           <input type="email" id="new-email" name="email" required maxlength="120">
-        </div>
-        <div class="form-field">
-          <label for="new-password">Temporary password</label>
+        </label>
+        <label class="form-field">
+          Temporary password
           <input type="password" id="new-password" name="password" required minlength="8" autocomplete="new-password">
-        </div>
-        <div class="form-field">
-          <label for="new-role">Role</label>
+        </label>
+        <label class="form-field">
+          Role
           <select id="new-role" name="role">
             <option value="member">Member</option>
             <option value="trainer">Trainer</option>
             <option value="admin">Admin</option>
           </select>
-        </div>
+        </label>
 
         <div class="form-actions">
           <button type="submit" class="btn-primary">Create account</button>

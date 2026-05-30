@@ -4,24 +4,24 @@
   <section class="filter-section" aria-label="Filter equipment">
     <div class="section-inner">
       <form class="filter-form" id="equipment-filter-form" method="get" action="equipment.php">
-        <div class="filter-field">
-          <label for="eq-location">Location</label>
+        <label class="filter-field">
+          Location
           <select id="eq-location" name="location">
             <option value="">All locations</option>
             <?php foreach ($locations as $l) { ?>
               <option value="<?= (int)$l->id ?>" <?= $locationId === $l->id ? 'selected' : '' ?>><?= htmlspecialchars($l->city, ENT_QUOTES, 'UTF-8') ?></option>
             <?php } ?>
           </select>
-        </div>
-        <div class="filter-field">
-          <label for="eq-type">Type</label>
+        </label>
+        <label class="filter-field">
+          Type
           <select id="eq-type" name="type">
             <option value="">All types</option>
             <?php foreach ($types as $t) { ?>
               <option value="<?= htmlspecialchars($t, ENT_QUOTES, 'UTF-8') ?>" <?= $type === $t ? 'selected' : '' ?>><?= htmlspecialchars($t, ENT_QUOTES, 'UTF-8') ?></option>
             <?php } ?>
           </select>
-        </div>
+        </label>
         <div class="filter-actions">
           <button type="submit" class="btn-primary">Filter</button>
           <a href="equipment.php" class="btn-outline">Reset</a>
