@@ -115,6 +115,7 @@
     </div>
   </footer>
   <script src="../javascript/nav-toggle.js" defer></script>
+  <script src="../javascript/ui-actions.js" defer></script>
 </body>
 </html>
 <?php } ?>

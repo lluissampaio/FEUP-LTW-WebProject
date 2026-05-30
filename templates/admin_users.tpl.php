@@ -8,7 +8,7 @@
       <form method="get" class="admin-form">
         <div class="form-field">
           <label for="role-filter">Filter by role</label>
-          <select id="role-filter" name="role" onchange="this.form.submit()">
+          <select id="role-filter" name="role" data-autosubmit>
             <option value=""        <?= $validRole === null      ? 'selected' : '' ?>>All roles</option>
             <option value="member"  <?= $validRole === 'member'  ? 'selected' : '' ?>>Member</option>
             <option value="trainer" <?= $validRole === 'trainer' ? 'selected' : '' ?>>Trainer</option>
@@ -79,7 +79,7 @@
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="action"     value="role">
                     <input type="hidden" name="user_id"    value="<?= (int)$u->id ?>">
-                    <select name="role" onchange="this.form.submit()">
+                    <select name="role" data-autosubmit>
                       <option value="member"  <?= $u->role === 'member'  ? 'selected' : '' ?>>member</option>
                       <option value="trainer" <?= $u->role === 'trainer' ? 'selected' : '' ?>>trainer</option>
                       <option value="admin"   <?= $u->role === 'admin'   ? 'selected' : '' ?>>admin</option>
@@ -102,7 +102,7 @@
                       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                       <input type="hidden" name="action"     value="deactivate">
                       <input type="hidden" name="user_id"    value="<?= (int)$u->id ?>">
-                      <button type="submit" class="btn-outline" onclick="return confirm('Deactivate this account?')">Deactivate</button>
+                      <button type="submit" class="btn-outline" data-confirm="Deactivate this account?">Deactivate</button>
                     </form>
                   <?php } else { ?>
                     <form method="post" action="../actions/action_admin_user.php" class="inline-form">
@@ -116,7 +116,7 @@
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="action"     value="delete">
                     <input type="hidden" name="user_id"    value="<?= (int)$u->id ?>">
-                    <button type="submit" class="btn-outline" onclick="return confirm('Delete this account permanently? Related data will be removed.')">Delete</button>
+                    <button type="submit" class="btn-outline" data-confirm="Delete this account permanently? Related data will be removed.">Delete</button>
                   </form>
                 <?php } ?>
               </td>
