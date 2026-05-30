@@ -244,7 +244,7 @@
         </div>
         <div class="form-field">
           <label for="w-duration">Duration (min)</label>
-          <input type="number" id="w-duration" name="duration" min="1" max="600" step="5" value="45" required>
+          <input type="number" id="w-duration" name="duration" min="1" max="600" step="1" value="45" required>
         </div>
         <div class="form-field">
           <label for="w-calories">Calories (optional)</label>
