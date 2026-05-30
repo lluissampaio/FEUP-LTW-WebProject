@@ -5,6 +5,7 @@
    (bcrypt hash: $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi)
 ********************************************************************************/
 
+DROP TABLE IF EXISTS MembershipApplication;
 DROP TABLE IF EXISTS NutritionPlan;
 DROP TABLE IF EXISTS Dispute;
 DROP TABLE IF EXISTS Booking;
@@ -273,6 +274,25 @@ CREATE TABLE NutritionPlan (
 );
 
 /*******************************************************************************
+   Membership applications (apply to join → admin accepts/rejects → email may register)
+********************************************************************************/
+
+CREATE TABLE MembershipApplication (
+    ApplicationId INTEGER       NOT NULL,
+    FirstName     NVARCHAR(40)  NOT NULL,
+    LastName      NVARCHAR(40)  NOT NULL,
+    Email         NVARCHAR(120) NOT NULL,
+    Message       TEXT,
+    Status        NVARCHAR(20)  NOT NULL DEFAULT 'pending',  -- 'pending' | 'accepted' | 'rejected'
+    CreatedAt     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DecidedAt     DATETIME,
+    DecidedBy     INTEGER,                                   -- admin UserId who decided
+    CONSTRAINT PK_MembershipApplication PRIMARY KEY (ApplicationId),
+    CONSTRAINT CK_Application_Status CHECK (Status IN ('pending','accepted','rejected')),
+    FOREIGN KEY (DecidedBy) REFERENCES User (UserId)
+);
+
+/*******************************************************************************
    Create Indexes (foreign-key access paths)
 ********************************************************************************/
 
@@ -296,6 +316,7 @@ CREATE INDEX IFK_BookingTrainer      ON Booking             (TrainerId);
 CREATE INDEX IFK_BookingAvailability ON Booking             (AvailabilityId);
 CREATE INDEX IFK_DisputeUser         ON Dispute             (UserId);
 CREATE INDEX IFK_NutritionPlanUser   ON NutritionPlan       (UserId);
+CREATE INDEX IDX_ApplicationEmail    ON MembershipApplication (Email);
 
 /*******************************************************************************
    Populate Tables
@@ -425,6 +446,12 @@ INSERT INTO Membership (MembershipId, UserId, PlanId, Status, RenewsAt) VALUES
 (1, 11, 2, 'active', datetime('now', '+1 month')),
 (2, 12, 1, 'active', datetime('now', '+1 month')),
 (3, 13, 3, 'active', datetime('now', '+1 month'));
+
+-- Membership applications (apply-to-join leads; admin accepts/rejects) --------
+INSERT INTO MembershipApplication (ApplicationId, FirstName, LastName, Email, Message, Status, DecidedAt, DecidedBy) VALUES
+(1, 'Mara',  'Vance', 'mara.vance@example.com',   'Referred by Jordan Miller. Interested in strength and mobility coaching.', 'pending',  NULL, NULL),
+(2, 'Tomas', 'Reis',  'newapplicant@example.com', 'Looking to join the Lisbon location — mostly endurance training.',         'accepted', CURRENT_TIMESTAMP, 1),
+(3, 'Priya', 'Nair',  'priya.nair@example.com',   'Enquiry about corporate membership.',                                      'rejected', CURRENT_TIMESTAMP, 1);
 
 -- Trainer availability (recurring weekly one-on-one slots) --------------------
 INSERT INTO TrainerAvailability (AvailabilityId, TrainerId, DayOfWeek, StartTime, Duration) VALUES

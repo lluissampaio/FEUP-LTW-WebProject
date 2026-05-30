@@ -9,6 +9,7 @@
   require_once(__DIR__ . '/../database/waitlist.class.php');
   require_once(__DIR__ . '/../database/schedule.class.php');
   require_once(__DIR__ . '/../database/notification.class.php');
+  require_once(__DIR__ . '/../database/membership.class.php');
 
   function jsend(int $code, array $payload) : void {
     http_response_code($code);
@@ -33,6 +34,12 @@
   $db = getDatabaseConnection();
   $schedule = Schedule::getSchedule($db, $scheduleId);
   if (!$schedule) jsend(404, ['ok' => false, 'error' => 'Schedule not found.']);
+
+  // Members must have chosen a membership before booking a spot or joining a waitlist.
+  if (in_array($action, ['enrol', 'waitlist_join'], true)
+      && isMemberUser($session) && !Membership::userHasActivePlan($db, $session->getId())) {
+    jsend(403, ['ok' => false, 'error' => 'Choose a membership plan to book classes.']);
+  }
 
   try {
     if ($action === 'enrol') {

@@ -12,10 +12,13 @@
 
 <?php
   /** Member's report form. */
-  function drawDisputeForm(string $csrf) {
+  function drawDisputeForm(string $csrf, bool $hasPlan = true) {
 ?>
   <section class="dispute-block">
     <h2 class="dashboard-section-heading">Report an issue</h2>
+    <?php if (!$hasPlan) { ?>
+      <p class="activity-empty">Choose a membership plan to open a support request. <a href="membership.php">Choose a plan &rarr;</a></p>
+    <?php } else { ?>
     <form class="dispute-form" method="post" action="../actions/action_dispute_create.php">
       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
@@ -42,6 +45,7 @@
 
       <button type="submit" class="btn-primary">Submit report</button>
     </form>
+    <?php } ?>
   </section>
 <?php } ?>
 

@@ -6,6 +6,7 @@
   require_once(__DIR__ . '/../database/enrollment.class.php');
   require_once(__DIR__ . '/../database/schedule.class.php');
   require_once(__DIR__ . '/../database/notification.class.php');
+  require_once(__DIR__ . '/../database/membership.class.php');
 
   $session = new Session();
   $session->requireLogin('../pages/login.php');
@@ -13,6 +14,14 @@
 
   $scheduleId = isset($_POST['schedule_id']) ? (int)$_POST['schedule_id'] : 0;
   $db = getDatabaseConnection();
+
+  // Members must have chosen a membership before enrolling in classes.
+  if (isMemberUser($session) && !Membership::userHasActivePlan($db, $session->getId())) {
+    $session->addMessage('error', 'Choose a membership plan before enrolling in classes.');
+    header('Location: ../pages/membership.php');
+    exit;
+  }
+
   $schedule = Schedule::getSchedule($db, $scheduleId);
   if (!$schedule) {
     $session->addMessage('error', 'Class not found.');

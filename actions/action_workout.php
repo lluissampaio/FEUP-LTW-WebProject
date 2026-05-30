@@ -4,6 +4,7 @@
   require_once(__DIR__ . '/../utils/session.php');
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/workout.class.php');
+  require_once(__DIR__ . '/../database/membership.class.php');
 
   $session = new Session();
   $session->requireLogin('../pages/login.php');
@@ -11,6 +12,13 @@
 
   $action = (string)($_POST['action'] ?? 'log');
   $db     = getDatabaseConnection();
+
+  // Members must have chosen a membership before logging workouts.
+  if ($action !== 'delete' && isMemberUser($session) && !Membership::userHasActivePlan($db, $session->getId())) {
+    $session->addMessage('error', 'Choose a membership plan before logging workouts.');
+    header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '../pages/membership.php'));
+    exit;
+  }
 
   try {
     if ($action === 'delete') {
