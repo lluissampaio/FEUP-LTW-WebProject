@@ -1470,9 +1470,6 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.form-field label {
   font-family: var(--font-body);
   font-size: 10px;
   letter-spacing: 2px;
@@ -1972,13 +1969,13 @@ ul {
   border-bottom: 1px solid var(--color-border);
 }
 .filter-form    { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; }
-.filter-field   { display: flex; flex-direction: column; min-width: 160px; flex: 1 1 160px; }
-.filter-field label {
+label.filter-field {
+  display: flex; flex-direction: column; min-width: 160px; flex: 1 1 160px;
   font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
   color: var(--color-muted); margin-bottom: 6px;
 }
-.filter-field select,
-.filter-field input,
+label.filter-field select,
+label.filter-field input,
 .form-field   select,
 .form-field   input,
 .form-field   textarea {
@@ -1986,12 +1983,15 @@ ul {
   border: 1px solid var(--color-border);
   background-color: var(--color-bg);
   color: var(--color-text);
-  font: inherit;
+  font-family: var(--font-body);
+  font-size: 14px;
+  letter-spacing: normal;
+  text-transform: none;
   border-radius: 2px;
   transition: border-color 0.2s ease;
 }
-.filter-field select:focus,
-.filter-field input:focus,
+label.filter-field select:focus,
+label.filter-field input:focus,
 .form-field   select:focus,
 .form-field   input:focus,
 .form-field   textarea:focus {
@@ -2223,8 +2223,8 @@ ul {
   border: 1px solid var(--color-border);
   border-radius: 2px;
 }
-.admin-form .form-field { display: flex; flex-direction: column; }
-.admin-form .form-field label {
+.admin-form .form-field { 
+  display: flex; flex-direction: column; 
   font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
   color: var(--color-muted); margin-bottom: 6px;
 }
@@ -2654,7 +2654,7 @@ ul {
   flex-wrap: wrap;
   margin-bottom: 40px;
 }
-.trainer-search .filter-field { min-width: 220px; }
+.trainer-search label.filter-field { min-width: 220px; }
 
 /* =========================================================
    RESPONSIVE — mobile-first

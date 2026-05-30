@@ -15,46 +15,46 @@
             <span class="profile-photo-initials" aria-hidden="true"><?= htmlspecialchars(strtoupper(substr($user->firstName, 0, 1) . substr($user->lastName, 0, 1)), ENT_QUOTES, 'UTF-8') ?></span>
           <?php } ?>
         </div>
-        <div class="form-field">
-          <label for="profile-photo">Profile photo</label>
+        <label class="form-field">
+          Profile photo
           <input type="file" id="profile-photo" name="photo" accept="image/jpeg,image/png,image/webp">
           <p class="form-hint">JPG, PNG or WebP &middot; max 3&nbsp;MB</p>
-        </div>
+        </label>
       </div>
 
       <div class="form-grid">
-        <div class="form-field">
-          <label for="profile-first">First name</label>
+        <label class="form-field">
+          First name
           <input type="text" id="profile-first" name="first_name" required value="<?= htmlspecialchars($user->firstName, ENT_QUOTES, 'UTF-8') ?>" autocomplete="given-name">
-        </div>
-        <div class="form-field">
-          <label for="profile-last">Last name</label>
+        </label>
+        <label class="form-field">
+          Last name
           <input type="text" id="profile-last" name="last_name" required value="<?= htmlspecialchars($user->lastName, ENT_QUOTES, 'UTF-8') ?>" autocomplete="family-name">
-        </div>
+        </label>
       </div>
 
-      <div class="form-field">
-        <label for="profile-username">Username</label>
+      <label class="form-field">
+        Username
         <input type="text" id="profile-username" name="username" required value="<?= htmlspecialchars($user->username, ENT_QUOTES, 'UTF-8') ?>" autocomplete="username" maxlength="20" pattern="[a-zA-Z0-9_]{3,20}" title="3 to 20 letters, numbers, or underscores">
-      </div>
+      </label>
 
-      <div class="form-field">
-        <label for="profile-email">Email</label>
+      <label class="form-field">
+        Email
         <input type="email" id="profile-email" name="email" required value="<?= htmlspecialchars($user->email, ENT_QUOTES, 'UTF-8') ?>" autocomplete="email">
-      </div>
+      </label>
 
       <fieldset class="profile-fieldset">
         <legend>Change password</legend>
         <p class="form-hint">Leave blank to keep your current password.</p>
         <div class="form-grid">
-          <div class="form-field">
-            <label for="profile-new-password">New password</label>
+          <label class="form-field">
+            New password
             <input type="password" id="profile-new-password" name="new_password" minlength="8" autocomplete="new-password" data-strength>
-          </div>
-          <div class="form-field">
-            <label for="profile-confirm-password">Confirm new password</label>
+          </label>
+          <label class="form-field">
+            Confirm new password
             <input type="password" id="profile-confirm-password" name="confirm_password" minlength="8" autocomplete="new-password">
-          </div>
+          </label>
         </div>
       </fieldset>
 

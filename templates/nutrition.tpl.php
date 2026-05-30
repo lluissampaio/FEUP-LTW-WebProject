@@ -17,35 +17,35 @@
           <input type="hidden" name="target_user_id" value="<?= (int)$targetUser->id ?>">
         <?php } ?>
         
-        <div class="form-field">
-          <label for="n-diet">Diet Type</label>
+        <label class="form-field">
+          Diet Type
           <input type="text" id="n-diet" name="diet_type" required maxlength="60" placeholder="e.g. Balanced, Keto, Vegan" value="<?= htmlspecialchars($dietType, ENT_QUOTES, 'UTF-8') ?>">
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="n-cals">Daily Calories</label>
+        <label class="form-field">
+          Daily Calories
           <input type="number" id="n-cals" name="daily_calories" required min="0" max="10000" value="<?= htmlspecialchars((string)$dailyCalories, ENT_QUOTES, 'UTF-8') ?>">
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="n-protein">Protein (g)</label>
+        <label class="form-field">
+          Protein (g)
           <input type="number" id="n-protein" name="protein" required min="0" value="<?= htmlspecialchars((string)$protein, ENT_QUOTES, 'UTF-8') ?>">
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="n-carbs">Carbs (g)</label>
+        <label class="form-field">
+          Carbs (g)
           <input type="number" id="n-carbs" name="carbs" required min="0" value="<?= htmlspecialchars((string)$carbs, ENT_QUOTES, 'UTF-8') ?>">
-        </div>
+        </label>
 
-        <div class="form-field">
-          <label for="n-fats">Fats (g)</label>
+        <label class="form-field">
+          Fats (g)
           <input type="number" id="n-fats" name="fats" required min="0" value="<?= htmlspecialchars((string)$fats, ENT_QUOTES, 'UTF-8') ?>">
-        </div>
+        </label>
 
-        <div class="form-field span-full">
-          <label for="n-guide">Guidelines / Notes</label>
+        <label class="form-field span-full">
+          Guidelines / Notes
           <textarea id="n-guide" name="guidelines" rows="6" placeholder="Any specific dietary restrictions, meal timing, or general notes..."><?= htmlspecialchars($guidelines, ENT_QUOTES, 'UTF-8') ?></textarea>
-        </div>
+        </label>
 
         <div class="form-actions">
           <button type="submit" class="btn-primary">Save Nutrition Plan</button>
