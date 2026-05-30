@@ -238,18 +238,18 @@
       <form class="admin-form" method="post" action="../actions/action_workout.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="action"     value="log">
-        <div class="form-field">
-          <label for="w-type">Type</label>
+        <label class="form-field">
+          Type
           <input type="text" id="w-type" name="workout_type" required maxlength="60" placeholder="e.g. Strength, Cardio, Yoga">
-        </div>
-        <div class="form-field">
-          <label for="w-duration">Duration (min)</label>
+        </label>
+        <label class="form-field">
+          Duration (min)
           <input type="number" id="w-duration" name="duration" min="1" max="600" step="1" value="45" required>
-        </div>
-        <div class="form-field">
-          <label for="w-calories">Calories (optional)</label>
+        </label>
+        <label class="form-field">
+          Calories (optional)
           <input type="number" id="w-calories" name="calories" min="0" max="5000" step="10" value="0">
-        </div>
+        </label>
         <div class="form-actions">
           <button type="submit" class="btn-primary">Log workout</button>
         </div>
