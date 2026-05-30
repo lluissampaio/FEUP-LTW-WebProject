@@ -48,6 +48,11 @@
         </div>
 
         <div class="form-field">
+          <label for="register-username">Username</label>
+          <input type="text" id="register-username" name="username" required autocomplete="username" pattern="[a-zA-Z0-9_]{3,20}" title="3 to 20 letters, numbers, or underscores">
+        </div>
+
+        <div class="form-field">
           <label for="register-email">Email</label>
           <input type="email" id="register-email" name="email" required autocomplete="email">
         </div>

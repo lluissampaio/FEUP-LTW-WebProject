@@ -31,7 +31,7 @@ CREATE TABLE User (
     UserId      INTEGER       NOT NULL,
     FirstName   NVARCHAR(40)  NOT NULL,
     LastName    NVARCHAR(40)  NOT NULL,
-    Username    NVARCHAR(40)  NOT NULL,
+    Username    NVARCHAR(20)  NOT NULL,
     Email       NVARCHAR(120) NOT NULL,
     Password    NVARCHAR(255) NOT NULL,
     Photo       NVARCHAR(255),
