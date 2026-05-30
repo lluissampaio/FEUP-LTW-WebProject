@@ -233,7 +233,7 @@
       </section>
     <?php } ?>
 
-    <section class="dashboard-activity">
+    <section id="workouts" class="dashboard-activity">
       <h2 class="dashboard-section-heading">Log a workout</h2>
       <form class="admin-form" method="post" action="../actions/action_workout.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">

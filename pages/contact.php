@@ -67,7 +67,7 @@
     'Quietly,<br>at your pace.',
     'Reach out by form, by phone, or in person at any of our four locations. Every enquiry is read by a human, in confidence, within twenty-four hours.'
   );
-  drawContactSection($info);
+  drawContactSection($info, $session->csrfToken());
   drawLocations($locations);
   drawFooter();
 ?>
