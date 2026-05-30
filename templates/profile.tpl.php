@@ -35,7 +35,7 @@
 
       <div class="form-field">
         <label for="profile-username">Username</label>
-        <input type="text" id="profile-username" name="username" required value="<?= htmlspecialchars($user->username, ENT_QUOTES, 'UTF-8') ?>" autocomplete="username">
+        <input type="text" id="profile-username" name="username" required value="<?= htmlspecialchars($user->username, ENT_QUOTES, 'UTF-8') ?>" autocomplete="username" maxlength="20" pattern="[a-zA-Z0-9_]{3,20}" title="3 to 20 letters, numbers, or underscores">
       </div>
 
       <div class="form-field">
