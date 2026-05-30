@@ -22,17 +22,15 @@
     elseif (is_file(__DIR__ . '/../images/' . $user->photo))   $photoUrl = '../images/' . $user->photo;
   }
 
-  drawHeader($session, '', 'Profile — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, '', 'Profile — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'account', $session->csrfToken()); ?>
-
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Manage account', 'Your profile', 'Update your name, sign-in details and profile photo.'); ?>
-
       <?php drawProfileForm($user, $photoUrl, $csrf); ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

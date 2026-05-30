@@ -23,16 +23,15 @@
 
   $clients = Trainer::getClients($db, $user->id);
 
-  drawHeader($session, '', 'Member Nutrition — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, '', 'Member Nutrition — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'trainer_clients', $session->csrfToken()); ?>
-    
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Trainer Management', 'Member Nutrition', 'Manage nutrition plans for your class members and personal training clients.'); ?>
       <?php drawTrainerClients($clients); ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

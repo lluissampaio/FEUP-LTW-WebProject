@@ -7,7 +7,7 @@
 
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/user.class.php');
-  require_once(__DIR__ . '/../database/analytics.class.php');
+  require_once(__DIR__ . '/../database/trainer_analytics.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
   require_once(__DIR__ . '/../templates/trainer_analytics.tpl.php');
@@ -24,16 +24,15 @@
   $overallStats = TrainerAnalytics::getOverallStats($db, $user->id);
   $classStats = TrainerAnalytics::getClassStats($db, $user->id);
 
-  drawHeader($session, '', 'Trainer Analytics — Iron Haven', 'DASHBOARD', 'dashboard.php');
+  drawHeader($session, '', 'Trainer Analytics — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'trainer_analytics', $session->csrfToken()); ?>
-
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Trainer Management', 'Analytics Dashboard', 'Track attendance, ratings, and engagement for your classes.'); ?>
       <?php drawTrainerAnalytics($overallStats, $classStats); ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

@@ -30,7 +30,7 @@
         <h2 class="dashboard-section-heading">Member retention</h2>
         <div class="retention-bar-wrap">
           <div class="retention-bar" style="--pct: <?= (int)$retention['retentionPct'] ?>%;">
-            <span class="retention-bar-fill" style="width: <?= (int)$retention['retentionPct'] ?>%;"></span>
+            <span class="retention-bar-fill"></span>
           </div>
           <p class="retention-figure"><?= (int)$retention['retentionPct'] ?>% engaged
             <span class="retention-sub">(<?= (int)$retention['engaged'] ?> of <?= (int)$retention['totalMembers'] ?> members active)</span>

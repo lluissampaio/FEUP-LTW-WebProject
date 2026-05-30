@@ -17,18 +17,17 @@
   $csrf      = $session->csrfToken();
   $disputes  = Dispute::getForUser($db, $session->getId());
 
-  drawHeader($session, '', 'Support & Disputes — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, '', 'Support & Disputes — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'disputes', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Support', 'Disputes & feedback', 'Report an equipment fault, a class issue, or a billing query. Our team responds in confidence.'); ?>
-
       <?php drawDisputeForm($csrf); ?>
       <?php drawMemberDisputes($disputes); ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

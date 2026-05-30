@@ -55,6 +55,7 @@
   <section class="admin-section">
     <div class="section-inner">
       <h2 class="section-heading">All equipment (<?= count($items) ?>)</h2>
+      <div class="table-scroll">
       <table class="data-table">
         <thead><tr><th>Name</th><th>Type</th><th>Location</th><th>Available</th><th>Status</th><th></th></tr></thead>
         <tbody>
@@ -64,20 +65,21 @@
               <td><?= htmlspecialchars($e->type, ENT_QUOTES, 'UTF-8') ?></td>
               <td><?= htmlspecialchars($e->locationName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
               <td><?= (int)$e->available ?> / <?= (int)$e->quantity ?></td>
-              <td><span class="status-tag status-tag--<?= str_replace('_','-', $e->status) ?>"><?= str_replace('_',' ', $e->status) ?></span></td>
+              <td><span class="status-tag status-tag-<?= str_replace('_','-', $e->status) ?>"><?= str_replace('_',' ', $e->status) ?></span></td>
               <td class="row-actions">
                 <a href="admin_equipment.php?edit=<?= (int)$e->id ?>" class="btn-outline">Edit</a>
-                <form method="post" action="../actions/action_admin_equipment.php" style="display:inline">
+                <form method="post" action="../actions/action_admin_equipment.php" class="inline-form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="action" value="delete">
                   <input type="hidden" name="equipment_id" value="<?= (int)$e->id ?>">
-                  <button type="submit" class="btn-outline" onclick="return confirm('Delete this item?')">Delete</button>
+                  <button type="submit" class="btn-outline" data-confirm="Delete this item?">Delete</button>
                 </form>
               </td>
             </tr>
           <?php } ?>
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 <?php

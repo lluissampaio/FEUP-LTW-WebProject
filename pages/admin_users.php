@@ -24,16 +24,15 @@
   $csrf      = $session->csrfToken();
   $meId      = $session->getId();
 
-  drawHeader($session, '', 'Admin · Users — Iron Haven');
+  drawHeader($session, '', 'Admin · Users — Iron Haven', includeMain: false);
 ?>
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($me, 'admin_users', $session->csrfToken()); ?>
     <main class="dashboard-main">
-      <?php drawDashboardPageHeader('Admin', 'Users', 'Promote, deactivate or remove accounts.'); ?>
-
+      <?php drawDashboardPageHeader('Admin', 'Users', 'Create, promote, deactivate or remove accounts.'); ?>
       <?php drawAdminUsers($users, $csrf, $meId, $validRole); ?>
     </main>
-  </section>
+  </div>
 <?php
-  drawFooter();
+  drawFooter(false);
 ?>

@@ -3,7 +3,7 @@
 <?php function drawTwoCol(array $cfg) {
   $reverse = !empty($cfg['reverse']);
   $alt     = !empty($cfg['alt']);
-  $classes = 'two-col' . ($reverse ? ' two-col--reverse' : '') . ($alt ? ' two-col--alt' : '');
+  $classes = 'two-col' . ($reverse ? ' two-col-reverse' : '') . ($alt ? ' two-col-alt' : '');
 ?>
   <section class="<?= $classes ?>">
     <div class="two-col-inner">

@@ -29,7 +29,7 @@
     require_once(__DIR__ . '/../database/admin_analytics.class.php');
     $adminCounts = AdminAnalytics::getDashboardCounts($db);
   } elseif ($isTrainer) {
-    require_once(__DIR__ . '/../database/analytics.class.php');
+    require_once(__DIR__ . '/../database/trainer_analytics.class.php');
     $trainerStats = TrainerAnalytics::getOverallStats($db, $user->id);
   } else {
     require_once(__DIR__ . '/../database/workout.class.php');
@@ -49,14 +49,13 @@
   $name      = $user ? $user->name() : ($session->getName() ?? 'Member');
   $firstName = explode(' ', $name)[0];
 
-  drawHeader($session, '', 'Dashboard — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, '', 'Dashboard — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'dashboard', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
-
       <?php if ($isAdmin) { ?>
         <?php drawDashboardPageHeader('Admin dashboard', "Welcome back, $firstName.", 'Manage gym operations, classes, and members.'); ?>
         <?php drawAdminDashboard($adminCounts); ?>
@@ -65,9 +64,9 @@
         <?php drawTrainerDashboard($trainerStats); ?>
       <?php } else { ?>
         <?php drawDashboardPageHeader('Member dashboard', "Welcome back, $firstName.", 'Today is a great day to train.'); ?>
-        <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, $workouts, $session->csrfToken(), $nutritionPlan); ?>
+        <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, array_slice($workouts, 0, 3), $session->csrfToken(), $nutritionPlan); ?>
       <?php } ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

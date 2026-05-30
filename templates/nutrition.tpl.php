@@ -42,7 +42,7 @@
           <input type="number" id="n-fats" name="fats" required min="0" value="<?= htmlspecialchars((string)$fats, ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
-        <div class="form-field" style="grid-column: 1 / -1;">
+        <div class="form-field span-full">
           <label for="n-guide">Guidelines / Notes</label>
           <textarea id="n-guide" name="guidelines" rows="6" placeholder="Any specific dietary restrictions, meal timing, or general notes..."><?= htmlspecialchars($guidelines, ENT_QUOTES, 'UTF-8') ?></textarea>
         </div>

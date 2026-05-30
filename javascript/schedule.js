@@ -33,7 +33,7 @@
       document.querySelector('main')?.before(region);
     }
     const article = document.createElement('article');
-    article.className = 'message message--' + type;
+    article.className = 'message message-' + type;
     article.textContent = text;
     region.appendChild(article);
     setTimeout(() => article.remove(), 4000);
@@ -50,9 +50,9 @@
   }
 
   function capacityHtml(s) {
-    if (s.full) return '<span class="status-tag status-tag--full">Full</span>';
+    if (s.full) return '<span class="status-tag status-tag-full">Full</span>';
     const spots = Math.max(0, (s.capacity || 0) - (s.enrolled || 0));
-    return '<span class="status-tag status-tag--open">' + spots + ' spot' + (spots === 1 ? '' : 's') + ' left</span>';
+    return '<span class="status-tag status-tag-open">' + spots + ' spot' + (spots === 1 ? '' : 's') + ' left</span>';
   }
 
   function actionsHtml(s) {

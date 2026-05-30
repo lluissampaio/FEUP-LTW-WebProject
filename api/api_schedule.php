@@ -3,7 +3,6 @@
 
   // Public, read-only API: class schedule. No auth required (read of public data).
   header('Content-Type: application/json');
-  header('Access-Control-Allow-Origin: *');
 
   require_once(__DIR__ . '/../utils/session.php');
   require_once(__DIR__ . '/../database/connection.db.php');

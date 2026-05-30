@@ -3,7 +3,7 @@
 
   function drawTrainerClasses(array $classes, array $schedules, array $rosters, array $days, string $csrf) {
 ?>
-  <section class="dashboard-activity dashboard-activity--gap">
+  <section class="dashboard-activity dashboard-activity-gap">
     <h2 class="dashboard-section-heading">Add a session</h2>
     <?php if (empty($classes)) { ?>
       <p class="activity-empty">You do not have any assigned classes to add sessions to.</p>
@@ -59,7 +59,7 @@
               <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
               <input type="hidden" name="action" value="delete">
               <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
-              <button type="submit" class="btn-outline btn-sm" onclick="return confirm('Cancel this session?')">Delete</button>
+              <button type="submit" class="btn-outline btn-sm" data-confirm="Cancel this session?">Delete</button>
             </form>
           </div>
           <p class="dashboard-sub roster-meta">

@@ -36,9 +36,9 @@
             </header>
             <p class="schedule-card-capacity">
               <?php if ($full) { ?>
-                <span class="status-tag status-tag--full">Full</span>
+                <span class="status-tag status-tag-full">Full</span>
               <?php } else { ?>
-                <span class="status-tag status-tag--open"><?= $spots ?> spot<?= $spots === 1 ? '' : 's' ?> left</span>
+                <span class="status-tag status-tag-open"><?= $spots ?> spot<?= $spots === 1 ? '' : 's' ?> left</span>
               <?php } ?>
             </p>
             <div class="schedule-card-actions">

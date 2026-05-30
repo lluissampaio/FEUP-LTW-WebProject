@@ -82,6 +82,16 @@
       return (bool)$stmt->fetch();
     }
 
+    /** Count how many sessions a user has booked in a specific year-month (YYYY-MM). */
+    public static function countSessionsInMonth(PDO $db, int $userId, string $yearMonth) : int {
+      $stmt = $db->prepare("
+        SELECT COUNT(*) FROM Booking
+        WHERE UserId = ? AND Status = 'booked' AND BookingDate LIKE ?
+      ");
+      $stmt->execute(array($userId, $yearMonth . '-%'));
+      return (int)$stmt->fetchColumn();
+    }
+
     /** Book an availability slot for a concrete date. Throws on conflict. */
     public static function book(PDO $db, int $userId, int $availabilityId, ?string $notes = null) : Booking {
       $db->beginTransaction();

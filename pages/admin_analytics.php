@@ -27,15 +27,15 @@
   $retention = AdminAnalytics::getRetention($db);
   $planDist  = AdminAnalytics::getPlanDistribution($db);
 
-  drawHeader($session, 'admin', 'Admin · Analytics — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, 'admin', 'Admin · Analytics — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'analytics', $session->csrfToken()); ?>
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Admin analytics', 'Gym-wide metrics', 'Engagement, equipment usage, retention and revenue at a glance.'); ?>
       <?php drawAdminAnalytics($overview, $popular, $equipment, $retention, $planDist); ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

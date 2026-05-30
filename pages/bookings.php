@@ -9,6 +9,8 @@
   require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../database/trainer.class.php');
   require_once(__DIR__ . '/../database/booking.class.php');
+  require_once(__DIR__ . '/../database/membership.class.php');
+  require_once(__DIR__ . '/../database/plan.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/dashboard.tpl.php');
   require_once(__DIR__ . '/../templates/bookings.tpl.php');
@@ -24,16 +26,27 @@
   } else {
     $myBookings     = Booking::getForUser($db, $session->getId());
     $trainers       = Trainer::getTrainers($db);
+    $membership     = Membership::getForUser($db, $session->getId());
+    $monthlyUsage   = [];
     $slotsByTrainer = [];
+    
     foreach ($trainers as $t) {
-      $slotsByTrainer[$t->id] = Booking::getAvailabilityForTrainer($db, $t->id);
+      $slots = Booking::getAvailabilityForTrainer($db, $t->id);
+      foreach ($slots as &$s) {
+        $ym = substr($s['NextDate'], 0, 7);
+        if (!isset($monthlyUsage[$ym])) {
+          $monthlyUsage[$ym] = Booking::countSessionsInMonth($db, $session->getId(), $ym);
+        }
+        $s['MonthUsage'] = $monthlyUsage[$ym];
+      }
+      $slotsByTrainer[$t->id] = $slots;
     }
   }
 
-  drawHeader($session, '', 'Personal Training — Iron Haven', 'SIGN OUT', '#');
+  drawHeader($session, '', 'Personal Training — Iron Haven', includeMain: false);
 ?>
 
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'bookings', $session->csrfToken()); ?>
 
     <main class="dashboard-main">
@@ -43,9 +56,9 @@
       <?php } else { ?>
         <?php drawDashboardPageHeader('Personal training', 'One-on-one sessions', 'Book private sessions with our coaches around their weekly availability.'); ?>
         <?php drawMyBookings($myBookings, $csrf); ?>
-        <?php drawTrainerAvailability($trainers, $slotsByTrainer, $csrf); ?>
+        <?php drawTrainerAvailability($trainers, $slotsByTrainer, $membership, $csrf); ?>
       <?php } ?>
     </main>
-  </section>
+  </div>
 
-<?php drawFooter(); ?>
+<?php drawFooter(false); ?>

@@ -28,16 +28,15 @@
   $locations = Location::getLocations($db);
   $csrf      = $session->csrfToken();
 
-  drawHeader($session, '', 'Admin · Equipment — Iron Haven');
+  drawHeader($session, '', 'Admin · Equipment — Iron Haven', includeMain: false);
 ?>
-  <section class="dashboard">
+  <div class="dashboard">
     <?php drawDashboardSidebar($user, 'admin_equipment', $session->csrfToken()); ?>
     <main class="dashboard-main">
       <?php drawDashboardPageHeader('Admin', 'Equipment inventory', 'Add, update availability or remove equipment across all locations.'); ?>
-
       <?php drawAdminEquipment($items, $locations, $csrf, $editing); ?>
     </main>
-  </section>
+  </div>
 <?php
-  drawFooter();
+  drawFooter(false);
 ?>

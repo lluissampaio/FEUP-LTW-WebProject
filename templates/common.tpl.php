@@ -10,9 +10,26 @@
     return "<a href=\"$href\"$active>$label</a>";
   }
 
+  // Escape a hand-authored heading while preserving intentional <br> line breaks.
+  // Headings are developer constants (never user input), so allowing <br> is safe.
+  function escapeHeading(string $text) : string {
+    $escaped = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    return str_replace(['&lt;br&gt;', '&lt;br/&gt;', '&lt;br /&gt;'], '<br>', $escaped);
+  }
+
 ?>
 
-<?php function drawHeader(Session $session, string $current = '', string $title = 'Iron Haven — Private Members Gym', string $ctaLabel = 'JOIN', string $ctaHref = 'membership.php') { ?>
+<?php function drawHeader(Session $session, string $current = '', string $title = 'Iron Haven — Private Members Gym', string $ctaLabel = 'JOIN', string $ctaHref = 'membership.php', bool $includeMain = true) { 
+  $unread = 0;
+  $firstName = '';
+  $fullName = 'Member';
+  
+  if ($session->isLoggedIn()) {
+    try { $unread = Notification::unreadCount(getDatabaseConnection(), $session->getId()); } catch (Throwable $e) {}
+    $fullName = $session->getName() ?? 'Member';
+    $firstName = explode(' ', $fullName)[0];
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +48,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.php" class="site-logo">IRON HAVEN</a>
-      <nav class="site-nav" aria-label="Primary navigation">
+      <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
         <?= navLink('index.php',      'Home',       $current, 'home') ?>
         <?= navLink('classes.php',    'Classes',    $current, 'classes') ?>
         <?= navLink('trainers.php',   'Trainers',   $current, 'trainers') ?>
@@ -44,42 +61,43 @@
         <?php } ?>
       </nav>
       <?php if ($session->isLoggedIn()) { ?>
-        <?php
-          $unread = 0;
-          try { $unread = Notification::unreadCount(getDatabaseConnection(), $session->getId()); } catch (Throwable $e) {}
-        ?>
         <a href="notifications.php" class="nav-bell" aria-label="Notifications">
           <span aria-hidden="true">&#9788;</span>
           <?php if ($unread > 0) { ?>
             <span class="nav-bell-count"><?= (int)$unread ?></span>
           <?php } ?>
         </a>
-        <?php
-          $fullName  = $session->getName() ?? 'Member';
-          $firstName = explode(' ', $fullName)[0];
-        ?>
         <a href="dashboard.php" class="nav-cta" title="<?= htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?></a>
       <?php } else { ?>
         <a href="<?= htmlspecialchars($ctaHref, ENT_QUOTES, 'UTF-8') ?>" class="nav-cta"><?= htmlspecialchars($ctaLabel, ENT_QUOTES, 'UTF-8') ?></a>
       <?php } ?>
+      <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-nav" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
     </div>
   </header>
 
   <?php if (count($session->getMessages()) > 0) { ?>
     <section id="messages" aria-label="System messages">
       <?php foreach ($session->getMessages() as $message) { ?>
-        <article class="message message--<?= htmlspecialchars($message['type'], ENT_QUOTES, 'UTF-8') ?>">
+        <article class="message message-<?= htmlspecialchars($message['type'], ENT_QUOTES, 'UTF-8') ?>">
           <?= htmlspecialchars($message['text'], ENT_QUOTES, 'UTF-8') ?>
         </article>
       <?php } ?>
     </section>
   <?php } ?>
 
+  <?php if ($includeMain) { ?>
   <main>
+  <?php } ?>
 <?php } ?>
 
-<?php function drawFooter() { ?>
+<?php function drawFooter(bool $includeMain = true) { ?>
+  <?php if ($includeMain) { ?>
   </main>
+  <?php } ?>
 
   <footer class="site-footer">
     <div class="footer-inner">
@@ -96,6 +114,8 @@
       </nav>
     </div>
   </footer>
+  <script src="../javascript/nav-toggle.js" defer></script>
+  <script src="../javascript/ui-actions.js" defer></script>
 </body>
 </html>
 <?php } ?>
@@ -112,7 +132,7 @@
   <section class="page-hero">
     <div class="page-hero-inner">
       <?php drawBreadcrumb($crumb); ?>
-      <h1 class="page-hero-heading"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h1>
+      <h1 class="page-hero-heading"><?= escapeHeading($heading) ?></h1>
       <p class="page-hero-sub"><?= htmlspecialchars($sub, ENT_QUOTES, 'UTF-8') ?></p>
     </div>
   </section>
@@ -121,7 +141,7 @@
 <?php function drawCtaBanner(string $heading, array $actions) { ?>
   <section class="cta-banner">
     <div class="cta-inner">
-      <h2 class="cta-heading"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h2>
+      <h2 class="cta-heading"><?= escapeHeading($heading) ?></h2>
       <div class="cta-actions">
         <?php foreach ($actions as $a) { ?>
           <a href="<?= htmlspecialchars($a['href'], ENT_QUOTES, 'UTF-8') ?>" class="<?= htmlspecialchars($a['style'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($a['label'], ENT_QUOTES, 'UTF-8') ?></a>

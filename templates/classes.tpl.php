@@ -86,9 +86,9 @@
             <p class="schedule-card-coach">with <a href="trainer.php?id=<?= (int)$s->trainerId ?>"><?= htmlspecialchars($s->trainerName ?? '', ENT_QUOTES, 'UTF-8') ?></a></p>
             <p class="schedule-card-capacity">
               <?php if ($full) { ?>
-                <span class="status-tag status-tag--full">Full</span>
+                <span class="status-tag status-tag-full">Full</span>
               <?php } else { ?>
-                <span class="status-tag status-tag--open"><?= $spots ?> spot<?= $spots === 1 ? '' : 's' ?> left</span>
+                <span class="status-tag status-tag-open"><?= $spots ?> spot<?= $spots === 1 ? '' : 's' ?> left</span>
               <?php } ?>
             </p>
 

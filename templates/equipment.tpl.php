@@ -41,6 +41,7 @@
         <?php if (count($items) === 0) { ?>
           <p class="empty-state">No equipment matches your filters.</p>
         <?php } else { ?>
+          <div class="table-scroll">
           <table class="data-table">
             <thead>
               <tr>
@@ -53,7 +54,7 @@
             </thead>
             <tbody>
               <?php foreach ($items as $e) {
-                $statusClass = 'status-tag status-tag--' . htmlspecialchars(str_replace('_', '-', $e->status), ENT_QUOTES, 'UTF-8');
+                $statusClass = 'status-tag status-tag-' . htmlspecialchars(str_replace('_', '-', $e->status), ENT_QUOTES, 'UTF-8');
               ?>
                 <tr>
                   <td><?= htmlspecialchars($e->name, ENT_QUOTES, 'UTF-8') ?></td>
@@ -65,6 +66,7 @@
               <?php } ?>
             </tbody>
           </table>
+          </div>
         <?php } ?>
       </div>
     </div>
