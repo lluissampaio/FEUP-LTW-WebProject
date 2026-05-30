@@ -24,7 +24,7 @@
       <a href="dashboard.php" class="dashboard-nav-link <?= $activePage === 'dashboard' ? 'is-active' : '' ?>">Dashboard</a>
       
       <?php if (!$user || $user->role === 'member') { ?>
-        <a href="#workouts"  class="dashboard-nav-link <?= $activePage === 'workouts' ? 'is-active' : '' ?>">Workout history</a>
+        <a href="workouts.php"  class="dashboard-nav-link <?= $activePage === 'workouts' ? 'is-active' : '' ?>">Workout history</a>
         <a href="nutrition.php" class="dashboard-nav-link <?= $activePage === 'nutrition' ? 'is-active' : '' ?>">Nutrition plan</a>
       <?php } ?>
 
@@ -286,6 +286,11 @@
           </tbody>
         </table>
       </div>
+      <?php if ($totalWorkouts > count($workouts)) { ?>
+        <div style="margin-top: var(--spacing-md, 1.5rem); text-align: center;">
+          <a href="workouts.php" class="btn-outline btn-sm">View all history</a>
+        </div>
+      <?php } ?>
     </section>
 <?php
   }
