@@ -104,9 +104,9 @@
         <a href="index.php">Home</a>
         <a href="classes.php">Classes</a>
         <a href="trainers.php">Trainers</a>
-        <a href="equipment.php">Equipment</a>
         <a href="about.php">About</a>
         <a href="membership.php">Membership</a>
+        <a href="equipment.php">Equipment</a>
         <a href="contact.php">Contact</a>
       </nav>
     </div>
