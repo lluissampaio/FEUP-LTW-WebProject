@@ -32,6 +32,7 @@
     $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
-  header('Location: ../pages/dashboard.php');
+  $referer = $_SERVER['HTTP_REFERER'] ?? '../pages/dashboard.php';
+  header('Location: ' . $referer);
   exit;
 ?>
