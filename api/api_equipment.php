@@ -3,7 +3,6 @@
 
   // Public, read-only API: equipment availability in the training area.
   header('Content-Type: application/json');
-  header('Access-Control-Allow-Origin: *');
 
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/equipment.class.php');
