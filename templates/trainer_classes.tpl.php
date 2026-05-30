@@ -59,7 +59,7 @@
               <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
               <input type="hidden" name="action" value="delete">
               <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
-              <button type="submit" class="btn-outline btn-sm" onclick="return confirm('Cancel this session?')">Delete</button>
+              <button type="submit" class="btn-outline btn-sm" data-confirm="Cancel this session?">Delete</button>
             </form>
           </div>
           <p class="dashboard-sub roster-meta">

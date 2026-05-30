@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); ?>
 
-<?php function drawContactSection(array $info) { ?>
+<?php function drawContactSection(array $info, string $csrf) { ?>
   <section class="contact-section">
     <div class="section-inner">
       <div class="contact-grid">
@@ -19,15 +19,16 @@
           </div>
         </div>
 
-        <?php drawContactForm(); ?>
+        <?php drawContactForm($csrf); ?>
 
       </div>
     </div>
   </section>
 <?php } ?>
 
-<?php function drawContactForm() { ?>
+<?php function drawContactForm(string $csrf) { ?>
   <form class="contact-form" action="../actions/action_enquiry.php" method="post" data-validate>
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
     <div class="form-row">
       <div class="form-field">

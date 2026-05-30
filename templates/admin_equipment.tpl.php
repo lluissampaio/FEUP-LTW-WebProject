@@ -72,7 +72,7 @@
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="action" value="delete">
                   <input type="hidden" name="equipment_id" value="<?= (int)$e->id ?>">
-                  <button type="submit" class="btn-outline" onclick="return confirm('Delete this item?')">Delete</button>
+                  <button type="submit" class="btn-outline" data-confirm="Delete this item?">Delete</button>
                 </form>
               </td>
             </tr>
