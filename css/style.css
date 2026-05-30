@@ -1969,13 +1969,13 @@ ul {
   border-bottom: 1px solid var(--color-border);
 }
 .filter-form    { display: flex; flex-wrap: wrap; gap: 16px; align-items: end; }
-.filter-field   { display: flex; flex-direction: column; min-width: 160px; flex: 1 1 160px; }
-.filter-field label {
+label.filter-field {
+  display: flex; flex-direction: column; min-width: 160px; flex: 1 1 160px;
   font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
   color: var(--color-muted); margin-bottom: 6px;
 }
-.filter-field select,
-.filter-field input,
+label.filter-field select,
+label.filter-field input,
 .form-field   select,
 .form-field   input,
 .form-field   textarea {
@@ -1990,8 +1990,8 @@ ul {
   border-radius: 2px;
   transition: border-color 0.2s ease;
 }
-.filter-field select:focus,
-.filter-field input:focus,
+label.filter-field select:focus,
+label.filter-field input:focus,
 .form-field   select:focus,
 .form-field   input:focus,
 .form-field   textarea:focus {
@@ -2654,7 +2654,7 @@ ul {
   flex-wrap: wrap;
   margin-bottom: 40px;
 }
-.trainer-search .filter-field { min-width: 220px; }
+.trainer-search label.filter-field { min-width: 220px; }
 
 /* =========================================================
    RESPONSIVE — mobile-first
