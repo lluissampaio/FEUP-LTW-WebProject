@@ -1470,9 +1470,6 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.form-field label {
   font-family: var(--font-body);
   font-size: 10px;
   letter-spacing: 2px;
@@ -1986,7 +1983,10 @@ ul {
   border: 1px solid var(--color-border);
   background-color: var(--color-bg);
   color: var(--color-text);
-  font: inherit;
+  font-family: var(--font-body);
+  font-size: 14px;
+  letter-spacing: normal;
+  text-transform: none;
   border-radius: 2px;
   transition: border-color 0.2s ease;
 }
@@ -2223,8 +2223,8 @@ ul {
   border: 1px solid var(--color-border);
   border-radius: 2px;
 }
-.admin-form .form-field { display: flex; flex-direction: column; }
-.admin-form .form-field label {
+.admin-form .form-field { 
+  display: flex; flex-direction: column; 
   font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
   color: var(--color-muted); margin-bottom: 6px;
 }
