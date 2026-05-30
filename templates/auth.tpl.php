@@ -37,7 +37,7 @@
     <div class="auth-card">
       <p class="auth-eyebrow">New membership</p>
       <h1 class="auth-heading">Join the Haven.</h1>
-      <p class="auth-sub">Create your account to begin.</p>
+      <p class="auth-sub">Membership is by approved application. <a href="contact.php">Apply here</a> first, then create your account with the same email once approved.</p>
 
       <form class="auth-form" method="post" action="../actions/action_register.php" data-validate>
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">

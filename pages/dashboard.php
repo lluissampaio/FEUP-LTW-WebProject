@@ -24,6 +24,7 @@
   $activeHours   = 0;
   $adminCounts   = [];
   $trainerStats  = [];
+  $hasPlan       = true;
 
   if ($isAdmin) {
     require_once(__DIR__ . '/../database/admin_analytics.class.php');
@@ -33,8 +34,10 @@
     $trainerStats = TrainerAnalytics::getOverallStats($db, $user->id);
   } else {
     require_once(__DIR__ . '/../database/workout.class.php');
+    require_once(__DIR__ . '/../database/membership.class.php');
     $workouts = Workout::getForUser($db, $session->getId(), 1000);
     $nutritionPlan = NutritionPlan::getPlanByUserId($db, $session->getId());
+    $hasPlan = Membership::userHasActivePlan($db, $session->getId());
 
     $totalWorkouts = count($workouts);
     $weeklyDays    = [];
@@ -74,7 +77,7 @@
         <?php drawTrainerDashboard($trainerStats); ?>
       <?php } else { ?>
         <?php drawDashboardPageHeader('Member dashboard', "Welcome back, $firstName.", 'Today is a great day to train.'); ?>
-        <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, $weeklyFrequency, array_slice($workouts, 0, 3), $session->csrfToken(), $nutritionPlan); ?>
+        <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, array_slice($workouts, 0, 3), $session->csrfToken(), $nutritionPlan, $hasPlan); ?>
       <?php } ?>
     </main>
   </div>

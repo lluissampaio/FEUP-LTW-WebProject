@@ -48,6 +48,7 @@
         <a href="admin_classes.php" class="dashboard-nav-link <?= $activePage === 'admin' ? 'is-active' : '' ?>">Manage classes</a>
         <a href="admin_equipment.php" class="dashboard-nav-link <?= $activePage === 'admin_equipment' ? 'is-active' : '' ?>">Manage equipment</a>
         <a href="admin_users.php" class="dashboard-nav-link <?= $activePage === 'admin_users' ? 'is-active' : '' ?>">Manage users</a>
+        <a href="admin_applications.php" class="dashboard-nav-link <?= $activePage === 'admin_applications' ? 'is-active' : '' ?>">Membership applications</a>
         <a href="admin_analytics.php" class="dashboard-nav-link <?= $activePage === 'analytics' ? 'is-active' : '' ?>">Analytics</a>
         <a href="admin_disputes.php" class="dashboard-nav-link <?= $activePage === 'disputes' ? 'is-active' : '' ?>">Disputes</a>
       <?php } ?>
@@ -177,8 +178,16 @@
 ?>
 
 <?php
-  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, int $weeklyFrequency, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null) {
+  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null, bool $hasPlan = true) {
 ?>
+    <?php if (!$hasPlan) { ?>
+      <section class="dashboard-activity">
+        <h2 class="dashboard-section-heading">Choose your membership</h2>
+        <p class="activity-empty">Select a membership plan to unlock class enrolment, workout logging and support requests.</p>
+        <p><a href="membership.php" class="btn-primary">Choose a plan</a></p>
+      </section>
+    <?php } ?>
+
     <section class="dashboard-stats" aria-label="Your statistics">
       <article class="stat-card">
         <p class="stat-card-label">Total workouts</p>
@@ -235,6 +244,9 @@
 
     <section class="dashboard-activity">
       <h2 class="dashboard-section-heading">Log a workout</h2>
+      <?php if (!$hasPlan) { ?>
+        <p class="activity-empty">Choose a membership plan to start logging workouts.</p>
+      <?php } else { ?>
       <form class="admin-form" method="post" action="../actions/action_workout.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="action"     value="log">
@@ -254,6 +266,7 @@
           <button type="submit" class="btn-primary">Log workout</button>
         </div>
       </form>
+      <?php } ?>
     </section>
 
     <section class="dashboard-activity" aria-labelledby="activity-heading">

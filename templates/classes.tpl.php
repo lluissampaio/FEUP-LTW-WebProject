@@ -59,7 +59,7 @@
   </section>
 <?php } ?>
 
-<?php function drawScheduleList(array $schedules, array $myEnrolled, array $myWaiting, bool $isLoggedIn, string $csrf) { ?>
+<?php function drawScheduleList(array $schedules, array $myEnrolled, array $myWaiting, bool $isLoggedIn, string $csrf, bool $canEnrol = true) { ?>
   <section class="schedule-list-section" aria-labelledby="schedule-list-heading">
     <div class="section-inner">
       <p class="section-label">01 &mdash; This Week</p>
@@ -109,6 +109,8 @@
                   <span class="enrolled-tag">On waitlist</span>
                   <button type="submit" class="btn-outline">Leave waitlist</button>
                 </form>
+              <?php } elseif (!$canEnrol) { ?>
+                <a href="membership.php" class="btn-outline">Choose a plan to book</a>
               <?php } elseif ($full) { ?>
                 <form method="post" action="../actions/action_waitlist_join.php">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
