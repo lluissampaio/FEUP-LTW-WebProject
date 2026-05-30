@@ -56,9 +56,6 @@
         <?= navLink('membership.php', 'Membership', $current, 'membership') ?>
         <?= navLink('equipment.php', 'Equipment', $current, 'equipment') ?>
         <?= navLink('contact.php',    'Contact',    $current, 'contact') ?>
-        <?php if (!$session->isLoggedIn()) { ?>
-          <?= navLink('login.php', 'Sign in', $current, 'login') ?>
-        <?php } ?>
       </nav>
       <?php if ($session->isLoggedIn()) { ?>
         <a href="notifications.php" class="nav-bell" aria-label="Notifications">
@@ -69,7 +66,7 @@
         </a>
         <a href="dashboard.php" class="nav-cta" title="<?= htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?></a>
       <?php } else { ?>
-        <a href="<?= htmlspecialchars($ctaHref, ENT_QUOTES, 'UTF-8') ?>" class="nav-cta"><?= htmlspecialchars($ctaLabel, ENT_QUOTES, 'UTF-8') ?></a>
+        <a href="register.php" class="nav-cta">Join</a>
       <?php } ?>
       <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-nav" aria-expanded="false">
         <span class="nav-toggle-bar"></span>

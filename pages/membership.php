@@ -8,6 +8,7 @@
   require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../database/plan.class.php');
   require_once(__DIR__ . '/../database/membership.class.php');
+  require_once(__DIR__ . '/../database/application.class.php');
   require_once(__DIR__ . '/../templates/common.tpl.php');
   require_once(__DIR__ . '/../templates/membership.tpl.php');
 
@@ -100,7 +101,7 @@
     ['q' => 'Can I pause my membership?',                      'a' => 'Yes. Members may pause once per year for up to three months — for travel, recovery, or any reason at all. Your concierge will arrange this without question.'],
   ];
 
-  drawHeader($session, 'membership', 'Membership — Iron Haven', 'APPLY', 'contact.php');
+  drawHeader($session, 'membership', 'Membership — Iron Haven');
   drawPageHero(
     'Membership',
     'Three plans.<br>One standard.',
@@ -108,37 +109,49 @@
   );
 
   if ($isMember) {
-    // Functional subscribe / upgrade / cancel for signed-in members.
+    // Members apply for a plan → an admin approves → then they may subscribe to it.
     $dbPlans = Plan::getPlans($db);
     $current = Membership::getForUser($db, $currentUser->id);
-    
+
     $hasActive = $current && $current->isActive();
-    $currentTier = $hasActive ? $current->plan->tier : 0;
-    
+
     $displayPlans = [];
     foreach ($dbPlans as $p) {
-        $isCurrent = $hasActive && $current->planId === $p->id;
-        $isFeaturedDisplay = $hasActive ? $isCurrent : $p->featured;
-        $cardClass = 'pricing-card' . ($isFeaturedDisplay ? ' pricing-card-featured' : '');
+        $isCurrent  = $hasActive && $current->planId === $p->id;
+        $appStatus  = MembershipApplication::statusFor($db, $currentUser->id, $p->id);
+        $isFeatured = $hasActive ? $isCurrent : $p->featured;
+        $cardClass  = 'pricing-card' . ($isFeatured ? ' pricing-card-featured' : '');
 
-        if ($isCurrent)                  { $label = 'Current plan'; $btnClass = 'btn-outline'; $disabled = true; }
-        elseif (!$hasActive)             { $label = 'Subscribe';    $btnClass = $isFeaturedDisplay ? 'btn-primary' : 'btn-outline'; $disabled = false; }
-        elseif ($p->tier > $currentTier) { $label = 'Upgrade';      $btnClass = 'btn-primary'; $disabled = false; }
-        else                             { $label = 'Switch to this'; $btnClass = 'btn-outline'; $disabled = false; }
+        // Default: no application yet → invite to apply (sends to the contact form).
+        $label    = 'Apply';
+        $btnClass = $isFeatured ? 'btn-primary' : 'btn-outline';
+        $disabled = false;
+        $isApply  = true;   // renders as a link to the contact form
+
+        if ($isCurrent) {
+            $label = 'Current plan';            $btnClass = 'btn-outline'; $disabled = true; $isApply = false;
+        } elseif ($appStatus === 'accepted') {
+            $label = 'Subscribe';               $btnClass = 'btn-primary'; $isApply = false;
+        } elseif ($appStatus === 'pending') {
+            $label = 'Application under review'; $disabled = true;         $isApply = false;
+        } elseif ($appStatus === 'rejected') {
+            $label = 'Apply again';
+        }
 
         $displayPlans[] = [
             'plan'      => $p,
             'cardClass' => $cardClass,
             'label'     => $label,
             'btnClass'  => $btnClass,
-            'disabled'  => $disabled
+            'disabled'  => $disabled,
+            'isApply'   => $isApply,
         ];
     }
-    
+
     drawMembershipManager($displayPlans, $current, $featureBullets, $session->csrfToken());
   } else {
-    // Public marketing pricing → routes to the contact/apply flow.
-    drawPricing($plans, 'contact.php');
+    // Public marketing pricing → create an account first, then apply once signed in.
+    drawPricing($plans, 'register.php');
   }
 
   drawCompareTable($features, $columns);

@@ -27,15 +27,16 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th scope="col">Name</th><th scope="col">Email</th><th scope="col">Message</th>
-              <th scope="col">Status</th><th scope="col">Submitted</th><th scope="col"></th>
+              <th scope="col">Member</th><th scope="col">Email</th><th scope="col">Requested plan</th>
+              <th scope="col">Note</th><th scope="col">Status</th><th scope="col">Submitted</th><th scope="col"></th>
             </tr>
           </thead>
           <tbody>
             <?php foreach ($apps as $a) { ?>
               <tr>
-                <td><?= htmlspecialchars($a->name(), ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= htmlspecialchars($a->email, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($a->memberName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($a->memberEmail ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($a->planName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($a->message ?? '—', ENT_QUOTES, 'UTF-8') ?></td>
                 <td><span class="<?= $statusTag[$a->status] ?? 'status-tag' ?>"><?= htmlspecialchars($a->status, ENT_QUOTES, 'UTF-8') ?></span></td>
                 <td><?= htmlspecialchars(date('d/m/Y', strtotime($a->createdAt)), ENT_QUOTES, 'UTF-8') ?></td>
@@ -60,7 +61,7 @@
               </tr>
             <?php } ?>
             <?php if (empty($apps)) { ?>
-              <tr><td colspan="6" class="empty-state">No applications match this filter.</td></tr>
+              <tr><td colspan="7" class="empty-state">No applications match this filter.</td></tr>
             <?php } ?>
           </tbody>
         </table>

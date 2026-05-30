@@ -24,15 +24,34 @@
     exit();
   }
 
-  // Record the enquiry as a membership application for an admin to triage.
-  try {
-    $db = getDatabaseConnection();
-    MembershipApplication::create($db, $first, $last, $email, $message);
-  } catch (Throwable $e) {
-    error_log('action_enquiry: ' . $e->getMessage() . sprintf(' | lead from %s %s <%s>', $first, $last, $email));
+  $planName = trim($_POST['plan'] ?? '');
+  $db       = getDatabaseConnection();
+
+  // A signed-in member who chose a real plan is applying for membership; record it.
+  $planId = null;
+  if ($planName !== '' && strtolower($planName) !== 'not sure yet') {
+    $stmt = $db->prepare('SELECT PlanId FROM Plan WHERE Name = ?');
+    $stmt->execute([$planName]);
+    $row = $stmt->fetch();
+    $planId = $row ? (int)$row['PlanId'] : null;
   }
 
-  $session->addMessage('success', 'Thank you for your application. Our team will review it and be in touch within twenty-four hours.');
+  if ($session->isLoggedIn() && isMemberUser($session) && $planId !== null) {
+    try {
+      MembershipApplication::create($db, $session->getId(), $planId, $message);
+      $session->addMessage('success', 'Your application for the ' . $planName . ' plan has been submitted. An admin will review it shortly.');
+    } catch (PDOException $e) {
+      $session->addMessage('error', 'You already have a pending application for this plan.');
+    } catch (Throwable $e) {
+      error_log('action_enquiry: ' . $e->getMessage());
+      $session->addMessage('error', 'Something went wrong. Please try again.');
+    }
+  } else {
+    // General enquiry (not signed in, or no specific plan) — log the lead.
+    error_log(sprintf('enquiry from %s %s <%s> [plan=%s]: %s', $first, $last, $email, $planName, $message));
+    $session->addMessage('success', 'Thank you for your enquiry. Our team will be in touch within twenty-four hours.');
+  }
+
   header('Location: ../pages/contact.php');
   exit();
 ?>

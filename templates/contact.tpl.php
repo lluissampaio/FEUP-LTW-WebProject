@@ -67,7 +67,7 @@
           <option>Essential</option>
           <option>Premium</option>
           <option>Elite</option>
-          <option>Not sure yet</option>
+          <option selected>Not sure yet</option>
         </select>
       </label>
     </div>
@@ -86,6 +86,8 @@
     <p class="form-disclaimer">By submitting, you consent to Iron Haven contacting you in confidence about your enquiry. We do not share, sell, or publish any applicant information.</p>
 
   </form>
+
+  <script src="../javascript/contact-plan.js" defer></script>
 
   <script src="../javascript/form-validate.js" defer></script>
 <?php } ?>

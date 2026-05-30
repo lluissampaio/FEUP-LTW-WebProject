@@ -178,7 +178,7 @@
 ?>
 
 <?php
-  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null, bool $hasPlan = true) {
+  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, int $weeklyFrequency, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null, bool $hasPlan = true) {
 ?>
     <?php if (!$hasPlan) { ?>
       <section class="dashboard-activity">

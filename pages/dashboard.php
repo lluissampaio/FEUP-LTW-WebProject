@@ -77,7 +77,7 @@
         <?php drawTrainerDashboard($trainerStats); ?>
       <?php } else { ?>
         <?php drawDashboardPageHeader('Member dashboard', "Welcome back, $firstName.", 'Today is a great day to train.'); ?>
-        <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, array_slice($workouts, 0, 3), $session->csrfToken(), $nutritionPlan, $hasPlan); ?>
+        <?php drawMemberDashboard($totalWorkouts, $activeHours, $totalCalories, $weeklyFrequency, array_slice($workouts, 0, 3), $session->csrfToken(), $nutritionPlan, $hasPlan); ?>
       <?php } ?>
     </main>
   </div>
