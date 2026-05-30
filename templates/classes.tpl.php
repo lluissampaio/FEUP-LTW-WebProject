@@ -51,7 +51,6 @@
           </select>
         </label>
         <div class="filter-actions">
-          <button type="submit" class="btn-primary">Filter</button>
           <a href="classes.php" class="btn-outline">Reset</a>
         </div>
       </form>

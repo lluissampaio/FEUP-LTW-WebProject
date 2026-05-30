@@ -4,6 +4,7 @@
   require_once(__DIR__ . '/../utils/session.php');
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/application.class.php');
+  require_once(__DIR__ . '/../database/notification.class.php');
 
   $session = new Session();
   $session->requireLogin('../pages/login.php');
@@ -25,7 +26,13 @@
   try {
     if ($action === 'accept') {
       MembershipApplication::decide($db, $applicationId, 'accepted', $session->getId());
-      $session->addMessage('success', 'Application accepted. The applicant can now register with their email.');
+      $app = MembershipApplication::getById($db, $applicationId);
+      if ($app) {
+        Notification::send($db, $app->userId, 'system', 'Membership application approved',
+          'Your application for the ' . ($app->planName ?? 'membership') . ' plan was approved — you can now subscribe on the membership page.',
+          'membership.php');
+      }
+      $session->addMessage('success', 'Application accepted. The member has been notified and can now subscribe.');
     } elseif ($action === 'reject') {
       MembershipApplication::decide($db, $applicationId, 'rejected', $session->getId());
       $session->addMessage('success', 'Application rejected.');

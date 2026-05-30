@@ -23,7 +23,6 @@
           </select>
         </label>
         <div class="filter-actions">
-          <button type="submit" class="btn-primary">Filter</button>
           <a href="equipment.php" class="btn-outline">Reset</a>
         </div>
       </form>

@@ -701,6 +701,14 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  list-style: none;
+}
+
+/* Cards are wrapped in <li>; make the list item the equal-width flex cell so the
+   .pricing-card (flex: 1) fills it. */
+.pricing-grid > li {
+  display: flex;
+  flex: 1;
 }
 
 .pricing-card {
