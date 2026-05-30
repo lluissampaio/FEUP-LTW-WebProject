@@ -177,7 +177,7 @@
 ?>
 
 <?php
-  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null) {
+  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, int $weeklyFrequency, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null) {
 ?>
     <section class="dashboard-stats" aria-label="Your statistics">
       <article class="stat-card">
@@ -197,7 +197,7 @@
       </article>
       <article class="stat-card">
         <p class="stat-card-label">Weekly frequency</p>
-        <p class="stat-card-value">0 / 7</p>
+        <p class="stat-card-value"><?= $weeklyFrequency ?> / 7</p>
         <p class="stat-card-note">Days this week</p>
       </article>
     </section>
