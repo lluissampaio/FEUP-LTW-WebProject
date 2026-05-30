@@ -19,11 +19,16 @@
 
   $firstName = trim($_POST['first_name'] ?? '');
   $lastName  = trim($_POST['last_name'] ?? '');
-  $username  = trim($_POST['username'] ?? '');
+  $username  = strtolower(trim($_POST['username'] ?? ''));
   $email     = trim($_POST['email'] ?? '');
 
   if ($firstName === '' || $lastName === '' || $username === '' || $email === '') {
     $session->addMessage('error', 'Name, username and email are required.');
+    header('Location: ../pages/profile.php');
+    exit();
+  }
+  if (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $username)) {
+    $session->addMessage('error', 'Username must be 3-20 characters long and contain only letters, numbers, and underscores.');
     header('Location: ../pages/profile.php');
     exit();
   }
