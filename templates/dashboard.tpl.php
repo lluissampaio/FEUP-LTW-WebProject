@@ -206,7 +206,7 @@
       </article>
       <article class="stat-card">
         <p class="stat-card-label">Weekly frequency</p>
-        <p class="stat-card-value">0 / 7</p>
+        <p class="stat-card-value"><?= $weeklyFrequency ?> / 7</p>
         <p class="stat-card-note">Days this week</p>
       </article>
     </section>

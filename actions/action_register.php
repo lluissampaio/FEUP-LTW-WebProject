@@ -9,12 +9,19 @@
   $session->verifyCsrf($_POST['csrf_token'] ?? '', '../pages/register.php');
 
   $name             = trim($_POST['name'] ?? '');
+  $username         = strtolower(trim($_POST['username'] ?? ''));
   $email            = trim($_POST['email'] ?? '');
   $password         = $_POST['password'] ?? '';
   $confirm_password = $_POST['confirm_password'] ?? '';
 
-  if ($name === '' || $email === '' || $password === '') {
+  if ($name === '' || $username === '' || $email === '' || $password === '') {
     $session->addMessage('error', 'Please fill in all fields.');
+    header('Location: ../pages/register.php');
+    exit();
+  }
+
+  if (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $username)) {
+    $session->addMessage('error', 'Username must be 3-20 characters long and contain only letters, numbers, and underscores.');
     header('Location: ../pages/register.php');
     exit();
   }
@@ -40,7 +47,6 @@
   $parts     = preg_split('/\s+/', $name, 2);
   $firstName = $parts[0];
   $lastName  = $parts[1] ?? '';
-  $username  = strtolower($email);
 
   $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
 
