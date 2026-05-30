@@ -70,6 +70,21 @@
       return $out;
     }
 
+    /** One application with member + plan names joined, or null. */
+    public static function getById(PDO $db, int $id) : ?MembershipApplication {
+      $stmt = $db->prepare("
+        SELECT a.ApplicationId, a.UserId, a.PlanId, a.Message, a.Status, a.CreatedAt, a.DecidedAt, a.DecidedBy,
+               u.FirstName || ' ' || u.LastName AS MemberName, u.Email AS MemberEmail, p.Name AS PlanName
+        FROM MembershipApplication a
+        JOIN User u ON u.UserId = a.UserId
+        JOIN Plan p ON p.PlanId = a.PlanId
+        WHERE a.ApplicationId = ?
+      ");
+      $stmt->execute(array($id));
+      $row = $stmt->fetch();
+      return $row ? self::fromRow($row) : null;
+    }
+
     /** Accept or reject an application. */
     public static function decide(PDO $db, int $id, string $status, int $adminId) : void {
       if (!in_array($status, array('accepted', 'rejected'), true)) {

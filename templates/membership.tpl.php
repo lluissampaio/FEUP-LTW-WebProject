@@ -71,33 +71,30 @@
         <?php foreach ($displayPlans as $dp) {
           $p = $dp['plan'];
         ?>
-<li>
-              <article class="<?= $dp['cardClass'] ?>">
-                <p class="pricing-plan-label"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></p>
-                <h3 class="pricing-plan-name"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></h3>
-                <p class="pricing-price"><?= htmlspecialchars($p->priceLabel(), ENT_QUOTES, 'UTF-8') ?></p>
-                <p class="pricing-period"><?= htmlspecialchars($p->period, ENT_QUOTES, 'UTF-8') ?></p>
-                <ul class="pricing-features">
-                  <?php foreach (($features[$p->name] ?? []) as $f) { ?>
-                    <li><?= htmlspecialchars($f, ENT_QUOTES, 'UTF-8') ?></li>
-                  <?php } ?>
-                </ul>
-                <?php if ($dp['disabled']) { ?>
-                  <button type="button" class="<?= $dp['btnClass'] ?>" disabled><?= htmlspecialchars($dp['label'],
-  ENT_QUOTES, 'UTF-8') ?></button>
-                <?php } elseif (!empty($dp['isApply'])) { ?>
-                  <a href="contact.php?plan=<?= urlencode($p->name) ?>" class="<?= $dp['btnClass'] ?>"><?=
-  htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></a>
-                <?php } else { ?>
-                  <form method="post" action="../actions/action_subscribe.php">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
-                    <input type="hidden" name="plan_id" value="<?= (int)$p->id ?>">
-                    <button type="submit" class="<?= $dp['btnClass'] ?>"><?= htmlspecialchars($dp['label'], ENT_QUOTES,
-  'UTF-8') ?></button>
-                  </form>
+          <li>
+            <article class="<?= $dp['cardClass'] ?>">
+              <p class="pricing-plan-label"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></p>
+              <h3 class="pricing-plan-name"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></h3>
+              <p class="pricing-price"><?= htmlspecialchars($p->priceLabel(), ENT_QUOTES, 'UTF-8') ?></p>
+              <p class="pricing-period"><?= htmlspecialchars($p->period, ENT_QUOTES, 'UTF-8') ?></p>
+              <ul class="pricing-features">
+                <?php foreach (($features[$p->name] ?? []) as $f) { ?>
+                  <li><?= htmlspecialchars($f, ENT_QUOTES, 'UTF-8') ?></li>
                 <?php } ?>
-              </article>
-            </li>
+              </ul>
+              <?php if ($dp['disabled']) { ?>
+                <button type="button" class="<?= $dp['btnClass'] ?>" disabled><?= htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></button>
+              <?php } elseif (!empty($dp['isApply'])) { ?>
+                <a href="contact.php?plan=<?= urlencode($p->name) ?>" class="<?= $dp['btnClass'] ?>"><?= htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></a>
+              <?php } else { ?>
+                <form method="post" action="../actions/action_subscribe.php">
+                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
+                  <input type="hidden" name="plan_id" value="<?= (int)$p->id ?>">
+                  <button type="submit" class="<?= $dp['btnClass'] ?>"><?= htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></button>
+                </form>
+              <?php } ?>
+            </article>
+          </li>
         <?php } ?>
       </ul>
     </div>
