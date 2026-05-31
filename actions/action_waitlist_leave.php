@@ -9,6 +9,12 @@
   $session->requireLogin('../pages/login.php');
   $session->verifyCsrf($_POST['csrf_token'] ?? '', '../pages/classes.php');
 
+  if (!isMemberUser($session)) {
+    $session->addMessage('error', 'Only members can perform this action.');
+    header('Location: ../pages/classes.php');
+    exit;
+  }
+
   $scheduleId = isset($_POST['schedule_id']) ? (int)$_POST['schedule_id'] : 0;
   $db = getDatabaseConnection();
   if (Waitlist::leave($db, $session->getId(), $scheduleId)) {

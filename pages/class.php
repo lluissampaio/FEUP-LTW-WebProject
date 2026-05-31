@@ -42,8 +42,19 @@
 
   $csrf = $session->csrfToken();
 
+  // Only members (with an active plan) can enrol; trainers and admins cannot.
+  require_once(__DIR__ . '/../database/membership.class.php');
+  $isMember = false;
+  $canEnrol = false;
+  if ($session->isLoggedIn()) {
+    $isMember = isMemberUser($session);
+    if ($isMember) {
+      $canEnrol = Membership::userHasActivePlan($db, $session->getId());
+    }
+  }
+
   drawHeader($session, 'classes', $class->name . ' — Iron Haven');
-  drawClassDetail($class, $schedules, $myEnrolled, $myWaiting, $session->isLoggedIn(), $csrf);
+  drawClassDetail($class, $schedules, $myEnrolled, $myWaiting, $session->isLoggedIn(), $isMember, $canEnrol, $csrf);
   drawClassReviews($class, $reviews, $avg, $canReview, $myReview, $csrf);
   drawFooter();
 ?>
