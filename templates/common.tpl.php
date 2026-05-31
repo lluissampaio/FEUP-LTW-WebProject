@@ -62,7 +62,7 @@
         <a href="notifications.php" class="nav-bell" aria-label="<?= $unread > 0 ? 'Notifications (' . (int)$unread . ' unread)' : 'Notifications' ?>">
           <span aria-hidden="true">&#9788;</span>
           <?php if ($unread > 0) { ?>
-            <span class="nav-bell-count" aria-hidden="true"><?= (int)$unread ?></span>
+            <span class="nav-bell__count" aria-hidden="true"><?= (int)$unread ?></span>
           <?php } ?>
         </a>
         <a href="dashboard.php" class="nav-cta" title="<?= htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?></a>
@@ -71,9 +71,9 @@
         <a href="register.php" class="nav-cta">Join</a>
       <?php } ?>
       <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-nav" aria-expanded="false">
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
-        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
       </button>
     </div>
   </header>
@@ -81,9 +81,9 @@
   <?php if (count($session->getMessages()) > 0) { ?>
     <section id="messages" aria-label="System messages">
       <?php foreach ($session->getMessages() as $message) { ?>
-        <article class="message message-<?= htmlspecialchars($message['type'], ENT_QUOTES, 'UTF-8') ?>">
+        <article class="message message--<?= htmlspecialchars($message['type'], ENT_QUOTES, 'UTF-8') ?>">
           <?= htmlspecialchars($message['text'], ENT_QUOTES, 'UTF-8') ?>
-          <button type="button" class="message-close" aria-label="Dismiss message">&times;</button>
+          <button type="button" class="message__close" aria-label="Dismiss message">&times;</button>
         </article>
       <?php } ?>
     </section>
@@ -126,17 +126,17 @@
 <?php function drawBreadcrumb(string $label) { ?>
   <p class="breadcrumb">
     <a href="index.php">Home</a>
-    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb__sep">/</span>
     <span><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></span>
   </p>
 <?php } ?>
 
 <?php function drawPageHero(string $crumb, string $heading, string $sub) { ?>
   <section class="page-hero">
-    <div class="page-hero-inner">
+    <div class="page-hero__inner">
       <?php drawBreadcrumb($crumb); ?>
-      <h1 class="page-hero-heading"><?= escapeHeading($heading) ?></h1>
-      <p class="page-hero-sub"><?= htmlspecialchars($sub, ENT_QUOTES, 'UTF-8') ?></p>
+      <h1 class="page-hero__heading"><?= escapeHeading($heading) ?></h1>
+      <p class="page-hero__sub"><?= htmlspecialchars($sub, ENT_QUOTES, 'UTF-8') ?></p>
     </div>
   </section>
 <?php } ?>

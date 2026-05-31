@@ -29,7 +29,7 @@
 ?>
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'admin_promotions', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Admin', 'Promotional features', 'Highlight classes and trainers to feature them on the public homepage.'); ?>
       <?php drawAdminPromotions($classes, $trainers, $csrf); ?>
     </main>

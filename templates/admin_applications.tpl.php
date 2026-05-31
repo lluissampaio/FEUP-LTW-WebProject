@@ -6,12 +6,12 @@
   function drawAdminApplications(array $apps, string $csrf, ?string $validStatus) {
     $statusTag = [
       'pending'  => 'status-tag',
-      'accepted' => 'status-tag status-tag-open',
-      'rejected' => 'status-tag status-tag-full',
+      'accepted' => 'status-tag status-tag--open',
+      'rejected' => 'status-tag status-tag--full',
     ];
 ?>
   <section class="admin-section">
-    <div class="section-inner">
+    <div class="section__inner">
       <form method="get" class="admin-form">
         <div class="form-field">
           <label for="status-filter">Filter by status</label>
@@ -24,7 +24,7 @@
         </div>
       </form>
 
-      <h2 class="section-heading">Applications (<?= count($apps) ?>)</h2>
+      <h2 class="section__heading">Applications (<?= count($apps) ?>)</h2>
       <div class="table-scroll">
         <table class="data-table">
           <thead>
@@ -48,13 +48,13 @@
                       <input type="hidden" name="csrf_token"     value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                       <input type="hidden" name="action"         value="accept">
                       <input type="hidden" name="application_id" value="<?= (int)$a->id ?>">
-                      <button type="submit" class="btn-outline btn-sm">Accept</button>
+                      <button type="submit" class="btn--outline btn--sm">Accept</button>
                     </form>
                     <form method="post" action="../actions/action_admin_application.php" class="inline-form">
                       <input type="hidden" name="csrf_token"     value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                       <input type="hidden" name="action"         value="reject">
                       <input type="hidden" name="application_id" value="<?= (int)$a->id ?>">
-                      <button type="submit" class="btn-outline btn-sm" data-confirm="Reject this application? This cannot be undone.">Reject</button>
+                      <button type="submit" class="btn--outline btn--sm" data-confirm="Reject this application? This cannot be undone.">Reject</button>
                     </form>
                   <?php } else { ?>
                     <span class="activity-empty">decided</span>

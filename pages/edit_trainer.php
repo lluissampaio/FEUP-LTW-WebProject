@@ -28,7 +28,7 @@
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'edit_trainer', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Trainer Management', 'Edit Profile', 'Update your public trainer profile information.'); ?>
       <?php drawEditTrainerForm($trainer, $session->csrfToken()); ?>
     </main>

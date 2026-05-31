@@ -40,7 +40,7 @@
     span.textContent = text;
     const close = document.createElement('button');
     close.type = 'button';
-    close.className = 'message-close';
+    close.className = 'message__close';
     close.setAttribute('aria-label', 'Dismiss message');
     close.innerHTML = '&times;';
     article.appendChild(span);
@@ -60,31 +60,31 @@
   }
 
   function capacityHtml(s) {
-    if (s.full) return '<span class="status-tag status-tag-full">Full</span>';
+    if (s.full) return '<span class="status-tag status-tag--full">Full</span>';
     const spots = Math.max(0, (s.capacity || 0) - (s.enrolled || 0));
-    return '<span class="status-tag status-tag-open">' + spots + ' spot' + (spots === 1 ? '' : 's') + ' left</span>';
+    return '<span class="status-tag status-tag--open">' + spots + ' spot' + (spots === 1 ? '' : 's') + ' left</span>';
   }
 
   function actionsHtml(s) {
-    if (!loggedIn) return '<a href="login.php" class="btn-outline">Sign in to book</a>';
-    if (s.my_state === 'enrolled') return buildForm('cancel', s.schedule_id, 'Cancel', 'btn-outline', 'Enrolled');
-    if (s.my_state === 'waiting')  return buildForm('waitlist_leave', s.schedule_id, 'Leave waitlist', 'btn-outline', 'On waitlist');
-    if (s.full)                    return buildForm('waitlist_join', s.schedule_id, 'Join waitlist', 'btn-outline', null);
-    return buildForm('enrol', s.schedule_id, 'Enrol', 'btn-primary', null);
+    if (!loggedIn) return '<a href="login.php" class="btn--outline">Sign in to book</a>';
+    if (s.my_state === 'enrolled') return buildForm('cancel', s.schedule_id, 'Cancel', 'btn--outline', 'Enrolled');
+    if (s.my_state === 'waiting')  return buildForm('waitlist_leave', s.schedule_id, 'Leave waitlist', 'btn--outline', 'On waitlist');
+    if (s.full)                    return buildForm('waitlist_join', s.schedule_id, 'Join waitlist', 'btn--outline', null);
+    return buildForm('enrol', s.schedule_id, 'Enrol', 'btn--primary', null);
   }
 
   // Full <li> card, mirroring drawScheduleList() in templates/classes.tpl.php.
   function cardHtml(s) {
     return '<li class="schedule-card" data-schedule-id="' + (s.schedule_id | 0) + '">' +
-      '<header class="schedule-card-head">' +
-        '<p class="schedule-card-day">' + esc(s.day) + ' &middot; ' + esc(s.start_time) + '</p>' +
-        '<p class="schedule-card-meta">' + (s.duration_min | 0) + ' min &middot; ' + esc(s.location) + '</p>' +
+      '<header class="schedule-card__head">' +
+        '<p class="schedule-card__day">' + esc(s.day) + ' &middot; ' + esc(s.start_time) + '</p>' +
+        '<p class="schedule-card__meta">' + (s.duration_min | 0) + ' min &middot; ' + esc(s.location) + '</p>' +
       '</header>' +
-      '<h3 class="schedule-card-title"><a href="class.php?id=' + (s.class_id | 0) + '">' + esc(s.class) + '</a></h3>' +
-      '<p class="schedule-card-type">' + esc(s.type) + '</p>' +
-      '<p class="schedule-card-coach">with <a href="trainer.php?id=' + (s.trainer_id | 0) + '">' + esc(s.trainer) + '</a></p>' +
-      '<p class="schedule-card-capacity">' + capacityHtml(s) + '</p>' +
-      '<div class="schedule-card-actions">' + actionsHtml(s) + '</div>' +
+      '<h3 class="schedule-card__title"><a href="class.php?id=' + (s.class_id | 0) + '">' + esc(s.class) + '</a></h3>' +
+      '<p class="schedule-card__type">' + esc(s.type) + '</p>' +
+      '<p class="schedule-card__coach">with <a href="trainer.php?id=' + (s.trainer_id | 0) + '">' + esc(s.trainer) + '</a></p>' +
+      '<p class="schedule-card__capacity">' + capacityHtml(s) + '</p>' +
+      '<div class="schedule-card__actions">' + actionsHtml(s) + '</div>' +
     '</li>';
   }
 
@@ -140,11 +140,11 @@
 
   // Re-render a single card in place after an action, reusing the same builders.
   function rerenderCard(card, data) {
-    const cap = card.querySelector('.schedule-card-capacity');
+    const cap = card.querySelector('.schedule-card__capacity');
     if (cap && data.capacity != null) {
       cap.innerHTML = capacityHtml({ full: data.full, capacity: data.capacity, enrolled: data.enrolled_count });
     }
-    const actions = card.querySelector('.schedule-card-actions');
+    const actions = card.querySelector('.schedule-card__actions');
     if (!actions) return;
     const scheduleId = card.dataset.scheduleId;
     const state = data.state === 'enrolled' ? 'enrolled' : data.state === 'waiting' ? 'waiting' : null;

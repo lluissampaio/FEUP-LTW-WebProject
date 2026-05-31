@@ -26,7 +26,7 @@
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'disputes', $session->csrfToken()); ?>
 
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Support', 'Disputes & feedback', 'Report an equipment fault, a class issue, or a billing query. Our team responds in confidence.'); ?>
       <?php drawDisputeForm($csrf, $hasPlan); ?>
       <?php drawMemberDisputes($disputes); ?>

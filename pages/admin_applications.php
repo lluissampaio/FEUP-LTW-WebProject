@@ -28,7 +28,7 @@
 ?>
   <div class="dashboard">
     <?php drawDashboardSidebar($me, 'admin_applications', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Admin', 'Membership applications', 'Review applications and accept or reject them. Accepted emails can register an account.'); ?>
       <?php drawAdminApplications($apps, $csrf, $validStatus); ?>
     </main>

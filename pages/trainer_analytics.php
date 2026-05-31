@@ -29,7 +29,7 @@
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'trainer_analytics', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Trainer Management', 'Analytics Dashboard', 'Track attendance, ratings, and engagement for your classes.'); ?>
       <?php drawTrainerAnalytics($overallStats, $classStats); ?>
     </main>

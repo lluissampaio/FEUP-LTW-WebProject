@@ -21,8 +21,8 @@
   drawCtaBanner(
     'Every member is paired<br>with a primary coach.',
     [
-      ['label' => 'Apply',       'href' => 'membership.php', 'style' => 'btn-primary'],
-      ['label' => 'Speak to us', 'href' => 'contact.php',    'style' => 'btn-outline'],
+      ['label' => 'Apply',       'href' => 'membership.php', 'style' => 'btn--primary'],
+      ['label' => 'Speak to us', 'href' => 'contact.php',    'style' => 'btn--outline'],
     ]
   );
   drawFooter();

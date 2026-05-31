@@ -33,7 +33,7 @@
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'workouts', $session->csrfToken()); ?>
 
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Workout history', 'Your training log', 'A complete record of your activity at Iron Haven.'); ?>
       <?php drawWorkoutsCharts($workouts, $goals); ?>
       <?php drawWorkoutsGoals($goals, $session->csrfToken()); ?>

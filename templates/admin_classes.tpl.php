@@ -4,8 +4,8 @@
   function drawAdminClasses(array $classes, array $trainers, array $locations, string $csrf, array $days, ?GymClass $editing, array $editingSchedules, array $sessionCounts) {
 ?>
   <section class="admin-section">
-    <div class="section-inner">
-      <h2 class="section-heading"><?= $editing ? 'Edit class' : 'New class' ?></h2>
+    <div class="section__inner">
+      <h2 class="section__heading"><?= $editing ? 'Edit class' : 'New class' ?></h2>
       <form class="admin-form" method="post" action="../actions/action_admin_class.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="action" value="<?= $editing ? 'update' : 'create' ?>">
@@ -47,8 +47,8 @@
         <?php if (!$editing) { ?>
           <fieldset class="form-field form-subsection">
             <legend>Optional first session</legend>
-            <p class="schedule-card-meta">A class only shows up on the schedule page once it has at least one session. Add one here, or add more after creating.</p>
-            <div class="form-grid-3">
+            <p class="schedule-card__meta">A class only shows up on the schedule page once it has at least one session. Add one here, or add more after creating.</p>
+            <div class="form-grid--3">
               <div class="form-field">
                 <label for="c-day">Day</label>
                 <select id="c-day" name="schedule_day">
@@ -71,8 +71,8 @@
         <?php } ?>
 
         <div class="form-actions">
-          <button type="submit" class="btn-primary"><?= $editing ? 'Update class' : 'Create class' ?></button>
-          <?php if ($editing) { ?><a href="admin_classes.php" class="btn-outline">Cancel</a><?php } ?>
+          <button type="submit" class="btn--primary"><?= $editing ? 'Update class' : 'Create class' ?></button>
+          <?php if ($editing) { ?><a href="admin_classes.php" class="btn--outline">Cancel</a><?php } ?>
         </div>
       </form>
     </div>
@@ -80,8 +80,8 @@
 
   <?php if ($editing) { ?>
     <section class="admin-section">
-      <div class="section-inner">
-        <h2 class="section-heading">Sessions for &ldquo;<?= htmlspecialchars($editing->name, ENT_QUOTES, 'UTF-8') ?>&rdquo; (<?= count($editingSchedules) ?>)</h2>
+      <div class="section__inner">
+        <h2 class="section__heading">Sessions for &ldquo;<?= htmlspecialchars($editing->name, ENT_QUOTES, 'UTF-8') ?>&rdquo; (<?= count($editingSchedules) ?>)</h2>
 
         <form class="admin-form" method="post" action="../actions/action_admin_schedule.php">
           <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
@@ -106,7 +106,7 @@
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="btn-primary">Add session</button>
+            <button type="submit" class="btn--primary">Add session</button>
           </div>
         </form>
 
@@ -129,7 +129,7 @@
                       <input type="hidden" name="action"      value="delete">
                       <input type="hidden" name="class_id"    value="<?= (int)$editing->id ?>">
                       <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
-                      <button type="submit" class="btn-outline" data-confirm="Delete this session and its enrolments?">Delete</button>
+                      <button type="submit" class="btn--outline" data-confirm="Delete this session and its enrolments?">Delete</button>
                     </form>
                   </td>
                 </tr>
@@ -143,8 +143,8 @@
   <?php } ?>
 
   <section class="admin-section">
-    <div class="section-inner">
-      <h2 class="section-heading">All classes (<?= count($classes) ?>)</h2>
+    <div class="section__inner">
+      <h2 class="section__heading">All classes (<?= count($classes) ?>)</h2>
       <div class="table-scroll">
       <table class="data-table">
         <thead><tr><th>Name</th><th>Type</th><th>Trainer</th><th>Location</th><th>Capacity</th><th>Sessions</th><th></th></tr></thead>
@@ -160,18 +160,18 @@
               <td><?= (int)$c->capacity ?></td>
               <td>
                 <?php if ($sessions === 0) { ?>
-                  <span class="status-tag status-tag-full">none</span>
+                  <span class="status-tag status-tag--full">none</span>
                 <?php } else { ?>
-                  <span class="status-tag status-tag-open"><?= $sessions ?></span>
+                  <span class="status-tag status-tag--open"><?= $sessions ?></span>
                 <?php } ?>
               </td>
               <td class="row-actions">
-                <a href="admin_classes.php?edit=<?= (int)$c->id ?>" class="btn-outline">Edit</a>
+                <a href="admin_classes.php?edit=<?= (int)$c->id ?>" class="btn--outline">Edit</a>
                 <form method="post" action="../actions/action_admin_class.php" class="inline-form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="action" value="delete">
                   <input type="hidden" name="class_id" value="<?= (int)$c->id ?>">
-                  <button type="submit" class="btn-outline" data-confirm="Delete this class? All schedules and enrolments will be removed.">Delete</button>
+                  <button type="submit" class="btn--outline" data-confirm="Delete this class? All schedules and enrolments will be removed.">Delete</button>
                 </form>
               </td>
             </tr>

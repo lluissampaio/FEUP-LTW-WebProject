@@ -50,13 +50,13 @@
     $hasGoals    = !empty($goalData['goals']);
     $valueLabel  = $workoutData['valueLabel'];
 ?>
-    <section class="dashboard-activity" aria-labelledby="charts-heading">
-      <h2 class="dashboard-section-heading" id="charts-heading">Progress at a glance</h2>
+    <section class="dashboard__activity" aria-labelledby="charts-heading">
+      <h2 class="dashboard__section-heading" id="charts-heading">Progress at a glance</h2>
       <div class="chart-grid">
-        <article class="dashboard-card chart-card">
+        <article class="dashboard__card chart-card">
           <h3 class="chart-title">Recent workouts<?= $hasWorkouts ? ' (' . htmlspecialchars($valueLabel, ENT_QUOTES, 'UTF-8') . ')' : '' ?></h3>
           <?php if ($hasWorkouts) { ?>
-            <div class="chart-canvas-wrap">
+            <div class="chart-canvas__wrap">
               <canvas class="chart-canvas" data-chart="workout-history" data-source="#chart-workouts-data"></canvas>
             </div>
             <script type="application/json" id="chart-workouts-data"><?= htmlspecialchars(json_encode($workoutData), ENT_QUOTES, 'UTF-8') ?></script>
@@ -65,10 +65,10 @@
           <?php } ?>
         </article>
 
-        <article class="dashboard-card chart-card">
+        <article class="dashboard__card chart-card">
           <h3 class="chart-title">Goal progress</h3>
           <?php if ($hasGoals) { ?>
-            <div class="chart-canvas-wrap">
+            <div class="chart-canvas__wrap">
               <canvas class="chart-canvas" data-chart="goal-progress" data-source="#chart-goals-data"></canvas>
             </div>
             <script type="application/json" id="chart-goals-data"><?= htmlspecialchars(json_encode($goalData), ENT_QUOTES, 'UTF-8') ?></script>
@@ -85,8 +85,8 @@
 <?php
   function drawWorkoutsGoals(array $goals, string $csrf) {
 ?>
-    <section class="dashboard-activity" aria-labelledby="goals-heading">
-      <h2 class="dashboard-section-heading" id="goals-heading">Fitness goals</h2>
+    <section class="dashboard__activity" aria-labelledby="goals-heading">
+      <h2 class="dashboard__section-heading" id="goals-heading">Fitness goals</h2>
 
       <?php if (empty($goals)) { ?>
         <p class="empty-state">No fitness goals yet. Set one below to start tracking your progress.</p>
@@ -101,13 +101,13 @@
             $cur = rtrim(rtrim(number_format($g->currentValue, 2, '.', ''), '0'), '.');
             $tgt = rtrim(rtrim(number_format($g->targetValue, 2, '.', ''), '0'), '.');
           ?>
-            <article class="goal-card goal-card-<?= $statusEsc ?>">
-              <div class="goal-card-head">
-                <h3 class="goal-card-title"><?= $titleEsc ?></h3>
-                <span class="status-tag status-tag-<?= $statusEsc ?>"><?= $statusEsc ?></span>
+            <article class="goal-card goal-card--<?= $statusEsc ?>">
+              <div class="goal-card__head">
+                <h3 class="goal-card__title"><?= $titleEsc ?></h3>
+                <span class="status-tag status-tag--<?= $statusEsc ?>"><?= $statusEsc ?></span>
               </div>
 
-              <p class="goal-card-values">
+              <p class="goal-card__values">
                 <?= htmlspecialchars($cur, ENT_QUOTES, 'UTF-8') ?>
                 <?php if ($unitEsc !== '') { ?><?= $unitEsc ?><?php } ?>
                 of
@@ -116,16 +116,16 @@
               </p>
 
               <div class="goal-progress" role="progressbar" aria-valuenow="<?= $pct ?>" aria-valuemin="0" aria-valuemax="100" aria-label="<?= $titleEsc ?> progress">
-                <span class="goal-progress-fill" style="width: <?= $pct ?>%;"></span>
-                <span class="goal-progress-label"><?= $pct ?>%</span>
+                <span class="goal-progress__fill" style="width: <?= $pct ?>%;"></span>
+                <span class="goal-progress__label"><?= $pct ?>%</span>
               </div>
 
               <?php if ($g->deadline !== null && $g->deadline !== '') { ?>
-                <p class="goal-card-meta">Deadline: <?= htmlspecialchars(formatDate($g->deadline), ENT_QUOTES, 'UTF-8') ?></p>
+                <p class="goal-card__meta">Deadline: <?= htmlspecialchars(formatDate($g->deadline), ENT_QUOTES, 'UTF-8') ?></p>
               <?php } ?>
 
-              <details class="goal-card-edit">
-                <summary class="btn-outline btn-sm">Edit</summary>
+              <details class="goal-card__edit">
+                <summary class="btn--outline btn--sm">Edit</summary>
                 <form method="post" action="../actions/action_goal.php" class="admin-form goal-form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="action"  value="update">
@@ -166,14 +166,14 @@
                     </select>
                   </label>
                   <div class="form-actions">
-                    <button type="submit" class="btn-primary btn-sm">Save changes</button>
+                    <button type="submit" class="btn--primary btn--sm">Save changes</button>
                   </div>
                 </form>
                 <form method="post" action="../actions/action_goal.php" class="inline-form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="action"  value="delete">
                   <input type="hidden" name="goal_id" value="<?= (int)$g->id ?>">
-                  <button type="submit" class="btn-outline btn-sm" data-confirm="Delete this goal? This cannot be undone.">Delete</button>
+                  <button type="submit" class="btn--outline btn--sm" data-confirm="Delete this goal? This cannot be undone.">Delete</button>
                 </form>
               </details>
             </article>
@@ -182,7 +182,7 @@
       <?php } ?>
 
       <details class="goal-add">
-        <summary class="btn-primary btn-sm">Add a goal</summary>
+        <summary class="btn--primary btn--sm">Add a goal</summary>
         <form method="post" action="../actions/action_goal.php" class="admin-form goal-form">
           <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
           <input type="hidden" name="action" value="create">
@@ -215,7 +215,7 @@
             <input type="date" name="deadline">
           </label>
           <div class="form-actions">
-            <button type="submit" class="btn-primary">Add goal</button>
+            <button type="submit" class="btn--primary">Add goal</button>
           </div>
         </form>
       </details>
@@ -227,8 +227,8 @@
 <?php
   function drawWorkoutsLogForm(bool $hasPlan, string $csrf) {
 ?>
-    <section class="dashboard-activity" aria-labelledby="log-heading">
-      <h2 class="dashboard-section-heading" id="log-heading">Log a workout</h2>
+    <section class="dashboard__activity" aria-labelledby="log-heading">
+      <h2 class="dashboard__section-heading" id="log-heading">Log a workout</h2>
       <?php if (!$hasPlan) { ?>
         <p class="empty-state">Choose a membership plan to start logging workouts.</p>
       <?php } else { ?>
@@ -248,7 +248,7 @@
             <input type="number" name="calories" min="0" max="5000" step="10" value="0">
           </label>
           <div class="form-actions">
-            <button type="submit" class="btn-primary">Log workout</button>
+            <button type="submit" class="btn--primary">Log workout</button>
           </div>
         </form>
       <?php } ?>
@@ -261,9 +261,9 @@
   function drawWorkoutsHistory(array $workouts, string $csrf) {
     require_once(__DIR__ . '/../utils/format.php');
 ?>
-    <section class="dashboard-activity" aria-labelledby="history-heading">
-      <h2 class="dashboard-section-heading" id="history-heading">Workout log</h2>
-      <div class="activity-table-wrap">
+    <section class="dashboard__activity" aria-labelledby="history-heading">
+      <h2 class="dashboard__section-heading" id="history-heading">Workout log</h2>
+      <div class="activity-table__wrap">
         <table class="activity-table">
           <thead>
             <tr>
@@ -282,13 +282,13 @@
                 <td><?= htmlspecialchars($w->workoutType, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= (int)$w->durationMinutes ?> min</td>
                 <td><?= $w->calories ? (int)$w->calories : '—' ?></td>
-                <td><span class="status-tag status-tag-<?= htmlspecialchars(strtolower($w->status), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w->status, ENT_QUOTES, 'UTF-8') ?></span></td>
+                <td><span class="status-tag status-tag--<?= htmlspecialchars(strtolower($w->status), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w->status, ENT_QUOTES, 'UTF-8') ?></span></td>
                 <td>
                   <form method="post" action="../actions/action_workout.php" class="inline-form">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="action" value="delete">
                     <input type="hidden" name="workout_id" value="<?= (int)$w->id ?>">
-                    <button type="submit" class="btn-outline btn-sm" data-confirm="Remove this workout? This cannot be undone.">Remove</button>
+                    <button type="submit" class="btn--outline btn--sm" data-confirm="Remove this workout? This cannot be undone.">Remove</button>
                   </form>
                 </td>
               </tr>

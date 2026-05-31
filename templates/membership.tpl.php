@@ -4,22 +4,22 @@
 
 <?php function drawPricing(array $plans, string $applyHref = '#apply') { ?>
   <section class="pricing">
-    <div class="section-inner">
-      <p class="section-label">01 &mdash; Plans</p>
-      <h2 class="section-heading">Choose Your Plan</h2>
-      <ul class="pricing-grid">
+    <div class="section__inner">
+      <p class="section__label">01 &mdash; Plans</p>
+      <h2 class="section__heading">Choose Your Plan</h2>
+      <ul class="pricing__grid">
         <?php foreach ($plans as $p) {
           $featured  = !empty($p['featured']);
-          $cardClass = 'pricing-card' . ($featured ? ' pricing-card-featured' : '');
-          $btnClass  = $featured ? 'btn-primary' : 'btn-outline';
+          $cardClass = 'pricing__card' . ($featured ? ' pricing__card--featured' : '');
+          $btnClass  = $featured ? 'btn--primary' : 'btn--outline';
         ?>
         <li>
           <article class="<?= $cardClass ?>">
-            <p class="pricing-plan-label"><?= htmlspecialchars($p['label'], ENT_QUOTES, 'UTF-8') ?></p>
-            <h3 class="pricing-plan-name"><?= htmlspecialchars($p['name'], ENT_QUOTES, 'UTF-8') ?></h3>
-            <p class="pricing-price"><?= htmlspecialchars($p['price'], ENT_QUOTES, 'UTF-8') ?></p>
-            <p class="pricing-period"><?= htmlspecialchars($p['period'], ENT_QUOTES, 'UTF-8') ?></p>
-            <ul class="pricing-features">
+            <p class="pricing__plan-label"><?= htmlspecialchars($p['label'], ENT_QUOTES, 'UTF-8') ?></p>
+            <h3 class="pricing__plan-name"><?= htmlspecialchars($p['name'], ENT_QUOTES, 'UTF-8') ?></h3>
+            <p class="pricing__price"><?= htmlspecialchars($p['price'], ENT_QUOTES, 'UTF-8') ?></p>
+            <p class="pricing__period"><?= htmlspecialchars($p['period'], ENT_QUOTES, 'UTF-8') ?></p>
+            <ul class="pricing__features">
               <?php foreach ($p['features'] as $f) { ?>
                 <li><?= htmlspecialchars($f, ENT_QUOTES, 'UTF-8') ?></li>
               <?php } ?>
@@ -45,14 +45,14 @@
     $currentTier = $hasActive && $current->plan ? $current->plan->tier : 0;
 ?>
   <section class="section" style="padding-top: 0;">
-    <div class="section-inner">
-      <p class="section-label">01 &mdash; Your membership</p>
+    <div class="section__inner">
+      <p class="section__label">01 &mdash; Your membership</p>
 
       <?php if ($hasActive && $current->plan) { ?>
         <div class="membership-current">
           <div>
-            <h2 class="section-heading">You are on the <?= htmlspecialchars($current->plan->name, ENT_QUOTES, 'UTF-8') ?> plan.</h2>
-            <p class="membership-current-meta">
+            <h2 class="section__heading">You are on the <?= htmlspecialchars($current->plan->name, ENT_QUOTES, 'UTF-8') ?> plan.</h2>
+            <p class="membership-current__meta">
               <?= htmlspecialchars($current->plan->priceLabel(), ENT_QUOTES, 'UTF-8') ?> <?= htmlspecialchars($current->plan->period, ENT_QUOTES, 'UTF-8') ?>
               <?php if ($current->renewsAt) { ?>
                 &middot; renews <?= htmlspecialchars(formatDate($current->renewsAt), ENT_QUOTES, 'UTF-8') ?>
@@ -61,25 +61,25 @@
           </div>
           <form method="post" action="../actions/action_cancel_membership.php" class="inline-form">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
-            <button type="submit" class="btn-outline" data-confirm="Cancel your membership? This cannot be undone.">Cancel membership</button>
+            <button type="submit" class="btn--outline" data-confirm="Cancel your membership? This cannot be undone.">Cancel membership</button>
           </form>
         </div>
       <?php } else { ?>
-        <h2 class="section-heading">Choose your plan.</h2>
-        <p class="membership-current-meta">You don't have an active membership yet.</p>
+        <h2 class="section__heading">Choose your plan.</h2>
+        <p class="membership-current__meta">You don't have an active membership yet.</p>
       <?php } ?>
 
-      <ul class="pricing-grid">
+      <ul class="pricing__grid">
         <?php foreach ($displayPlans as $dp) {
           $p = $dp['plan'];
         ?>
           <li>
             <article class="<?= $dp['cardClass'] ?>">
-              <p class="pricing-plan-label"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></p>
-              <h3 class="pricing-plan-name"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></h3>
-              <p class="pricing-price"><?= htmlspecialchars($p->priceLabel(), ENT_QUOTES, 'UTF-8') ?></p>
-              <p class="pricing-period"><?= htmlspecialchars($p->period, ENT_QUOTES, 'UTF-8') ?></p>
-              <ul class="pricing-features">
+              <p class="pricing__plan-label"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></p>
+              <h3 class="pricing__plan-name"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></h3>
+              <p class="pricing__price"><?= htmlspecialchars($p->priceLabel(), ENT_QUOTES, 'UTF-8') ?></p>
+              <p class="pricing__period"><?= htmlspecialchars($p->period, ENT_QUOTES, 'UTF-8') ?></p>
+              <ul class="pricing__features">
                 <?php foreach (($features[$p->name] ?? []) as $f) { ?>
                   <li><?= htmlspecialchars($f, ENT_QUOTES, 'UTF-8') ?></li>
                 <?php } ?>
@@ -105,9 +105,9 @@
 
 <?php function drawCompareTable(array $features, array $columns) { ?>
   <section class="compare-section">
-    <div class="section-inner">
-      <p class="section-label">02 &mdash; Compare</p>
-      <h2 class="section-heading">All Features</h2>
+    <div class="section__inner">
+      <p class="section__label">02 &mdash; Compare</p>
+      <h2 class="section__heading">All Features</h2>
 
       <div class="table-scroll">
       <table class="compare-table">
@@ -147,9 +147,9 @@
 
 <?php function drawFaq(array $faqs) { ?>
   <section class="faq-section">
-    <div class="section-inner">
-      <p class="section-label">03 &mdash; Common Questions</p>
-      <h2 class="section-heading">Before You Apply</h2>
+    <div class="section__inner">
+      <p class="section__label">03 &mdash; Common Questions</p>
+      <h2 class="section__heading">Before You Apply</h2>
       <ul class="faq-list">
         <?php foreach ($faqs as $f) { ?>
           <li>

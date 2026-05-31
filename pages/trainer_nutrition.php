@@ -52,7 +52,7 @@
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'trainer_clients', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Nutrition', $targetUser->firstName . '\'s Nutrition Plan', 'Manage dietary goals and macros for your client.'); ?>
       <?php drawNutritionPlan($plan, $session, $targetUser, $meals); ?>
     </main>

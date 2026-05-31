@@ -19,7 +19,7 @@
   if (!$class) {
     http_response_code(404);
     drawHeader($session, '', 'Not found — Iron Haven');
-    echo '<section class="section-inner"><p class="empty-state">Class not found.</p></section>';
+    echo '<section class="section__inner"><p class="empty-state">Class not found.</p></section>';
     drawFooter();
     exit;
   }

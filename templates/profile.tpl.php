@@ -58,7 +58,7 @@
         </div>
       </fieldset>
 
-      <button type="submit" class="btn-primary">Save changes</button>
+      <button type="submit" class="btn--primary">Save changes</button>
     </form>
   </section>
 

@@ -3,8 +3,8 @@
 
   function drawTrainerClients(array $clients) {
 ?>
-      <section class="dashboard-activity">
-        <div class="activity-table-wrap">
+      <section class="dashboard__activity">
+        <div class="activity-table__wrap">
           <table class="activity-table">
             <thead>
               <tr>
@@ -19,7 +19,7 @@
                   <td><?= htmlspecialchars($c['FirstName'] . ' ' . $c['LastName'], ENT_QUOTES, 'UTF-8') ?></td>
                   <td><?= htmlspecialchars($c['Email'], ENT_QUOTES, 'UTF-8') ?></td>
                   <td>
-                    <a href="trainer_nutrition.php?member_id=<?= (int)$c['UserId'] ?>" class="btn-outline btn-sm">Manage Plan</a>
+                    <a href="trainer_nutrition.php?member_id=<?= (int)$c['UserId'] ?>" class="btn--outline btn--sm">Manage Plan</a>
                   </td>
                 </tr>
               <?php } ?>

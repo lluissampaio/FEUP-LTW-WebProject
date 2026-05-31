@@ -4,12 +4,12 @@
 
   function drawTrainerClasses(array $classes, array $schedules, array $rosters, array $days, string $csrf) {
 ?>
-  <section class="dashboard-activity dashboard-activity-gap">
-    <h2 class="dashboard-section-heading">Add a session</h2>
+  <section class="dashboard__activity dashboard__activity--gap">
+    <h2 class="dashboard__section-heading">Add a session</h2>
     <?php if (empty($classes)) { ?>
       <p class="activity-empty">You do not have any assigned classes to add sessions to.</p>
     <?php } else { ?>
-      <form class="dashboard-form schedule-add-form" method="post" action="../actions/action_trainer_schedule.php">
+      <form class="dashboard__form schedule-add-form" method="post" action="../actions/action_trainer_schedule.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="action" value="create">
 
@@ -39,12 +39,12 @@
             <input type="number" id="schedule_duration" name="schedule_duration" min="15" max="240" step="5" value="60" required>
           </label>
         </div>
-        <button type="submit" class="btn-primary">Add session</button>
+        <button type="submit" class="btn--primary">Add session</button>
       </form>
     <?php } ?>
   </section>
 
-  <section class="dashboard-activity">
+  <section class="dashboard__activity">
     <?php if (empty($schedules)) { ?>
       <p class="activity-empty">You are not assigned to any classes yet.</p>
     <?php } else { ?>
@@ -53,13 +53,13 @@
       ?>
         <article class="roster-block">
           <div class="roster-head">
-            <h2 class="dashboard-section-heading roster-head-title">
+            <h2 class="dashboard__section-heading roster-head__title">
               <?= htmlspecialchars($s->className ?? '', ENT_QUOTES, 'UTF-8') ?> &mdash; <?= htmlspecialchars($s->classType ?? '', ENT_QUOTES, 'UTF-8') ?>
             </h2>
             <div class="roster-actions">
               <details class="schedule-edit">
-                <summary class="btn-outline btn-sm">Edit</summary>
-                <form method="post" action="../actions/action_trainer_schedule.php" class="dashboard-form schedule-edit-form">
+                <summary class="btn--outline btn--sm">Edit</summary>
+                <form method="post" action="../actions/action_trainer_schedule.php" class="dashboard__form schedule-edit__form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="action" value="edit">
                   <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
@@ -81,25 +81,25 @@
                       <input type="number" name="schedule_duration" min="15" max="240" step="5" value="<?= (int)$s->duration ?>" required>
                     </label>
                   </div>
-                  <button type="submit" class="btn-primary btn-sm">Save changes</button>
+                  <button type="submit" class="btn--primary btn--sm">Save changes</button>
                 </form>
               </details>
               <form method="post" action="../actions/action_trainer_schedule.php" class="inline-form">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                 <input type="hidden" name="action" value="delete">
                 <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
-                <button type="submit" class="btn-outline btn-sm" data-confirm="Delete this session? This cannot be undone.">Delete</button>
+                <button type="submit" class="btn--outline btn--sm" data-confirm="Delete this session? This cannot be undone.">Delete</button>
               </form>
             </div>
           </div>
-          <p class="dashboard-sub roster-meta">
+          <p class="dashboard__sub roster-meta">
             <?= htmlspecialchars($s->dayOfWeek, ENT_QUOTES, 'UTF-8') ?>s at <?= htmlspecialchars(substr($s->startTime, 0, 5), ENT_QUOTES, 'UTF-8') ?> &bull;
             <?= $s->duration ?> min &bull;
             <?= htmlspecialchars($s->locationName ?? '', ENT_QUOTES, 'UTF-8') ?> &bull;
             <?= count($roster) ?> / <?= $s->capacity ?? 0 ?> enrolled
           </p>
 
-          <div class="activity-table-wrap">
+          <div class="activity-table__wrap">
             <table class="activity-table">
               <thead>
                 <tr>

@@ -25,11 +25,11 @@
 </head>
 <body>
   <main class="error-page">
-    <div class="error-page-inner">
-      <p class="error-page-code"><?= $safeCode ?></p>
-      <h1 class="error-page-title"><?= $safeTitle ?></h1>
-      <p class="error-page-message"><?= $safeMessage ?></p>
-      <a href="/pages/index.php" class="btn-primary">Back to home</a>
+    <div class="error-page__inner">
+      <p class="error-page__code"><?= $safeCode ?></p>
+      <h1 class="error-page__title"><?= $safeTitle ?></h1>
+      <p class="error-page__message"><?= $safeMessage ?></p>
+      <a href="/pages/index.php" class="btn--primary">Back to home</a>
     </div>
   </main>
 </body>

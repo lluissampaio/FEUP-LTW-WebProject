@@ -16,8 +16,8 @@
       if ($h < 21) $slots[] = sprintf('%02d:30', $h);
     }
 ?>
-    <section class="dashboard-activity">
-      <h2 class="dashboard-section-heading">New reservation</h2>
+    <section class="dashboard__activity">
+      <h2 class="dashboard__section-heading">New reservation</h2>
       <?php if (empty($equipment)) { ?>
         <p class="empty-state">No equipment is available to reserve yet.</p>
       <?php } else { ?>
@@ -64,7 +64,7 @@
         </label>
         <div class="form-actions">
           <p class="reservation-summary" id="reservation-summary" aria-live="polite"></p>
-          <button type="submit" class="btn-primary" id="reservation-submit">Reserve equipment</button>
+          <button type="submit" class="btn--primary" id="reservation-submit">Reserve equipment</button>
         </div>
       </form>
       <?php } ?>
@@ -77,12 +77,12 @@
   /** A member's upcoming equipment reservations, with cancel controls. */
   function drawMyReservations(array $reservations, string $csrf) {
 ?>
-    <section class="dashboard-activity" aria-labelledby="reservations-heading">
-      <h2 class="dashboard-section-heading" id="reservations-heading">Your reservations</h2>
+    <section class="dashboard__activity" aria-labelledby="reservations-heading">
+      <h2 class="dashboard__section-heading" id="reservations-heading">Your reservations</h2>
       <?php if (empty($reservations)) { ?>
         <p class="empty-state">No equipment reservations yet. Reserve a slot above.</p>
       <?php } else { ?>
-        <div class="activity-table-wrap">
+        <div class="activity-table__wrap">
           <table class="activity-table">
             <thead>
               <tr>
@@ -106,7 +106,7 @@
                     <form method="post" action="../actions/action_cancel_reservation.php" class="inline-form">
                       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                       <input type="hidden" name="reservation_id" value="<?= (int)$r->id ?>">
-                      <button type="submit" class="btn-outline btn-sm" data-confirm="Cancel this reservation? This cannot be undone.">Cancel</button>
+                      <button type="submit" class="btn--outline btn--sm" data-confirm="Cancel this reservation? This cannot be undone.">Cancel</button>
                     </form>
                   </td>
                 </tr>

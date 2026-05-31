@@ -59,8 +59,8 @@
   drawCtaBanner(
     'Membership is by referral.<br>Apply for an interview.',
     [
-      ['label' => 'Apply',       'href' => 'membership.php', 'style' => 'btn-primary'],
-      ['label' => 'Get in touch','href' => 'contact.php',    'style' => 'btn-outline'],
+      ['label' => 'Apply',       'href' => 'membership.php', 'style' => 'btn--primary'],
+      ['label' => 'Get in touch','href' => 'contact.php',    'style' => 'btn--outline'],
     ]
   );
   drawFooter();

@@ -4,36 +4,36 @@
   function drawTrainerAnalytics(array $overallStats, array $classStats) {
 ?>
   <?php if (empty($overallStats) || $overallStats['TotalClasses'] === 0) { ?>
-    <section class="dashboard-activity">
+    <section class="dashboard__activity">
       <p class="activity-empty">You do not have any assigned classes yet.</p>
     </section>
   <?php } else { ?>
-    <section class="dashboard-stats" aria-label="Trainer statistics">
+    <section class="dashboard__stats" aria-label="Trainer statistics">
       <article class="stat-card">
-        <p class="stat-card-label">Total Enrollments</p>
-        <p class="stat-card-value"><?= htmlspecialchars((string)$overallStats['TotalEnrollments'], ENT_QUOTES, 'UTF-8') ?></p>
-        <p class="stat-card-note">Across <?= htmlspecialchars((string)$overallStats['TotalSessions'], ENT_QUOTES, 'UTF-8') ?> sessions</p>
+        <p class="stat-card__label">Total Enrollments</p>
+        <p class="stat-card__value"><?= htmlspecialchars((string)$overallStats['TotalEnrollments'], ENT_QUOTES, 'UTF-8') ?></p>
+        <p class="stat-card__note">Across <?= htmlspecialchars((string)$overallStats['TotalSessions'], ENT_QUOTES, 'UTF-8') ?> sessions</p>
       </article>
 
       <article class="stat-card">
-        <p class="stat-card-label">Attendance Rate</p>
-        <p class="stat-card-value"><?= htmlspecialchars((string)$overallStats['AttendanceRate'], ENT_QUOTES, 'UTF-8') ?><span class="stat-unit">%</span></p>
-        <p class="stat-card-note">Attended / Enrolled</p>
+        <p class="stat-card__label">Attendance Rate</p>
+        <p class="stat-card__value"><?= htmlspecialchars((string)$overallStats['AttendanceRate'], ENT_QUOTES, 'UTF-8') ?><span class="stat-unit">%</span></p>
+        <p class="stat-card__note">Attended / Enrolled</p>
       </article>
 
       <article class="stat-card">
-        <p class="stat-card-label">Average Rating</p>
-        <p class="stat-card-value"><?= htmlspecialchars((string)($overallStats['AverageRating'] ?? '—'), ENT_QUOTES, 'UTF-8') ?><span class="stat-unit">/5</span></p>
-        <p class="stat-card-note">From <?= htmlspecialchars((string)$overallStats['TotalReviews'], ENT_QUOTES, 'UTF-8') ?> reviews</p>
+        <p class="stat-card__label">Average Rating</p>
+        <p class="stat-card__value"><?= htmlspecialchars((string)($overallStats['AverageRating'] ?? '—'), ENT_QUOTES, 'UTF-8') ?><span class="stat-unit">/5</span></p>
+        <p class="stat-card__note">From <?= htmlspecialchars((string)$overallStats['TotalReviews'], ENT_QUOTES, 'UTF-8') ?> reviews</p>
       </article>
     </section>
 
-    <section class="dashboard-activity">
-      <h2 class="dashboard-section-heading">Class Breakdown</h2>
+    <section class="dashboard__activity">
+      <h2 class="dashboard__section-heading">Class Breakdown</h2>
       <?php if (empty($classStats)) { ?>
         <p class="activity-empty">No classes available for breakdown.</p>
       <?php } else { ?>
-        <div class="activity-table-wrap">
+        <div class="activity-table__wrap">
           <table class="activity-table">
             <thead>
               <tr>
@@ -55,10 +55,10 @@
                   <td><?= htmlspecialchars((string)$stat['TotalEnrollments'], ENT_QUOTES, 'UTF-8') ?></td>
                   <td>
                     <div class="fill-bar">
-                      <div class="fill-bar-track">
-                        <div class="fill-bar-fill" style="--pct: <?= min($stat['FillRate'], 100) ?>%;"></div>
+                      <div class="fill-bar__track">
+                        <div class="fill-bar__fill" style="--pct: <?= min($stat['FillRate'], 100) ?>%;"></div>
                       </div>
-                      <span class="fill-bar-value"><?= htmlspecialchars((string)$stat['FillRate'], ENT_QUOTES, 'UTF-8') ?>%</span>
+                      <span class="fill-bar__value"><?= htmlspecialchars((string)$stat['FillRate'], ENT_QUOTES, 'UTF-8') ?>%</span>
                     </div>
                   </td>
                   <td><?= htmlspecialchars((string)($stat['AverageRating'] ? $stat['AverageRating'] . ' / 5' : '—'), ENT_QUOTES, 'UTF-8') ?></td>

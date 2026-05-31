@@ -2,7 +2,7 @@
 
 <?php function drawEquipmentFilters(array $locations, array $types, ?int $locationId, string $type) { ?>
   <section class="filter-section" aria-label="Filter equipment">
-    <div class="section-inner">
+    <div class="section__inner">
       <form class="filter-form" id="equipment-filter-form" method="get" action="equipment.php">
         <label class="filter-field">
           Location
@@ -23,7 +23,7 @@
           </select>
         </label>
         <div class="filter-actions">
-          <a href="equipment.php" class="btn-outline">Reset</a>
+          <a href="equipment.php" class="btn--outline">Reset</a>
         </div>
       </form>
     </div>
@@ -32,9 +32,9 @@
 
 <?php function drawEquipmentList(array $items, bool $canReserve = false) { ?>
   <section class="equipment-section" aria-labelledby="equipment-heading">
-    <div class="section-inner">
-      <p class="section-label">01 &mdash; Inventory</p>
-      <h2 class="section-heading" id="equipment-heading">Equipment (<span id="equipment-count"><?= count($items) ?></span>)</h2>
+    <div class="section__inner">
+      <p class="section__label">01 &mdash; Inventory</p>
+      <h2 class="section__heading" id="equipment-heading">Equipment (<span id="equipment-count"><?= count($items) ?></span>)</h2>
 
       <div id="equipment-results">
         <?php if (count($items) === 0) { ?>
@@ -54,7 +54,7 @@
             </thead>
             <tbody>
               <?php foreach ($items as $e) {
-                $statusClass = 'status-tag status-tag-' . htmlspecialchars(str_replace('_', '-', $e->status), ENT_QUOTES, 'UTF-8');
+                $statusClass = 'status-tag status-tag--' . htmlspecialchars(str_replace('_', '-', $e->status), ENT_QUOTES, 'UTF-8');
               ?>
                 <tr>
                   <td><?= htmlspecialchars($e->name, ENT_QUOTES, 'UTF-8') ?></td>
@@ -63,7 +63,7 @@
                   <td><?= (int)$e->available ?> / <?= (int)$e->quantity ?></td>
                   <td><span class="<?= $statusClass ?>"><?= htmlspecialchars(str_replace('_', ' ', $e->status), ENT_QUOTES, 'UTF-8') ?></span></td>
                   <?php if ($canReserve) { ?>
-                    <td><a class="btn-outline btn-sm" href="reservations.php?equipment_id=<?= (int)$e->id ?>">Reserve</a></td>
+                    <td><a class="btn--outline btn--sm" href="reservations.php?equipment_id=<?= (int)$e->id ?>">Reserve</a></td>
                   <?php } ?>
                 </tr>
               <?php } ?>

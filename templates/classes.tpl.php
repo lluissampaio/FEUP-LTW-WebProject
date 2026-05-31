@@ -2,7 +2,7 @@
 
 <?php function drawClassFilters(array $ctx) { ?>
   <section class="filter-section" aria-labelledby="filter-heading">
-    <div class="section-inner">
+    <div class="section__inner">
       <h2 class="visually-hidden" id="filter-heading">Filter classes</h2>
       <form class="filter-form" id="class-filter-form" method="get" action="classes.php">
         <label class="filter-field">
@@ -51,7 +51,7 @@
           </select>
         </label>
         <div class="filter-actions">
-          <a href="classes.php" class="btn-outline">Reset</a>
+          <a href="classes.php" class="btn--outline">Reset</a>
         </div>
       </form>
     </div>
@@ -60,9 +60,9 @@
 
 <?php function drawScheduleList(array $schedules, array $myEnrolled, array $myWaiting, bool $isLoggedIn, string $csrf, bool $canEnrol = true) { ?>
   <section class="schedule-list-section" aria-labelledby="schedule-list-heading">
-    <div class="section-inner">
-      <p class="section-label">01 &mdash; This Week</p>
-      <h2 class="section-heading" id="schedule-list-heading">Schedule (<span id="schedule-count"><?= count($schedules) ?></span>)</h2>
+    <div class="section__inner">
+      <p class="section__label">01 &mdash; This Week</p>
+      <h2 class="section__heading" id="schedule-list-heading">Schedule (<span id="schedule-count"><?= count($schedules) ?></span>)</h2>
 
       <p class="empty-state" id="schedule-empty"<?= count($schedules) === 0 ? '' : ' hidden' ?>>No classes match your filters.</p>
 
@@ -74,53 +74,53 @@
           $spots    = max(0, ($s->capacity ?? 0) - ($s->enrolledCount ?? 0));
         ?>
           <li class="schedule-card" data-schedule-id="<?= (int)$s->id ?>">
-            <header class="schedule-card-head">
-              <p class="schedule-card-day"><?= htmlspecialchars($s->dayOfWeek, ENT_QUOTES, 'UTF-8') ?> &middot; <?= htmlspecialchars($s->startTime, ENT_QUOTES, 'UTF-8') ?></p>
-              <p class="schedule-card-meta"><?= (int)$s->duration ?> min &middot; <?= htmlspecialchars($s->locationName ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+            <header class="schedule-card__head">
+              <p class="schedule-card__day"><?= htmlspecialchars($s->dayOfWeek, ENT_QUOTES, 'UTF-8') ?> &middot; <?= htmlspecialchars($s->startTime, ENT_QUOTES, 'UTF-8') ?></p>
+              <p class="schedule-card__meta"><?= (int)$s->duration ?> min &middot; <?= htmlspecialchars($s->locationName ?? '', ENT_QUOTES, 'UTF-8') ?></p>
             </header>
-            <h3 class="schedule-card-title">
+            <h3 class="schedule-card__title">
               <a href="class.php?id=<?= (int)$s->classId ?>"><?= htmlspecialchars($s->className ?? '', ENT_QUOTES, 'UTF-8') ?></a>
             </h3>
-            <p class="schedule-card-type"><?= htmlspecialchars($s->classType ?? '', ENT_QUOTES, 'UTF-8') ?></p>
-            <p class="schedule-card-coach">with <a href="trainer.php?id=<?= (int)$s->trainerId ?>"><?= htmlspecialchars($s->trainerName ?? '', ENT_QUOTES, 'UTF-8') ?></a></p>
-            <p class="schedule-card-capacity">
+            <p class="schedule-card__type"><?= htmlspecialchars($s->classType ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+            <p class="schedule-card__coach">with <a href="trainer.php?id=<?= (int)$s->trainerId ?>"><?= htmlspecialchars($s->trainerName ?? '', ENT_QUOTES, 'UTF-8') ?></a></p>
+            <p class="schedule-card__capacity">
               <?php if ($full) { ?>
-                <span class="status-tag status-tag-full">Full</span>
+                <span class="status-tag status-tag--full">Full</span>
               <?php } else { ?>
-                <span class="status-tag status-tag-open"><?= $spots ?> spot<?= $spots === 1 ? '' : 's' ?> left</span>
+                <span class="status-tag status-tag--open"><?= $spots ?> spot<?= $spots === 1 ? '' : 's' ?> left</span>
               <?php } ?>
             </p>
 
-            <div class="schedule-card-actions">
+            <div class="schedule-card__actions">
               <?php if (!$isLoggedIn) { ?>
-                <a href="login.php" class="btn-outline">Sign in to book</a>
+                <a href="login.php" class="btn--outline">Sign in to book</a>
               <?php } elseif ($enrolled) { ?>
                 <form method="post" action="../actions/action_cancel.php" class="js-cancel-form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
                   <span class="enrolled-tag">Enrolled</span>
-                  <button type="submit" class="btn-outline">Cancel</button>
+                  <button type="submit" class="btn--outline">Cancel</button>
                 </form>
               <?php } elseif ($waiting) { ?>
                 <form method="post" action="../actions/action_waitlist_leave.php">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
                   <span class="enrolled-tag">On waitlist</span>
-                  <button type="submit" class="btn-outline">Leave waitlist</button>
+                  <button type="submit" class="btn--outline">Leave waitlist</button>
                 </form>
               <?php } elseif (!$canEnrol) { ?>
-                <a href="membership.php" class="btn-outline">Choose a plan to book</a>
+                <a href="membership.php" class="btn--outline">Choose a plan to book</a>
               <?php } elseif ($full) { ?>
                 <form method="post" action="../actions/action_waitlist_join.php">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
-                  <button type="submit" class="btn-outline">Join waitlist</button>
+                  <button type="submit" class="btn--outline">Join waitlist</button>
                 </form>
               <?php } else { ?>
                 <form method="post" action="../actions/action_enroll.php" class="js-enroll-form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
-                  <button type="submit" class="btn-primary">Enrol</button>
+                  <button type="submit" class="btn--primary">Enrol</button>
                 </form>
               <?php } ?>
             </div>

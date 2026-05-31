@@ -28,7 +28,7 @@
 ?>
   <div class="dashboard">
     <?php drawDashboardSidebar($me, 'admin_users', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Admin', 'Users', 'Create, promote, deactivate or remove accounts.'); ?>
       <?php drawAdminUsers($users, $csrf, $meId, $validRole); ?>
     </main>

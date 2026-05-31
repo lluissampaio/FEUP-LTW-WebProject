@@ -22,7 +22,7 @@
   // Dismiss a flash message when its close button is clicked (works for both the
   // server-rendered banner and JS-injected flashes, since this is delegated).
   document.addEventListener('click', function (ev) {
-    const btn = ev.target.closest ? ev.target.closest('.message-close') : null;
+    const btn = ev.target.closest ? ev.target.closest('.message__close') : null;
     if (!btn) return;
     const msg = btn.closest('.message');
     if (msg) msg.remove();

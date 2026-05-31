@@ -14,25 +14,25 @@
   };
 ?>
 
- <aside class="dashboard-sidebar" aria-label="<?= htmlspecialchars($sidebarLabel, ENT_QUOTES, 'UTF-8') ?>">
-    <header class="dashboard-profile">
+ <aside class="dashboard__sidebar" aria-label="<?= htmlspecialchars($sidebarLabel, ENT_QUOTES, 'UTF-8') ?>">
+    <header class="dashboard__profile">
       <?php if ($photoSrc !== '') { ?>
-        <img class="dashboard-profile-photo" src="<?= htmlspecialchars($photoSrc, ENT_QUOTES, 'UTF-8') ?>" alt="" aria-hidden="true">
+        <img class="dashboard__profile-photo" src="<?= htmlspecialchars($photoSrc, ENT_QUOTES, 'UTF-8') ?>" alt="" aria-hidden="true">
       <?php } else { ?>
-        <div class="dashboard-profile-photo dashboard-profile-photo-placeholder" aria-hidden="true">
+        <div class="dashboard__profile-photo dashboard__profile-photo--placeholder" aria-hidden="true">
           <?= htmlspecialchars(strtoupper(substr($name, 0, 1)), ENT_QUOTES, 'UTF-8') ?>
         </div>
       <?php } ?>
-      <p class="dashboard-profile-name"><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></p>
-      <p class="dashboard-profile-since"><?= htmlspecialchars($roleDisplay, ENT_QUOTES, 'UTF-8') ?></p>
+      <p class="dashboard__profile-name"><?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></p>
+      <p class="dashboard__profile-since"><?= htmlspecialchars($roleDisplay, ENT_QUOTES, 'UTF-8') ?></p>
     </header>
 
-    <nav class="dashboard-nav" aria-label="Dashboard navigation">
+    <nav class="dashboard__nav" aria-label="Dashboard navigation">
       <?php
         // Renders a sidebar link, marking it active (is-active + aria-current) when its slug matches.
         $navLink = function (string $href, string $slug, string $label) use ($activePage) {
           $isActive = $activePage === $slug;
-          $classes = 'dashboard-nav-link' . ($isActive ? ' is-active' : '');
+          $classes = 'dashboard__nav-link' . ($isActive ? ' is-active' : '');
           echo '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '"'
              . ' class="' . htmlspecialchars($classes, ENT_QUOTES, 'UTF-8') . '"'
              . ($isActive ? ' aria-current="page"' : '')
@@ -73,79 +73,79 @@
         <?php $navLink('admin_disputes.php', 'disputes', 'Disputes'); ?>
       <?php } ?>
 
-      <form action="../actions/action_logout.php" method="post" class="dashboard-logout">
+      <form action="../actions/action_logout.php" method="post" class="dashboard__logout">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
-        <button type="submit" class="dashboard-nav-link dashboard-nav-link-signout">Sign out</button>
+        <button type="submit" class="dashboard__nav-link dashboard__nav-link--signout">Sign out</button>
       </form>
     </nav>
   </aside>
 <?php } ?>
 
 <?php function drawDashboardPageHeader(string $eyebrow, string $heading, string $sub) { ?>
-    <header class="dashboard-header">
-      <p class="dashboard-eyebrow"><?= htmlspecialchars($eyebrow, ENT_QUOTES, 'UTF-8') ?></p>
-      <h1 class="dashboard-heading"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h1>
-      <p class="dashboard-sub"><?= htmlspecialchars($sub, ENT_QUOTES, 'UTF-8') ?></p>
+    <header class="dashboard__header">
+      <p class="dashboard__eyebrow"><?= htmlspecialchars($eyebrow, ENT_QUOTES, 'UTF-8') ?></p>
+      <h1 class="dashboard__heading"><?= htmlspecialchars($heading, ENT_QUOTES, 'UTF-8') ?></h1>
+      <p class="dashboard__sub"><?= htmlspecialchars($sub, ENT_QUOTES, 'UTF-8') ?></p>
     </header>
 <?php } ?>
 
 <?php
   function drawAdminDashboard(array $adminCounts) {
 ?>
-    <section class="dashboard-stats" aria-label="Catalog overview">
+    <section class="dashboard__stats" aria-label="Catalog overview">
       <article class="stat-card">
-        <p class="stat-card-label">Classes</p>
-        <p class="stat-card-value"><?= (int)$adminCounts['Class'] ?></p>
-        <p class="stat-card-note"><?= (int)$adminCounts['Schedule'] ?> sessions scheduled</p>
+        <p class="stat-card__label">Classes</p>
+        <p class="stat-card__value"><?= (int)$adminCounts['Class'] ?></p>
+        <p class="stat-card__note"><?= (int)$adminCounts['Schedule'] ?> sessions scheduled</p>
       </article>
       <article class="stat-card">
-        <p class="stat-card-label">Equipment</p>
-        <p class="stat-card-value"><?= (int)$adminCounts['Equipment'] ?></p>
-        <p class="stat-card-note">Items tracked</p>
+        <p class="stat-card__label">Equipment</p>
+        <p class="stat-card__value"><?= (int)$adminCounts['Equipment'] ?></p>
+        <p class="stat-card__note">Items tracked</p>
       </article>
       <article class="stat-card">
-        <p class="stat-card-label">Members</p>
-        <p class="stat-card-value"><?= (int)$adminCounts['User'] ?></p>
-        <p class="stat-card-note"><?= (int)$adminCounts['Enrollment'] ?> active enrolments</p>
+        <p class="stat-card__label">Members</p>
+        <p class="stat-card__value"><?= (int)$adminCounts['User'] ?></p>
+        <p class="stat-card__note"><?= (int)$adminCounts['Enrollment'] ?> active enrolments</p>
       </article>
       <article class="stat-card">
-        <p class="stat-card-label">Engagement</p>
-        <p class="stat-card-value"><?= (int)$adminCounts['Review'] ?></p>
-        <p class="stat-card-note"><?= (int)$adminCounts['Waitlist'] ?> on waitlists</p>
+        <p class="stat-card__label">Engagement</p>
+        <p class="stat-card__value"><?= (int)$adminCounts['Review'] ?></p>
+        <p class="stat-card__note"><?= (int)$adminCounts['Waitlist'] ?> on waitlists</p>
       </article>
     </section>
 
     <section class="admin-section">
-      <div class="section-inner admin-cards">
+      <div class="section__inner admin-cards">
         <article class="card">
-          <h2 class="card-title">Classes</h2>
-          <p class="card-body">Create, edit or remove classes. Add sessions so they appear on the public schedule.</p>
-          <a class="btn-primary" href="admin_classes.php">Manage classes</a>
+          <h2 class="card__title">Classes</h2>
+          <p class="card__body">Create, edit or remove classes. Add sessions so they appear on the public schedule.</p>
+          <a class="btn--primary" href="admin_classes.php">Manage classes</a>
         </article>
         <article class="card">
-          <h2 class="card-title">Equipment</h2>
-          <p class="card-body">Track inventory, availability and operational status of gym equipment.</p>
-          <a class="btn-primary" href="admin_equipment.php">Manage equipment</a>
+          <h2 class="card__title">Equipment</h2>
+          <p class="card__body">Track inventory, availability and operational status of gym equipment.</p>
+          <a class="btn--primary" href="admin_equipment.php">Manage equipment</a>
         </article>
         <article class="card">
-          <h2 class="card-title">Users</h2>
-          <p class="card-body">Promote, deactivate or remove member, trainer and admin accounts.</p>
-          <a class="btn-primary" href="admin_users.php">Manage users</a>
+          <h2 class="card__title">Users</h2>
+          <p class="card__body">Promote, deactivate or remove member, trainer and admin accounts.</p>
+          <a class="btn--primary" href="admin_users.php">Manage users</a>
         </article>
         <article class="card">
-          <h2 class="card-title">Analytics</h2>
-          <p class="card-body">Gym-wide metrics: popular classes, equipment usage, member retention and revenue.</p>
-          <a class="btn-primary" href="admin_analytics.php">View analytics</a>
+          <h2 class="card__title">Analytics</h2>
+          <p class="card__body">Gym-wide metrics: popular classes, equipment usage, member retention and revenue.</p>
+          <a class="btn--primary" href="admin_analytics.php">View analytics</a>
         </article>
         <article class="card">
-          <h2 class="card-title">Disputes & feedback</h2>
-          <p class="card-body">Triage member reports on equipment, classes and billing, and respond.</p>
-          <a class="btn-primary" href="admin_disputes.php">Manage disputes</a>
+          <h2 class="card__title">Disputes & feedback</h2>
+          <p class="card__body">Triage member reports on equipment, classes and billing, and respond.</p>
+          <a class="btn--primary" href="admin_disputes.php">Manage disputes</a>
         </article>
         <article class="card">
-          <h2 class="card-title">Activity</h2>
-          <p class="card-body"><?= (int)$adminCounts['Enrollment'] ?> enrolments &middot; <?= (int)$adminCounts['Waitlist'] ?> waitlist entries &middot; <?= (int)$adminCounts['Review'] ?> reviews</p>
-          <a class="btn-outline" href="classes.php">View public schedule</a>
+          <h2 class="card__title">Activity</h2>
+          <p class="card__body"><?= (int)$adminCounts['Enrollment'] ?> enrolments &middot; <?= (int)$adminCounts['Waitlist'] ?> waitlist entries &middot; <?= (int)$adminCounts['Review'] ?> reviews</p>
+          <a class="btn--outline" href="classes.php">View public schedule</a>
         </article>
       </div>
     </section>
@@ -156,40 +156,40 @@
 <?php
   function drawTrainerDashboard(array $trainerStats) {
 ?>
-    <section class="dashboard-stats" aria-label="Trainer overview">
+    <section class="dashboard__stats" aria-label="Trainer overview">
       <article class="stat-card">
-        <p class="stat-card-label">Total Enrollments</p>
-        <p class="stat-card-value"><?= (int)$trainerStats['TotalEnrollments'] ?></p>
-        <p class="stat-card-note">Across <?= (int)$trainerStats['TotalSessions'] ?> sessions</p>
+        <p class="stat-card__label">Total Enrollments</p>
+        <p class="stat-card__value"><?= (int)$trainerStats['TotalEnrollments'] ?></p>
+        <p class="stat-card__note">Across <?= (int)$trainerStats['TotalSessions'] ?> sessions</p>
       </article>
       <article class="stat-card">
-        <p class="stat-card-label">Attendance Rate</p>
-        <p class="stat-card-value"><?= (int)$trainerStats['AttendanceRate'] ?><span class="stat-unit">%</span></p>
-        <p class="stat-card-note">Attended / Enrolled</p>
+        <p class="stat-card__label">Attendance Rate</p>
+        <p class="stat-card__value"><?= (int)$trainerStats['AttendanceRate'] ?><span class="stat-unit">%</span></p>
+        <p class="stat-card__note">Attended / Enrolled</p>
       </article>
       <article class="stat-card">
-        <p class="stat-card-label">Average Rating</p>
-        <p class="stat-card-value"><?= htmlspecialchars((string)($trainerStats['AverageRating'] ?? '—'), ENT_QUOTES, 'UTF-8') ?><span class="stat-unit">/5</span></p>
-        <p class="stat-card-note">From <?= (int)$trainerStats['TotalReviews'] ?> reviews</p>
+        <p class="stat-card__label">Average Rating</p>
+        <p class="stat-card__value"><?= htmlspecialchars((string)($trainerStats['AverageRating'] ?? '—'), ENT_QUOTES, 'UTF-8') ?><span class="stat-unit">/5</span></p>
+        <p class="stat-card__note">From <?= (int)$trainerStats['TotalReviews'] ?> reviews</p>
       </article>
     </section>
 
     <section class="admin-section">
-      <div class="section-inner admin-cards">
+      <div class="section__inner admin-cards">
         <article class="card">
-          <h2 class="card-title">Analytics</h2>
-          <p class="card-body">View detailed attendance, ratings, and engagement data for your classes.</p>
-          <a class="btn-primary" href="trainer_analytics.php">View analytics</a>
+          <h2 class="card__title">Analytics</h2>
+          <p class="card__body">View detailed attendance, ratings, and engagement data for your classes.</p>
+          <a class="btn--primary" href="trainer_analytics.php">View analytics</a>
         </article>
         <article class="card">
-          <h2 class="card-title">My Classes & Roster</h2>
-          <p class="card-body">Track and manage your assigned class schedule and enrolled members.</p>
-          <a class="btn-primary" href="trainer_classes.php">Manage schedule</a>
+          <h2 class="card__title">My Classes & Roster</h2>
+          <p class="card__body">Track and manage your assigned class schedule and enrolled members.</p>
+          <a class="btn--primary" href="trainer_classes.php">Manage schedule</a>
         </article>
         <article class="card">
-          <h2 class="card-title">Public Profile</h2>
-          <p class="card-body">Manage your public profile, including bio, specializations, and certifications.</p>
-          <a class="btn-outline" href="edit_trainer.php">Edit profile</a>
+          <h2 class="card__title">Public Profile</h2>
+          <p class="card__body">Manage your public profile, including bio, specializations, and certifications.</p>
+          <a class="btn--outline" href="edit_trainer.php">Edit profile</a>
         </article>
       </div>
     </section>
@@ -201,69 +201,69 @@
   function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, int $weeklyFrequency, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null, bool $hasPlan = true) {
 ?>
     <?php if (!$hasPlan) { ?>
-      <section class="dashboard-activity">
-        <h2 class="dashboard-section-heading">Choose your membership</h2>
+      <section class="dashboard__activity">
+        <h2 class="dashboard__section-heading">Choose your membership</h2>
         <p class="activity-empty">Select a membership plan to unlock class enrolment, workout logging and support requests.</p>
-        <p><a href="membership.php" class="btn-primary">Choose a plan</a></p>
+        <p><a href="membership.php" class="btn--primary">Choose a plan</a></p>
       </section>
     <?php } ?>
 
-    <section class="dashboard-stats" aria-label="Your statistics">
+    <section class="dashboard__stats" aria-label="Your statistics">
       <article class="stat-card">
-        <p class="stat-card-label">Total workouts</p>
-        <p class="stat-card-value"><?= $totalWorkouts ?></p>
-        <p class="stat-card-note">Total activity recorded</p>
+        <p class="stat-card__label">Total workouts</p>
+        <p class="stat-card__value"><?= $totalWorkouts ?></p>
+        <p class="stat-card__note">Total activity recorded</p>
       </article>
       <article class="stat-card">
-        <p class="stat-card-label">Active time</p>
-        <p class="stat-card-value"><?= $activeHours ?>h</p>
-        <p class="stat-card-note">Cumulative hours logged</p>
+        <p class="stat-card__label">Active time</p>
+        <p class="stat-card__value"><?= $activeHours ?>h</p>
+        <p class="stat-card__note">Cumulative hours logged</p>
       </article>
       <article class="stat-card">
-        <p class="stat-card-label">Estimated calories</p>
-        <p class="stat-card-value"><?= number_format($totalCalories) ?></p>
-        <p class="stat-card-note">Calories burned</p>
+        <p class="stat-card__label">Estimated calories</p>
+        <p class="stat-card__value"><?= number_format($totalCalories) ?></p>
+        <p class="stat-card__note">Calories burned</p>
       </article>
       <article class="stat-card">
-        <p class="stat-card-label">Weekly frequency</p>
-        <p class="stat-card-value"><?= $weeklyFrequency ?> / 7</p>
-        <p class="stat-card-note">Days this week</p>
+        <p class="stat-card__label">Weekly frequency</p>
+        <p class="stat-card__value"><?= $weeklyFrequency ?> / 7</p>
+        <p class="stat-card__note">Days this week</p>
       </article>
     </section>
 
     <?php if ($nutritionPlan) { ?>
-      <section class="dashboard-activity">
-        <h2 class="dashboard-section-heading">My Nutrition Plan - <?= htmlspecialchars($nutritionPlan->dietType, ENT_QUOTES, 'UTF-8') ?></h2>
+      <section class="dashboard__activity">
+        <h2 class="dashboard__section-heading">My Nutrition Plan - <?= htmlspecialchars($nutritionPlan->dietType, ENT_QUOTES, 'UTF-8') ?></h2>
         <div class="macro-grid">
           <article class="stat-card">
-            <p class="stat-card-label">Calories</p>
-            <p class="stat-card-value"><?= number_format($nutritionPlan->dailyCalories) ?></p>
+            <p class="stat-card__label">Calories</p>
+            <p class="stat-card__value"><?= number_format($nutritionPlan->dailyCalories) ?></p>
           </article>
           <article class="stat-card">
-            <p class="stat-card-label">Protein</p>
-            <p class="stat-card-value"><?= $nutritionPlan->protein ?>g</p>
+            <p class="stat-card__label">Protein</p>
+            <p class="stat-card__value"><?= $nutritionPlan->protein ?>g</p>
           </article>
           <article class="stat-card">
-            <p class="stat-card-label">Carbs</p>
-            <p class="stat-card-value"><?= $nutritionPlan->carbs ?>g</p>
+            <p class="stat-card__label">Carbs</p>
+            <p class="stat-card__value"><?= $nutritionPlan->carbs ?>g</p>
           </article>
           <article class="stat-card">
-            <p class="stat-card-label">Fats</p>
-            <p class="stat-card-value"><?= $nutritionPlan->fats ?>g</p>
+            <p class="stat-card__label">Fats</p>
+            <p class="stat-card__value"><?= $nutritionPlan->fats ?>g</p>
           </article>
         </div>
         
         <?php if (!empty(trim($nutritionPlan->guidelines))) { ?>
-          <div class="dashboard-notes">
-            <h3 class="dashboard-notes-heading">Guidelines & Notes</h3>
-            <p class="dashboard-notes-body"><?= htmlspecialchars(trim($nutritionPlan->guidelines), ENT_QUOTES, 'UTF-8') ?></p>
+          <div class="dashboard__notes">
+            <h3 class="dashboard__notes-heading">Guidelines & Notes</h3>
+            <p class="dashboard__notes-body"><?= htmlspecialchars(trim($nutritionPlan->guidelines), ENT_QUOTES, 'UTF-8') ?></p>
           </div>
         <?php } ?>
       </section>
     <?php } ?>
 
-    <section class="dashboard-activity">
-      <h2 class="dashboard-section-heading">Log a workout</h2>
+    <section class="dashboard__activity">
+      <h2 class="dashboard__section-heading">Log a workout</h2>
       <?php if (!$hasPlan) { ?>
         <p class="activity-empty">Choose a membership plan to start logging workouts.</p>
       <?php } else { ?>
@@ -283,16 +283,16 @@
           <input type="number" id="w-calories" name="calories" min="0" max="5000" step="10" value="0">
         </label>
         <div class="form-actions">
-          <button type="submit" class="btn-primary">Log workout</button>
+          <button type="submit" class="btn--primary">Log workout</button>
         </div>
       </form>
       <?php } ?>
     </section>
 
-    <section class="dashboard-activity" aria-labelledby="activity-heading">
-      <h2 class="dashboard-section-heading" id="activity-heading">Recent activity</h2>
+    <section class="dashboard__activity" aria-labelledby="activity-heading">
+      <h2 class="dashboard__section-heading" id="activity-heading">Recent activity</h2>
 
-      <div class="activity-table-wrap">
+      <div class="activity-table__wrap">
         <table class="activity-table">
           <thead>
             <tr>
@@ -308,7 +308,7 @@
                 <td><?= htmlspecialchars(formatDate($w->date), ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($w->workoutType, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= (int)$w->durationMinutes ?> min</td>
-                <td><span class="status-tag status-tag-<?= htmlspecialchars(strtolower($w->status), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w->status, ENT_QUOTES, 'UTF-8') ?></span></td>
+                <td><span class="status-tag status-tag--<?= htmlspecialchars(strtolower($w->status), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w->status, ENT_QUOTES, 'UTF-8') ?></span></td>
               </tr>
             <?php } ?>
             <?php if (empty($workouts)) { ?>
@@ -321,7 +321,7 @@
       </div>
       <?php if ($totalWorkouts > count($workouts)) { ?>
         <div style="margin-top: var(--spacing-md, 1.5rem); text-align: center;">
-          <a href="workouts.php" class="btn-outline btn-sm">View all history</a>
+          <a href="workouts.php" class="btn--outline btn--sm">View all history</a>
         </div>
       <?php } ?>
     </section>

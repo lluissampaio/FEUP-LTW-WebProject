@@ -69,10 +69,10 @@
     const wrap = wrapOf(el);
     const meter = document.createElement('div');
     meter.className = 'pw-meter';
-    meter.innerHTML = '<span class="pw-meter-bar"></span><span class="pw-meter-label"></span>';
+    meter.innerHTML = '<span class="pw-meter__bar"></span><span class="pw-meter__label"></span>';
     wrap.appendChild(meter);
-    const bar = meter.querySelector('.pw-meter-bar');
-    const label = meter.querySelector('.pw-meter-label');
+    const bar = meter.querySelector('.pw-meter__bar');
+    const label = meter.querySelector('.pw-meter__label');
     const labels = ['Too weak', 'Weak', 'Fair', 'Good', 'Strong'];
 
     el.addEventListener('input', () => {
@@ -94,7 +94,7 @@
     const update = () => {
       const len = el.value.length;
       counter.textContent = max ? len + ' / ' + max : String(len);
-      counter.classList.toggle('char-counter-over', max > 0 && len > max);
+      counter.classList.toggle('char-counter--over', max > 0 && len > max);
     };
     el.addEventListener('input', update);
     update();

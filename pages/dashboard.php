@@ -68,7 +68,7 @@
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'dashboard', $session->csrfToken()); ?>
 
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php if ($isAdmin) { ?>
         <?php drawDashboardPageHeader('Admin dashboard', "Welcome back, $firstName.", 'Manage gym operations, classes, and members.'); ?>
         <?php drawAdminDashboard($adminCounts); ?>

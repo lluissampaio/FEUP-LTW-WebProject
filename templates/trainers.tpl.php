@@ -10,9 +10,9 @@
     sort($specialties);
 ?>
   <section class="trainers-section">
-    <div class="section-inner">
-      <p class="section-label">01 &mdash; Coaches</p>
-      <h2 class="section-heading">Our Trainers</h2>
+    <div class="section__inner">
+      <p class="section__label">01 &mdash; Coaches</p>
+      <h2 class="section__heading">Our Trainers</h2>
 
       <div class="trainer-search" id="trainer-search">
         <label class="filter-field">
@@ -35,7 +35,7 @@
           <article class="trainer-card"
                    data-name="<?= htmlspecialchars(strtolower($t->name()), ENT_QUOTES, 'UTF-8') ?>"
                    data-specialty="<?= htmlspecialchars($t->specialty ?? '', ENT_QUOTES, 'UTF-8') ?>">
-            <a href="trainer.php?id=<?= (int)$t->id ?>" class="img-real-wrap trainer-photo">
+            <a href="trainer.php?id=<?= (int)$t->id ?>" class="img-real__wrap trainer-photo">
               <?php if ($t->photo) { ?>
                 <img class="img-real" src="../images/<?= htmlspecialchars($t->photo, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($t->name(), ENT_QUOTES, 'UTF-8') ?>">
               <?php } ?>
@@ -66,18 +66,18 @@
 <?php } ?>
 
 <?php function drawTrainerProfile(Trainer $t, array $classes) { ?>
-  <section class="trainer-profile-section">
-    <div class="section-inner trainer-profile">
-      <div class="img-real-wrap trainer-profile-photo">
+  <section class="trainer-profile__section">
+    <div class="section__inner trainer-profile">
+      <div class="img-real__wrap trainer-profile__photo">
         <?php if ($t->photo) { ?>
           <img class="img-real" src="../images/<?= htmlspecialchars($t->photo, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($t->name(), ENT_QUOTES, 'UTF-8') ?>">
         <?php } ?>
       </div>
-      <div class="trainer-profile-body">
+      <div class="trainer-profile__body">
         <?php if ($t->specialty) { ?>
-          <p class="hero-eyebrow"><?= htmlspecialchars($t->specialty, ENT_QUOTES, 'UTF-8') ?></p>
+          <p class="hero__eyebrow"><?= htmlspecialchars($t->specialty, ENT_QUOTES, 'UTF-8') ?></p>
         <?php } ?>
-        <h1 class="page-hero-heading"><?= htmlspecialchars($t->name(), ENT_QUOTES, 'UTF-8') ?></h1>
+        <h1 class="page-hero__heading"><?= htmlspecialchars($t->name(), ENT_QUOTES, 'UTF-8') ?></h1>
         <?php if ($t->bio) { ?>
           <p class="trainer-bio"><?= htmlspecialchars($t->bio, ENT_QUOTES, 'UTF-8') ?></p>
         <?php } ?>
@@ -93,21 +93,21 @@
   </section>
 
   <section class="trainer-classes-section">
-    <div class="section-inner">
-      <p class="section-label">01 &mdash; Programmes</p>
-      <h2 class="section-heading">Classes taught</h2>
+    <div class="section__inner">
+      <p class="section__label">01 &mdash; Programmes</p>
+      <h2 class="section__heading">Classes taught</h2>
       <?php if (count($classes) === 0) { ?>
         <p class="empty-state">No classes assigned.</p>
       <?php } else { ?>
         <ul class="schedule-cards">
           <?php foreach ($classes as $c) { ?>
             <li class="schedule-card">
-              <p class="schedule-card-meta"><?= htmlspecialchars($c->type, ENT_QUOTES, 'UTF-8') ?></p>
-              <h3 class="schedule-card-title"><a href="class.php?id=<?= (int)$c->id ?>"><?= htmlspecialchars($c->name, ENT_QUOTES, 'UTF-8') ?></a></h3>
+              <p class="schedule-card__meta"><?= htmlspecialchars($c->type, ENT_QUOTES, 'UTF-8') ?></p>
+              <h3 class="schedule-card__title"><a href="class.php?id=<?= (int)$c->id ?>"><?= htmlspecialchars($c->name, ENT_QUOTES, 'UTF-8') ?></a></h3>
               <?php if ($c->description) { ?>
-                <p class="schedule-card-coach"><?= htmlspecialchars($c->description, ENT_QUOTES, 'UTF-8') ?></p>
+                <p class="schedule-card__coach"><?= htmlspecialchars($c->description, ENT_QUOTES, 'UTF-8') ?></p>
               <?php } ?>
-              <p class="schedule-card-coach"><?= htmlspecialchars($c->locationName ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+              <p class="schedule-card__coach"><?= htmlspecialchars($c->locationName ?? '', ENT_QUOTES, 'UTF-8') ?></p>
             </li>
           <?php } ?>
         </ul>

@@ -120,18 +120,18 @@
         $isCurrent  = $hasActive && $current->planId === $p->id;
         $appStatus  = MembershipApplication::statusFor($db, $currentUser->id, $p->id);
         $isFeatured = $hasActive ? $isCurrent : $p->featured;
-        $cardClass  = 'pricing-card' . ($isFeatured ? ' pricing-card-featured' : '');
+        $cardClass  = 'pricing__card' . ($isFeatured ? ' pricing__card--featured' : '');
 
         // Default: no application yet → invite to apply (sends to the contact form).
         $label    = 'Apply';
-        $btnClass = $isFeatured ? 'btn-primary' : 'btn-outline';
+        $btnClass = $isFeatured ? 'btn--primary' : 'btn--outline';
         $disabled = false;
         $isApply  = true;   // renders as a link to the contact form
 
         if ($isCurrent) {
-            $label = 'Current plan';            $btnClass = 'btn-outline'; $disabled = true; $isApply = false;
+            $label = 'Current plan';            $btnClass = 'btn--outline'; $disabled = true; $isApply = false;
         } elseif ($appStatus === 'accepted') {
-            $label = 'Subscribe';               $btnClass = 'btn-primary'; $isApply = false;
+            $label = 'Subscribe';               $btnClass = 'btn--primary'; $isApply = false;
         } elseif ($appStatus === 'pending') {
             $label = 'Application under review'; $disabled = true;         $isApply = false;
         } elseif ($appStatus === 'rejected') {
@@ -159,8 +159,8 @@
   drawCtaBanner(
     'Ready to apply?<br>Start the conversation.',
     [
-      ['label' => 'Begin Application', 'href' => 'contact.php', 'style' => 'btn-primary'],
-      ['label' => 'Read our story',    'href' => 'about.php',   'style' => 'btn-outline'],
+      ['label' => 'Begin Application', 'href' => 'contact.php', 'style' => 'btn--primary'],
+      ['label' => 'Read our story',    'href' => 'about.php',   'style' => 'btn--outline'],
     ]
   );
   drawFooter();

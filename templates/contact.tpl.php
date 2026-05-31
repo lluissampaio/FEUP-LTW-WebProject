@@ -2,7 +2,7 @@
 
 <?php function drawContactSection(array $info, string $csrf) { ?>
   <section class="contact-section">
-    <div class="section-inner">
+    <div class="section__inner">
       <div class="contact-grid">
 
         <div>
@@ -82,7 +82,7 @@
       <textarea id="message" name="message" rows="4" required maxlength="600" data-counter="600"></textarea>
     </label>
 
-    <button type="submit" class="btn-primary">Send enquiry</button>
+    <button type="submit" class="btn--primary">Send enquiry</button>
     <p class="form-disclaimer">By submitting, you consent to Iron Haven contacting you in confidence about your enquiry. We do not share, sell, or publish any applicant information.</p>
 
   </form>
@@ -94,14 +94,14 @@
 
 <?php function drawLocations(array $locations) { ?>
   <section class="locations-section">
-    <div class="section-inner">
-      <p class="section-label">02 &mdash; Our Locations</p>
-      <h2 class="section-heading">Four Cities. One Standard.</h2>
+    <div class="section__inner">
+      <p class="section__label">02 &mdash; Our Locations</p>
+      <h2 class="section__heading">Four Cities. One Standard.</h2>
 
       <div class="locations-grid">
         <?php foreach ($locations as $loc) { ?>
           <article class="location-card">
-            <figure class="img-real-wrap location-card-img">
+            <figure class="img-real__wrap location-card__img">
               <img class="img-real" src="../images/<?= htmlspecialchars($loc['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($loc['alt'], ENT_QUOTES, 'UTF-8') ?>">
             </figure>
             <h3 class="location-name"><?= htmlspecialchars($loc['name'], ENT_QUOTES, 'UTF-8') ?></h3>
@@ -109,7 +109,7 @@
             <address class="location-address"><?= $loc['address'] ?></address>
             <dl class="location-hours">
               <?php foreach ($loc['hours'] as $row) { ?>
-                <div class="location-hours-row">
+                <div class="location-hours__row">
                   <dt><?= htmlspecialchars($row['label'], ENT_QUOTES, 'UTF-8') ?></dt>
                   <dd><?= htmlspecialchars($row['value'], ENT_QUOTES, 'UTF-8') ?></dd>
                 </div>

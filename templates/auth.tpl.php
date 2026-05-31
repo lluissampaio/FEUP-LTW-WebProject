@@ -22,7 +22,7 @@
           <input type="password" id="login-password" name="password" required autocomplete="current-password">
         </label>
 
-        <button type="submit" class="btn-primary auth-submit">Sign in</button>
+        <button type="submit" class="btn--primary auth-submit">Sign in</button>
       </form>
 
       <p class="auth-alt">New here? <a href="register.php">Apply for membership</a></p>
@@ -69,7 +69,7 @@
           <input type="password" id="register-confirm" name="confirm_password" required minlength="8" autocomplete="new-password">
         </label>
 
-        <button type="submit" class="btn-primary auth-submit">Create account</button>
+        <button type="submit" class="btn--primary auth-submit">Create account</button>
       </form>
 
       <p class="auth-alt">Already a member? <a href="login.php">Sign in</a></p>

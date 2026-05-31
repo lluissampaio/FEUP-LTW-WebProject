@@ -43,7 +43,7 @@
     $guidelines    = $plan ? $plan->guidelines : '';
 ?>
     <section class="admin-section">
-      <h2 class="dashboard-section-heading">Daily macro target</h2>
+      <h2 class="dashboard__section-heading">Daily macro target</h2>
       <form class="admin-form" method="post" action="../actions/action_save_nutrition.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="target_user_id" value="<?= (int)$targetUser->id ?>">
@@ -79,7 +79,7 @@
         </label>
 
         <div class="form-actions">
-          <button type="submit" class="btn-primary">Save Nutrition Plan</button>
+          <button type="submit" class="btn--primary">Save Nutrition Plan</button>
         </div>
       </form>
     </section>
@@ -92,14 +92,14 @@
   function drawNutritionMealManager(?NutritionPlan $plan, array $meals, string $csrf, User $targetUser) {
 ?>
     <section class="admin-section">
-      <h2 class="dashboard-section-heading">Meal breakdown</h2>
+      <h2 class="dashboard__section-heading">Meal breakdown</h2>
 
       <?php if (!$plan) { ?>
         <p class="empty-state">Save a nutrition plan above before adding meals.</p>
       <?php } else { ?>
         <?php drawMealTable($meals, true, $csrf, (int)$targetUser->id); ?>
 
-        <h3 class="dashboard-section-heading">Add a meal</h3>
+        <h3 class="dashboard__section-heading">Add a meal</h3>
         <form class="admin-form" method="post" action="../actions/action_nutrition_meal.php">
           <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
           <input type="hidden" name="action" value="add">
@@ -127,7 +127,7 @@
           </label>
 
           <div class="form-actions">
-            <button type="submit" class="btn-primary">Add meal</button>
+            <button type="submit" class="btn--primary">Add meal</button>
           </div>
         </form>
       <?php } ?>
@@ -140,31 +140,31 @@
    * ------------------------------------------------------------------ */
   function drawNutritionPlanSummary(?NutritionPlan $plan, array $meals) {
 ?>
-    <section class="dashboard-stats" aria-label="Nutrition plan summary">
+    <section class="dashboard__stats" aria-label="Nutrition plan summary">
       <?php if (!$plan) { ?>
         <p class="empty-state">No nutrition plan yet. Your trainer will set up your daily macro targets and meal breakdown.</p>
       <?php } else { ?>
         <article class="stat-card">
-          <p class="stat-card-label">Diet</p>
-          <p class="stat-card-value"><?= htmlspecialchars($plan->dietType, ENT_QUOTES, 'UTF-8') ?></p>
-          <p class="stat-card-note">Daily target</p>
+          <p class="stat-card__label">Diet</p>
+          <p class="stat-card__value"><?= htmlspecialchars($plan->dietType, ENT_QUOTES, 'UTF-8') ?></p>
+          <p class="stat-card__note">Daily target</p>
         </article>
         <article class="stat-card">
-          <p class="stat-card-label">Calories</p>
-          <p class="stat-card-value"><?= (int)$plan->dailyCalories ?><span class="stat-unit"> kcal</span></p>
-          <p class="stat-card-note">Per day</p>
+          <p class="stat-card__label">Calories</p>
+          <p class="stat-card__value"><?= (int)$plan->dailyCalories ?><span class="stat-unit"> kcal</span></p>
+          <p class="stat-card__note">Per day</p>
         </article>
         <article class="stat-card">
-          <p class="stat-card-label">Protein</p>
-          <p class="stat-card-value"><?= (int)$plan->protein ?><span class="stat-unit">g</span></p>
-          <p class="stat-card-note">Carbs <?= (int)$plan->carbs ?>g &middot; Fats <?= (int)$plan->fats ?>g</p>
+          <p class="stat-card__label">Protein</p>
+          <p class="stat-card__value"><?= (int)$plan->protein ?><span class="stat-unit">g</span></p>
+          <p class="stat-card__note">Carbs <?= (int)$plan->carbs ?>g &middot; Fats <?= (int)$plan->fats ?>g</p>
         </article>
       <?php } ?>
     </section>
 
     <?php if ($plan) { ?>
       <section class="admin-section">
-        <h2 class="dashboard-section-heading">Meal breakdown</h2>
+        <h2 class="dashboard__section-heading">Meal breakdown</h2>
         <?php drawMealTable($meals, false, '', 0); ?>
         <?php if ($plan->guidelines !== '') { ?>
           <p class="nutrition-guidelines"><?= nl2br(htmlspecialchars($plan->guidelines, ENT_QUOTES, 'UTF-8')) ?></p>
@@ -217,7 +217,7 @@
               <?php if ($editable) { ?>
                 <td>
                   <details class="meal-edit">
-                    <summary class="btn-outline btn-sm">Edit</summary>
+                    <summary class="btn--outline btn--sm">Edit</summary>
                     <form class="admin-form" method="post" action="../actions/action_nutrition_meal.php">
                       <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                       <input type="hidden" name="action" value="edit">
@@ -244,7 +244,7 @@
                         <input type="number" name="fats" required min="0" value="<?= (int)$m->fats ?>">
                       </label>
                       <div class="form-actions">
-                        <button type="submit" class="btn-primary btn-sm">Save meal</button>
+                        <button type="submit" class="btn--primary btn--sm">Save meal</button>
                       </div>
                     </form>
                   </details>
@@ -253,7 +253,7 @@
                     <input type="hidden" name="action" value="delete">
                     <input type="hidden" name="member_id" value="<?= (int)$memberId ?>">
                     <input type="hidden" name="meal_id" value="<?= (int)$m->mealId ?>">
-                    <button type="submit" class="btn-outline btn-sm" data-confirm="Remove this meal? This cannot be undone.">Remove</button>
+                    <button type="submit" class="btn--outline btn--sm" data-confirm="Remove this meal? This cannot be undone.">Remove</button>
                   </form>
                 </td>
               <?php } ?>
@@ -261,7 +261,7 @@
           <?php } ?>
         </tbody>
         <tfoot>
-          <tr class="meal-row meal-row-total">
+          <tr class="meal-row meal-row--total">
             <td><strong>Total</strong></td>
             <td><strong><?= (int)$totCals ?> kcal</strong></td>
             <td><strong><?= (int)$totProtein ?>g</strong></td>
@@ -281,7 +281,7 @@
   function drawNutritionLogForm(NutritionPlan $plan, string $csrf) {
 ?>
     <section class="admin-section">
-      <h2 class="dashboard-section-heading">Log today</h2>
+      <h2 class="dashboard__section-heading">Log today</h2>
       <p class="nutrition-target-hint">
         Target: <?= (int)$plan->dailyCalories ?> kcal &middot;
         <?= (int)$plan->protein ?>g protein &middot;
@@ -314,7 +314,7 @@
         </label>
 
         <div class="form-actions">
-          <button type="submit" class="btn-primary">Save today's log</button>
+          <button type="submit" class="btn--primary">Save today's log</button>
         </div>
       </form>
     </section>
@@ -327,7 +327,7 @@
   function drawNutritionLogHistory(NutritionPlan $plan, array $logs) {
 ?>
     <section class="admin-section">
-      <h2 class="dashboard-section-heading">Recent logs</h2>
+      <h2 class="dashboard__section-heading">Recent logs</h2>
       <?php if (empty($logs)) { ?>
         <p class="empty-state">No nutrition logged yet. Use the form above to record today's intake.</p>
       <?php } else { ?>
@@ -347,7 +347,7 @@
               <?php foreach ($logs as $log) {
                 $diff      = $log->calories - $plan->dailyCalories;
                 $diffLabel = ($diff >= 0 ? '+' : '') . $diff . ' vs target';
-                $diffClass = $diff > 0 ? 'nutrition-diff-over' : ($diff < 0 ? 'nutrition-diff-under' : 'nutrition-diff-on');
+                $diffClass = $diff > 0 ? 'nutrition-diff--over' : ($diff < 0 ? 'nutrition-diff--under' : 'nutrition-diff--on');
               ?>
                 <tr>
                   <td><?= htmlspecialchars(formatDate($log->logDate), ENT_QUOTES, 'UTF-8') ?></td>

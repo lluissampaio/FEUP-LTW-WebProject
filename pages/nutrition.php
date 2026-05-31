@@ -29,7 +29,7 @@
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'nutrition', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Nutrition', 'Your Nutrition Plan', 'Manage your daily macros and dietary goals.'); ?>
       <?php drawNutritionPlan($plan, $session, null, $meals, $logs); ?>
     </main>

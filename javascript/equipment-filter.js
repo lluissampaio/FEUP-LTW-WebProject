@@ -23,7 +23,7 @@
   }
 
   function row(e) {
-    const statusClass = 'status-tag status-tag-' + esc(String(e.status).replace(/_/g, '-'));
+    const statusClass = 'status-tag status-tag--' + esc(String(e.status).replace(/_/g, '-'));
     const statusLabel = esc(String(e.status).replace(/_/g, ' '));
     return '<tr>' +
       '<td>' + esc(e.name) + '</td>' +

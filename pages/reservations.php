@@ -33,7 +33,7 @@
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'reservations', $session->csrfToken()); ?>
 
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Equipment reservations', 'Reserve your spot', 'Book a piece of equipment for a date and time slot.'); ?>
       <?php drawReserveForm($equipment, $preselectId, $today, $session->csrfToken()); ?>
       <?php drawMyReservations($reservations, $session->csrfToken()); ?>

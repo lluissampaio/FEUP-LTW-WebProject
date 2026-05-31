@@ -17,7 +17,7 @@
   function drawDisputeForm(string $csrf, bool $hasPlan = true) {
 ?>
   <section class="dispute-block">
-    <h2 class="dashboard-section-heading">Report an issue</h2>
+    <h2 class="dashboard__section-heading">Report an issue</h2>
     <?php if (!$hasPlan) { ?>
       <p class="activity-empty">Choose a membership plan to open a support request. <a href="membership.php">Choose a plan &rarr;</a></p>
     <?php } else { ?>
@@ -45,7 +45,7 @@
         <textarea id="dispute-message" name="message" rows="5" required></textarea>
       </label>
 
-      <button type="submit" class="btn-primary">Submit report</button>
+      <button type="submit" class="btn--primary">Submit report</button>
     </form>
     <?php } ?>
   </section>
@@ -56,7 +56,7 @@
   function drawMemberDisputes(array $disputes) {
 ?>
   <section class="dispute-block">
-    <h2 class="dashboard-section-heading">Your reports</h2>
+    <h2 class="dashboard__section-heading">Your reports</h2>
     <?php if (empty($disputes)) { ?>
       <p class="activity-empty">You haven't reported anything yet.</p>
     <?php } else { ?>
@@ -64,16 +64,16 @@
         <?php foreach ($disputes as $d) { ?>
           <li>
             <article class="dispute-card">
-              <header class="dispute-card-head">
+              <header class="dispute-card__head">
                 <span class="dispute-cat"><?= htmlspecialchars(disputeCategoryLabel($d->category), ENT_QUOTES, 'UTF-8') ?></span>
-                <span class="status-tag status-tag-<?= htmlspecialchars($d->status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(disputeStatusLabel($d->status), ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="status-tag status-tag--<?= htmlspecialchars($d->status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(disputeStatusLabel($d->status), ENT_QUOTES, 'UTF-8') ?></span>
               </header>
               <h3 class="dispute-subject"><?= htmlspecialchars($d->subject, ENT_QUOTES, 'UTF-8') ?></h3>
               <p class="dispute-message"><?= nl2br(htmlspecialchars($d->message, ENT_QUOTES, 'UTF-8')) ?></p>
               <p class="dispute-meta">Reported <?= htmlspecialchars(formatDate($d->createdAt), ENT_QUOTES, 'UTF-8') ?></p>
               <?php if ($d->response) { ?>
                 <div class="dispute-response">
-                  <p class="dispute-response-label">Iron Haven response</p>
+                  <p class="dispute-response__label">Iron Haven response</p>
                   <p><?= nl2br(htmlspecialchars($d->response, ENT_QUOTES, 'UTF-8')) ?></p>
                 </div>
               <?php } ?>
@@ -97,9 +97,9 @@
         <?php foreach ($disputes as $d) { ?>
           <li>
             <article class="dispute-card">
-              <header class="dispute-card-head">
+              <header class="dispute-card__head">
                 <span class="dispute-cat"><?= htmlspecialchars(disputeCategoryLabel($d->category), ENT_QUOTES, 'UTF-8') ?></span>
-                <span class="status-tag status-tag-<?= htmlspecialchars($d->status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(disputeStatusLabel($d->status), ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="status-tag status-tag--<?= htmlspecialchars($d->status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(disputeStatusLabel($d->status), ENT_QUOTES, 'UTF-8') ?></span>
               </header>
               <h3 class="dispute-subject"><?= htmlspecialchars($d->subject, ENT_QUOTES, 'UTF-8') ?></h3>
               <p class="dispute-meta">From <?= htmlspecialchars($d->memberName ?? 'Member', ENT_QUOTES, 'UTF-8') ?> &middot; <?= htmlspecialchars(formatDate($d->createdAt), ENT_QUOTES, 'UTF-8') ?></p>
@@ -123,7 +123,7 @@
                   <textarea id="response-<?= (int)$d->id ?>" name="response" rows="3"><?= htmlspecialchars($d->response ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
                 </label>
 
-                <button type="submit" class="btn-primary btn-sm">Save response</button>
+                <button type="submit" class="btn--primary btn--sm">Save response</button>
               </form>
             </article>
           </li>

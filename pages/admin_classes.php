@@ -43,7 +43,7 @@
 ?>
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'admin', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Admin', 'Class catalog', 'Create, edit or remove classes and assign trainers.'); ?>
       <?php drawAdminClasses($classes, $trainers, $locations, $csrf, $days, $editing, $editingSchedules, $sessionCounts); ?>
     </main>

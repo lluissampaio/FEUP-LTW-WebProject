@@ -27,7 +27,7 @@
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'account', $session->csrfToken()); ?>
-    <main id="main-content" class="dashboard-main">
+    <main id="main-content" class="dashboard__main">
       <?php drawDashboardPageHeader('Manage account', 'Your profile', 'Update your name, sign-in details and profile photo.'); ?>
       <?php drawProfileForm($user, $photoUrl, $csrf); ?>
     </main>
