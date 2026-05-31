@@ -40,10 +40,20 @@
     foreach ($reviews as $r) if ($r->userId === $session->getId()) { $myReview = $r; break; }
   }
 
-  $csrf = $session->csrfToken();
+  
+  require_once(__DIR__ . '/../database/membership.class.php');
+  $isMember = false;
+  $canEnrol = false;
+  if ($session->isLoggedIn()) {
+    $isMember = isMemberUser($session);
+    if ($isMember) {
+      $canEnrol = Membership::userHasActivePlan($db, $session->getId());
+    }
+  }
 
-  drawHeader($session, 'classes', $class->name . ' — Iron Haven');
-  drawClassDetail($class, $schedules, $myEnrolled, $myWaiting, $session->isLoggedIn(), $csrf);
+  $csrf = $session->csrfToken();
+drawHeader($session, 'classes', $class->name . ' — Iron Haven');
+  drawClassDetail($class, $schedules, $myEnrolled, $myWaiting, $session->isLoggedIn(), $isMember, $canEnrol, $csrf);
   drawClassReviews($class, $reviews, $avg, $canReview, $myReview, $csrf);
   drawFooter();
 ?>

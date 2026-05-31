@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); ?>
 
-<?php function drawClassDetail(GymClass $class, array $schedules, array $myEnrolled, array $myWaiting, bool $isLoggedIn, string $csrf) { ?>
+<?php function drawClassDetail(GymClass $class, array $schedules, array $myEnrolled, array $myWaiting, bool $isLoggedIn, bool $isMember, bool $canEnrol, string $csrf) { ?>
   <section class="page-hero">
     <div class="page-hero-inner">
       <p class="breadcrumb"><a href="classes.php">Classes</a> <span class="breadcrumb-sep">/</span> <span><?= htmlspecialchars($class->name, ENT_QUOTES, 'UTF-8') ?></span></p>
@@ -44,6 +44,8 @@
             <div class="schedule-card-actions">
               <?php if (!$isLoggedIn) { ?>
                 <a href="login.php" class="btn-outline">Sign in to book</a>
+              <?php } elseif (!$isMember) { ?>
+                <!-- No actions for trainers/admins -->
               <?php } elseif ($enrolled) { ?>
                 <form method="post" action="../actions/action_cancel.php">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
@@ -64,6 +66,8 @@
                   <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
                   <button type="submit" class="btn-outline">Join waitlist</button>
                 </form>
+              <?php } elseif (!$canEnrol) { ?>
+                <a href="membership.php" class="btn-outline">Choose a plan to book</a>
               <?php } else { ?>
                 <form method="post" action="../actions/action_enroll.php">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">

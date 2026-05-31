@@ -12,11 +12,17 @@
   $session->requireLogin('../pages/login.php');
   $session->verifyCsrf($_POST['csrf_token'] ?? '', '../pages/classes.php');
 
+  if (!isMemberUser($session)) {
+    $session->addMessage('error', 'Only members can perform this action.');
+    header('Location: ../pages/classes.php');
+    exit;
+  }
+
   $scheduleId = isset($_POST['schedule_id']) ? (int)$_POST['schedule_id'] : 0;
   $db = getDatabaseConnection();
 
   // Members must have chosen a membership before enrolling in classes.
-  if (isMemberUser($session) && !Membership::userHasActivePlan($db, $session->getId())) {
+  if (!Membership::userHasActivePlan($db, $session->getId())) {
     $session->addMessage('error', 'Choose a membership plan before enrolling in classes.');
     header('Location: ../pages/membership.php');
     exit;

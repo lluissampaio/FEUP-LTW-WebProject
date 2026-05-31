@@ -58,7 +58,7 @@
   </section>
 <?php } ?>
 
-<?php function drawScheduleList(array $schedules, array $myEnrolled, array $myWaiting, bool $isLoggedIn, string $csrf, bool $canEnrol = true) { ?>
+<?php function drawScheduleList(array $schedules, array $myEnrolled, array $myWaiting, bool $isLoggedIn, bool $isMember, bool $canEnrol, string $csrf) { ?>
   <section class="schedule-list-section" aria-labelledby="schedule-list-heading">
     <div class="section-inner">
       <p class="section-label">01 &mdash; This Week</p>
@@ -94,6 +94,8 @@
             <div class="schedule-card-actions">
               <?php if (!$isLoggedIn) { ?>
                 <a href="login.php" class="btn-outline">Sign in to book</a>
+              <?php } elseif (!$isMember) { ?>
+                <!-- No actions for trainers/admins -->
               <?php } elseif ($enrolled) { ?>
                 <form method="post" action="../actions/action_cancel.php" class="js-cancel-form">
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">

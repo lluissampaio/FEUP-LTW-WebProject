@@ -19,6 +19,7 @@
 
   $session = new Session();
   if (!$session->isLoggedIn()) jsend(401, ['ok' => false, 'error' => 'Not signed in.']);
+  if (!isMemberUser($session)) jsend(403, ['ok' => false, 'error' => 'Only members can enrol in classes.']);
 
   if ($_SERVER['REQUEST_METHOD'] !== 'POST') jsend(405, ['ok' => false, 'error' => 'POST required.']);
 
@@ -37,7 +38,7 @@
 
   // Members must have chosen a membership before booking a spot or joining a waitlist.
   if (in_array($action, ['enrol', 'waitlist_join'], true)
-      && isMemberUser($session) && !Membership::userHasActivePlan($db, $session->getId())) {
+      && !Membership::userHasActivePlan($db, $session->getId())) {
     jsend(403, ['ok' => false, 'error' => 'Choose a membership plan to book classes.']);
   }
 

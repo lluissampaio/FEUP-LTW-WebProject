@@ -44,9 +44,13 @@
 
   // Logged-in members must have chosen a plan before they can book.
   require_once(__DIR__ . '/../database/membership.class.php');
-  $canEnrol = true;
-  if ($session->isLoggedIn() && isMemberUser($session)) {
-    $canEnrol = Membership::userHasActivePlan($db, $session->getId());
+  $isMember = false;
+  $canEnrol = false;
+  if ($session->isLoggedIn()) {
+    $isMember = isMemberUser($session);
+    if ($isMember) {
+      $canEnrol = Membership::userHasActivePlan($db, $session->getId());
+    }
   }
 
   drawHeader($session, 'classes', 'Classes — Iron Haven');
@@ -59,6 +63,6 @@
     'type' => $type, 'day' => $day, 'trainer' => $trainerId, 'location' => $locationId, 'time' => $time,
     'types' => $types, 'trainers' => $trainers, 'locations' => $locations, 'days' => $days,
   ]);
-  drawScheduleList($schedules, $myEnrolled, $myWaiting, $session->isLoggedIn(), $csrf, $canEnrol);
+  drawScheduleList($schedules, $myEnrolled, $myWaiting, $session->isLoggedIn(), $isMember, $canEnrol, $csrf);
   drawFooter();
 ?>
