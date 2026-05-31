@@ -8,6 +8,8 @@
   require_once(__DIR__ . '/../templates/home.tpl.php');
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/plan.class.php');
+  require_once(__DIR__ . '/../database/class.class.php');
+  require_once(__DIR__ . '/../database/trainer.class.php');
 
   $stats = [
     ['number' => '4',      'label' => 'Locations'],
@@ -52,6 +54,10 @@
   $db = getDatabaseConnection();
   $plansFromDB = Plan::getPlans($db);
 
+  // Promotional features: classes/trainers an admin has flagged Featured = 1.
+  $featuredClasses  = GymClass::getFeatured($db);
+  $featuredTrainers = Trainer::getFeatured($db);
+
   $plans = [];
   foreach ($plansFromDB as $p) {
     $features = array_map('trim', explode(',', $p->description ?? ''));
@@ -70,6 +76,7 @@
   drawHomeStats($stats);
   drawHomeServices($services);
   drawHomeTestimonials($testimonials);
+  drawHomeFeatured($featuredClasses, $featuredTrainers);
   drawHomePricing($plans);
   drawFooter();
 ?>

@@ -4,26 +4,25 @@
   <section class="filter-section" aria-label="Filter equipment">
     <div class="section-inner">
       <form class="filter-form" id="equipment-filter-form" method="get" action="equipment.php">
-        <div class="filter-field">
-          <label for="eq-location">Location</label>
+        <label class="filter-field">
+          Location
           <select id="eq-location" name="location">
             <option value="">All locations</option>
             <?php foreach ($locations as $l) { ?>
               <option value="<?= (int)$l->id ?>" <?= $locationId === $l->id ? 'selected' : '' ?>><?= htmlspecialchars($l->city, ENT_QUOTES, 'UTF-8') ?></option>
             <?php } ?>
           </select>
-        </div>
-        <div class="filter-field">
-          <label for="eq-type">Type</label>
+        </label>
+        <label class="filter-field">
+          Type
           <select id="eq-type" name="type">
             <option value="">All types</option>
             <?php foreach ($types as $t) { ?>
               <option value="<?= htmlspecialchars($t, ENT_QUOTES, 'UTF-8') ?>" <?= $type === $t ? 'selected' : '' ?>><?= htmlspecialchars($t, ENT_QUOTES, 'UTF-8') ?></option>
             <?php } ?>
           </select>
-        </div>
+        </label>
         <div class="filter-actions">
-          <button type="submit" class="btn-primary">Filter</button>
           <a href="equipment.php" class="btn-outline">Reset</a>
         </div>
       </form>
@@ -31,7 +30,7 @@
   </section>
 <?php } ?>
 
-<?php function drawEquipmentList(array $items) { ?>
+<?php function drawEquipmentList(array $items, bool $canReserve = false) { ?>
   <section class="equipment-section" aria-labelledby="equipment-heading">
     <div class="section-inner">
       <p class="section-label">01 &mdash; Inventory</p>
@@ -50,6 +49,7 @@
                 <th scope="col">Location</th>
                 <th scope="col">Available</th>
                 <th scope="col">Status</th>
+                <?php if ($canReserve) { ?><th scope="col"></th><?php } ?>
               </tr>
             </thead>
             <tbody>
@@ -62,6 +62,9 @@
                   <td><?= htmlspecialchars($e->locationName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                   <td><?= (int)$e->available ?> / <?= (int)$e->quantity ?></td>
                   <td><span class="<?= $statusClass ?>"><?= htmlspecialchars(str_replace('_', ' ', $e->status), ENT_QUOTES, 'UTF-8') ?></span></td>
+                  <?php if ($canReserve) { ?>
+                    <td><a class="btn-outline btn-sm" href="reservations.php?equipment_id=<?= (int)$e->id ?>">Reserve</a></td>
+                  <?php } ?>
                 </tr>
               <?php } ?>
             </tbody>

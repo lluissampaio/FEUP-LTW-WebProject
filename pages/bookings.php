@@ -49,7 +49,7 @@
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'bookings', $session->csrfToken()); ?>
 
-    <main class="dashboard-main">
+    <main id="main-content" class="dashboard-main">
       <?php if ($isTrainer) { ?>
         <?php drawDashboardPageHeader('Personal training', 'Your one-on-one roster', 'Members who have booked private sessions with you.'); ?>
         <?php drawTrainerRoster($roster); ?>

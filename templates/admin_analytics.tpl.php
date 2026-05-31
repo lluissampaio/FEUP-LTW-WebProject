@@ -3,28 +3,28 @@
 
   function drawAdminAnalytics(array $overview, array $popular, array $equipment, array $retention, array $planDist) {
 ?>
-      <section class="dashboard-stats" aria-label="Headline metrics">
-        <article class="stat-card">
+      <ul class="dashboard-stats" aria-label="Headline metrics">
+        <li class="stat-card">
           <p class="stat-card-label">Active members</p>
           <p class="stat-card-value"><?= (int)$overview['members'] ?></p>
           <p class="stat-card-note"><?= (int)$overview['activeSubs'] ?> active subscriptions</p>
-        </article>
-        <article class="stat-card">
+        </li>
+        <li class="stat-card">
           <p class="stat-card-label">Monthly revenue</p>
           <p class="stat-card-value">$<?= number_format($overview['mrr']) ?></p>
           <p class="stat-card-note">Recurring, active plans</p>
-        </article>
-        <article class="stat-card">
+        </li>
+        <li class="stat-card">
           <p class="stat-card-label">Engagement</p>
           <p class="stat-card-value"><?= (int)$overview['enrollments'] ?></p>
           <p class="stat-card-note"><?= (int)$overview['bookings'] ?> PT bookings</p>
-        </article>
-        <article class="stat-card">
+        </li>
+        <li class="stat-card">
           <p class="stat-card-label">Open disputes</p>
           <p class="stat-card-value"><?= (int)$overview['openDisputes'] ?></p>
           <p class="stat-card-note"><a href="admin_disputes.php">Review now</a></p>
-        </article>
-      </section>
+        </li>
+      </ul>
 
       <section class="analytics-block">
         <h2 class="dashboard-section-heading">Member retention</h2>
@@ -83,15 +83,15 @@
 
       <section class="analytics-block">
         <h2 class="dashboard-section-heading">Plan distribution</h2>
-        <div class="plan-dist">
+        <ul class="plan-dist">
           <?php foreach ($planDist as $p) { ?>
-            <article class="plan-dist-item">
+            <li class="plan-dist-item">
               <p class="plan-dist-name"><?= htmlspecialchars($p['Name'], ENT_QUOTES, 'UTF-8') ?></p>
               <p class="plan-dist-count"><?= (int)$p['Subscribers'] ?></p>
               <p class="plan-dist-label">subscribers</p>
-            </article>
+            </li>
           <?php } ?>
-        </div>
+        </ul>
       </section>
 <?php
   }

@@ -1,6 +1,8 @@
 <?php
   declare(strict_types = 1);
 
+  require_once(__DIR__ . '/../utils/format.php');
+
   function drawNotificationsPage(array $notifications) {
 ?>
   <section class="page-hero">
@@ -22,7 +24,8 @@
               <p class="notification-title"><?= htmlspecialchars($n->title, ENT_QUOTES, 'UTF-8') ?></p>
               <p class="notification-message"><?= htmlspecialchars($n->message, ENT_QUOTES, 'UTF-8') ?></p>
               <p class="notification-meta">
-                <time><?= htmlspecialchars(date('d M Y · H:i', strtotime($n->createdAt)), ENT_QUOTES, 'UTF-8') ?></time>
+                <?php $createdTs = strtotime((string)$n->createdAt); ?>
+                <time datetime="<?= htmlspecialchars($createdTs !== false ? date('c', $createdTs) : '', ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(formatDateTime($n->createdAt), ENT_QUOTES, 'UTF-8') ?></time>
                 <?php if ($n->link) { ?>
                   &middot; <a href="<?= htmlspecialchars($n->link, ENT_QUOTES, 'UTF-8') ?>">View</a>
                 <?php } ?>

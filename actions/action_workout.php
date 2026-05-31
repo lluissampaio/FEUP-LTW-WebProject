@@ -4,6 +4,7 @@
   require_once(__DIR__ . '/../utils/session.php');
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/workout.class.php');
+  require_once(__DIR__ . '/../database/membership.class.php');
 
   $session = new Session();
   $session->requireLogin('../pages/login.php');
@@ -12,9 +13,16 @@
   $action = (string)($_POST['action'] ?? 'log');
   $db     = getDatabaseConnection();
 
+  // Members must have chosen a membership before logging workouts.
+  if ($action !== 'delete' && isMemberUser($session) && !Membership::userHasActivePlan($db, $session->getId())) {
+    $session->addMessage('error', 'Choose a membership plan before logging workouts.');
+    header('Location: ../pages/membership.php');
+    exit;
+  }
+
   try {
     if ($action === 'delete') {
-      Workout::delete($db, (int)($_POST['workout_id'] ?? 0));
+      Workout::delete($db, (int)($_POST['workout_id'] ?? 0), $session->getId());
       $session->addMessage('success', 'Workout removed.');
     } else {
       $type     = trim((string)($_POST['workout_type'] ?? ''));
@@ -32,6 +40,6 @@
     $session->addMessage('error', 'Something went wrong. Please try again.');
   }
 
-  header('Location: ../pages/dashboard.php');
+  header('Location: ../pages/workouts.php');
   exit;
 ?>

@@ -18,6 +18,7 @@
     if (!err) {
       err = document.createElement('span');
       err.className = 'field-error';
+      err.setAttribute('role', 'alert');
       wrap.appendChild(err);
     }
     err.textContent = msg;

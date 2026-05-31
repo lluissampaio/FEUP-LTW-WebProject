@@ -15,19 +15,19 @@
       <h2 class="section-heading">Our Trainers</h2>
 
       <div class="trainer-search" id="trainer-search">
-        <div class="filter-field">
-          <label for="trainer-q">Search</label>
+        <label class="filter-field">
+          Search
           <input type="search" id="trainer-q" placeholder="Search by name&hellip;" autocomplete="off">
-        </div>
-        <div class="filter-field">
-          <label for="trainer-spec">Specialty</label>
+        </label>
+        <label class="filter-field">
+          Specialty
           <select id="trainer-spec">
             <option value="">All specialties</option>
             <?php foreach ($specialties as $s) { ?>
               <option value="<?= htmlspecialchars($s, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($s, ENT_QUOTES, 'UTF-8') ?></option>
             <?php } ?>
           </select>
-        </div>
+        </label>
       </div>
 
       <div class="trainer-grid">

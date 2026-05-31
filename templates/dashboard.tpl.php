@@ -1,13 +1,20 @@
-<?php declare(strict_types = 1); ?>
+<?php declare(strict_types = 1); require_once(__DIR__ . '/../utils/format.php'); ?>
 
 <?php function drawDashboardSidebar(?User $user, string $activePage, string $csrf) { 
 
   $name = $user ? $user->name() : 'Member';
   $roleDisplay = $user ? $user->getRoleDisplay() : 'Member';
   $photoSrc = $user ? $user->getPhotoUrl() : '';
+
+  $role = $user ? $user->role : 'member';
+  $sidebarLabel = match ($role) {
+    'trainer' => 'Trainer sidebar',
+    'admin'   => 'Admin sidebar',
+    default   => 'Member sidebar',
+  };
 ?>
- 
- <aside class="dashboard-sidebar" aria-label="Member sidebar">
+
+ <aside class="dashboard-sidebar" aria-label="<?= htmlspecialchars($sidebarLabel, ENT_QUOTES, 'UTF-8') ?>">
     <header class="dashboard-profile">
       <?php if ($photoSrc !== '') { ?>
         <img class="dashboard-profile-photo" src="<?= htmlspecialchars($photoSrc, ENT_QUOTES, 'UTF-8') ?>" alt="" aria-hidden="true">
@@ -21,37 +28,51 @@
     </header>
 
     <nav class="dashboard-nav" aria-label="Dashboard navigation">
-      <a href="dashboard.php" class="dashboard-nav-link <?= $activePage === 'dashboard' ? 'is-active' : '' ?>">Dashboard</a>
-      
+      <?php
+        // Renders a sidebar link, marking it active (is-active + aria-current) when its slug matches.
+        $navLink = function (string $href, string $slug, string $label) use ($activePage) {
+          $isActive = $activePage === $slug;
+          $classes = 'dashboard-nav-link' . ($isActive ? ' is-active' : '');
+          echo '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '"'
+             . ' class="' . htmlspecialchars($classes, ENT_QUOTES, 'UTF-8') . '"'
+             . ($isActive ? ' aria-current="page"' : '')
+             . '>' . $label . '</a>';
+        };
+      ?>
+      <?php $navLink('dashboard.php', 'dashboard', 'Dashboard'); ?>
+
       <?php if (!$user || $user->role === 'member') { ?>
-        <a href="#workouts"  class="dashboard-nav-link <?= $activePage === 'workouts' ? 'is-active' : '' ?>">Workout history</a>
-        <a href="nutrition.php" class="dashboard-nav-link <?= $activePage === 'nutrition' ? 'is-active' : '' ?>">Nutrition plan</a>
+        <?php $navLink('workouts.php', 'workouts', 'Workout history'); ?>
+        <?php $navLink('nutrition.php', 'nutrition', 'Nutrition plan'); ?>
       <?php } ?>
 
-      <a href="profile.php" class="dashboard-nav-link <?= $activePage === 'account' ? 'is-active' : '' ?>">Manage account</a>
+      <?php $navLink('profile.php', 'account', 'Manage account'); ?>
 
       <?php if (!$user || $user->role === 'member') { ?>
-        <a href="bookings.php"   class="dashboard-nav-link <?= $activePage === 'bookings' ? 'is-active' : '' ?>">Personal training</a>
-        <a href="membership.php" class="dashboard-nav-link <?= $activePage === 'membership' ? 'is-active' : '' ?>">My membership</a>
-        <a href="disputes.php"   class="dashboard-nav-link <?= $activePage === 'disputes' ? 'is-active' : '' ?>">Support &amp; disputes</a>
+        <?php $navLink('bookings.php', 'bookings', 'Personal training'); ?>
+        <?php $navLink('reservations.php', 'reservations', 'Equipment Reservations'); ?>
+        <?php $navLink('membership.php', 'membership', 'My membership'); ?>
+        <?php $navLink('disputes.php', 'disputes', 'Support &amp; disputes'); ?>
       <?php } ?>
-      
+
       <?php if ($user && $user->role === 'trainer') { ?>
-        <a href="trainer_analytics.php" class="dashboard-nav-link <?= $activePage === 'trainer_analytics' ? 'is-active' : '' ?>">Analytics</a>
-        <a href="trainer_classes.php" class="dashboard-nav-link <?= $activePage === 'trainer_classes' ? 'is-active' : '' ?>">My Classes & Roster</a>
-        <a href="trainer_clients.php" class="dashboard-nav-link <?= $activePage === 'trainer_clients' ? 'is-active' : '' ?>">Member Nutrition</a>
-        <a href="bookings.php" class="dashboard-nav-link <?= $activePage === 'bookings' ? 'is-active' : '' ?>">Personal training</a>
-        <a href="edit_trainer.php" class="dashboard-nav-link <?= $activePage === 'edit_trainer' ? 'is-active' : '' ?>">Edit public profile</a>
+        <?php $navLink('trainer_analytics.php', 'trainer_analytics', 'Analytics'); ?>
+        <?php $navLink('trainer_classes.php', 'trainer_classes', 'My Classes &amp; Roster'); ?>
+        <?php $navLink('trainer_clients.php', 'trainer_clients', 'Member Nutrition'); ?>
+        <?php $navLink('bookings.php', 'bookings', 'Personal training'); ?>
+        <?php $navLink('edit_trainer.php', 'edit_trainer', 'Edit public profile'); ?>
       <?php } ?>
 
       <?php if ($user && $user->role === 'admin') { ?>
-        <a href="admin_classes.php" class="dashboard-nav-link <?= $activePage === 'admin' ? 'is-active' : '' ?>">Manage classes</a>
-        <a href="admin_equipment.php" class="dashboard-nav-link <?= $activePage === 'admin_equipment' ? 'is-active' : '' ?>">Manage equipment</a>
-        <a href="admin_users.php" class="dashboard-nav-link <?= $activePage === 'admin_users' ? 'is-active' : '' ?>">Manage users</a>
-        <a href="admin_analytics.php" class="dashboard-nav-link <?= $activePage === 'analytics' ? 'is-active' : '' ?>">Analytics</a>
-        <a href="admin_disputes.php" class="dashboard-nav-link <?= $activePage === 'disputes' ? 'is-active' : '' ?>">Disputes</a>
+        <?php $navLink('admin_classes.php', 'admin', 'Manage classes'); ?>
+        <?php $navLink('admin_equipment.php', 'admin_equipment', 'Manage equipment'); ?>
+        <?php $navLink('admin_users.php', 'admin_users', 'Manage users'); ?>
+        <?php $navLink('admin_applications.php', 'admin_applications', 'Membership applications'); ?>
+        <?php $navLink('admin_promotions.php', 'admin_promotions', 'Promotions'); ?>
+        <?php $navLink('admin_analytics.php', 'analytics', 'Analytics'); ?>
+        <?php $navLink('admin_disputes.php', 'disputes', 'Disputes'); ?>
       <?php } ?>
-        
+
       <form action="../actions/action_logout.php" method="post" class="dashboard-logout">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <button type="submit" class="dashboard-nav-link dashboard-nav-link-signout">Sign out</button>
@@ -177,8 +198,16 @@
 ?>
 
 <?php
-  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null) {
+  function drawMemberDashboard(int $totalWorkouts, float $activeHours, float $totalCalories, int $weeklyFrequency, array $workouts, string $csrf, ?NutritionPlan $nutritionPlan = null, bool $hasPlan = true) {
 ?>
+    <?php if (!$hasPlan) { ?>
+      <section class="dashboard-activity">
+        <h2 class="dashboard-section-heading">Choose your membership</h2>
+        <p class="activity-empty">Select a membership plan to unlock class enrolment, workout logging and support requests.</p>
+        <p><a href="membership.php" class="btn-primary">Choose a plan</a></p>
+      </section>
+    <?php } ?>
+
     <section class="dashboard-stats" aria-label="Your statistics">
       <article class="stat-card">
         <p class="stat-card-label">Total workouts</p>
@@ -197,7 +226,7 @@
       </article>
       <article class="stat-card">
         <p class="stat-card-label">Weekly frequency</p>
-        <p class="stat-card-value">0 / 7</p>
+        <p class="stat-card-value"><?= $weeklyFrequency ?> / 7</p>
         <p class="stat-card-note">Days this week</p>
       </article>
     </section>
@@ -233,27 +262,31 @@
       </section>
     <?php } ?>
 
-    <section id="workouts" class="dashboard-activity">
+    <section class="dashboard-activity">
       <h2 class="dashboard-section-heading">Log a workout</h2>
+      <?php if (!$hasPlan) { ?>
+        <p class="activity-empty">Choose a membership plan to start logging workouts.</p>
+      <?php } else { ?>
       <form class="admin-form" method="post" action="../actions/action_workout.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="action"     value="log">
-        <div class="form-field">
-          <label for="w-type">Type</label>
+        <label class="form-field">
+          Type
           <input type="text" id="w-type" name="workout_type" required maxlength="60" placeholder="e.g. Strength, Cardio, Yoga">
-        </div>
-        <div class="form-field">
-          <label for="w-duration">Duration (min)</label>
-          <input type="number" id="w-duration" name="duration" min="1" max="600" step="5" value="45" required>
-        </div>
-        <div class="form-field">
-          <label for="w-calories">Calories (optional)</label>
+        </label>
+        <label class="form-field">
+          Duration (min)
+          <input type="number" id="w-duration" name="duration" min="1" max="600" step="1" value="45" required>
+        </label>
+        <label class="form-field">
+          Calories (optional)
           <input type="number" id="w-calories" name="calories" min="0" max="5000" step="10" value="0">
-        </div>
+        </label>
         <div class="form-actions">
           <button type="submit" class="btn-primary">Log workout</button>
         </div>
       </form>
+      <?php } ?>
     </section>
 
     <section class="dashboard-activity" aria-labelledby="activity-heading">
@@ -272,7 +305,7 @@
           <tbody>
             <?php foreach ($workouts as $w) { ?>
               <tr>
-                <td><?= htmlspecialchars(date('d/m/Y', strtotime($w->date)), ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars(formatDate($w->date), ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($w->workoutType, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= (int)$w->durationMinutes ?> min</td>
                 <td><span class="status-tag status-tag-<?= htmlspecialchars(strtolower($w->status), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($w->status, ENT_QUOTES, 'UTF-8') ?></span></td>
@@ -286,6 +319,11 @@
           </tbody>
         </table>
       </div>
+      <?php if ($totalWorkouts > count($workouts)) { ?>
+        <div style="margin-top: var(--spacing-md, 1.5rem); text-align: center;">
+          <a href="workouts.php" class="btn-outline btn-sm">View all history</a>
+        </div>
+      <?php } ?>
     </section>
 <?php
   }

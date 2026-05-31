@@ -4,6 +4,7 @@
   require_once(__DIR__ . '/../utils/session.php');
   require_once(__DIR__ . '/../database/connection.db.php');
   require_once(__DIR__ . '/../database/dispute.class.php');
+  require_once(__DIR__ . '/../database/membership.class.php');
 
   $session = new Session();
   $session->requireLogin('../pages/login.php');
@@ -20,6 +21,14 @@
   }
 
   $db = getDatabaseConnection();
+
+  // Members must have chosen a membership before opening a support request.
+  if (isMemberUser($session) && !Membership::userHasActivePlan($db, $session->getId())) {
+    $session->addMessage('error', 'Choose a membership plan before creating a support request.');
+    header('Location: ../pages/membership.php');
+    exit();
+  }
+
   try {
     Dispute::create($db, $session->getId(), $category, $subject, $message);
     $session->addMessage('success', 'Your report has been submitted. Our team will respond shortly.');

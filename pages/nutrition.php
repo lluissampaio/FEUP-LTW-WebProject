@@ -20,16 +20,18 @@
     exit;
   }
 
-  $plan = NutritionPlan::getPlanByUserId($db, $user->id);
+  $plan  = NutritionPlan::getPlanByUserId($db, $user->id);
+  $meals = $plan ? NutritionMeal::getForPlan($db, $plan->planId) : array();
+  $logs  = NutritionLog::getForUser($db, $user->id, 14);
 
   drawHeader($session, '', 'Nutrition Plan — Iron Haven', includeMain: false);
 ?>
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'nutrition', $session->csrfToken()); ?>
-    <main class="dashboard-main">
+    <main id="main-content" class="dashboard-main">
       <?php drawDashboardPageHeader('Nutrition', 'Your Nutrition Plan', 'Manage your daily macros and dietary goals.'); ?>
-      <?php drawNutritionPlan($plan, $session); ?>
+      <?php drawNutritionPlan($plan, $session, null, $meals, $logs); ?>
     </main>
   </div>
 

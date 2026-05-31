@@ -45,15 +45,16 @@
 
   $targetUser = User::getUser($db, $memberId);
   $plan       = NutritionPlan::getPlanByUserId($db, $memberId);
+  $meals      = $plan ? NutritionMeal::getForPlan($db, $plan->planId) : array();
 
   drawHeader($session, '', 'Member Nutrition — Iron Haven', includeMain: false);
 ?>
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'trainer_clients', $session->csrfToken()); ?>
-    <main class="dashboard-main">
+    <main id="main-content" class="dashboard-main">
       <?php drawDashboardPageHeader('Nutrition', $targetUser->firstName . '\'s Nutrition Plan', 'Manage dietary goals and macros for your client.'); ?>
-      <?php drawNutritionPlan($plan, $session, $targetUser); ?>
+      <?php drawNutritionPlan($plan, $session, $targetUser, $meals); ?>
     </main>
   </div>
 

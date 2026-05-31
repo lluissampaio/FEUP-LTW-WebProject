@@ -8,17 +8,17 @@
   <section class="<?= $classes ?>">
     <div class="two-col-inner">
       <?php if ($reverse) { ?>
-        <div>
+        <div class="two-col-text">
           <?php drawTwoColCopy($cfg); ?>
         </div>
-        <div class="img-real-wrap two-col-image">
+        <figure class="img-real-wrap two-col-image">
           <img class="img-real" src="../images/<?= htmlspecialchars($cfg['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($cfg['alt_text'], ENT_QUOTES, 'UTF-8') ?>">
-        </div>
+        </figure>
       <?php } else { ?>
-        <div class="img-real-wrap two-col-image">
+        <figure class="img-real-wrap two-col-image">
           <img class="img-real" src="../images/<?= htmlspecialchars($cfg['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($cfg['alt_text'], ENT_QUOTES, 'UTF-8') ?>">
-        </div>
-        <div>
+        </figure>
+        <div class="two-col-text">
           <?php drawTwoColCopy($cfg); ?>
         </div>
       <?php } ?>
@@ -39,15 +39,15 @@
     <div class="section-inner">
       <p class="section-label">02 &mdash; What We Stand For</p>
       <h2 class="section-heading">Four Principles</h2>
-      <div class="values-grid">
+      <ul class="values-grid">
         <?php foreach ($values as $i => $v) { ?>
-          <div class="value-item">
+          <li class="value-item">
             <p class="value-number"><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?></p>
             <h3 class="value-title"><?= htmlspecialchars($v['title'], ENT_QUOTES, 'UTF-8') ?></h3>
             <p class="value-body"><?= htmlspecialchars($v['body'], ENT_QUOTES, 'UTF-8') ?></p>
-          </div>
+          </li>
         <?php } ?>
-      </div>
+      </ul>
     </div>
   </section>
 <?php } ?>

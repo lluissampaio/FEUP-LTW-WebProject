@@ -9,8 +9,9 @@
     public ?string $bio;
     public ?string $specialty;
     public ?string $certifications;
+    public bool    $featured;
 
-    public function __construct(int $id, string $firstName, string $lastName, ?string $photo, ?string $bio, ?string $specialty, ?string $certifications) {
+    public function __construct(int $id, string $firstName, string $lastName, ?string $photo, ?string $bio, ?string $specialty, ?string $certifications, bool $featured = false) {
       $this->id             = $id;
       $this->firstName      = $firstName;
       $this->lastName       = $lastName;
@@ -18,6 +19,7 @@
       $this->bio            = $bio;
       $this->specialty      = $specialty;
       $this->certifications = $certifications;
+      $this->featured       = $featured;
     }
 
     public function name() : string {
@@ -40,13 +42,14 @@
                 $r['Photo'],
                 $r['Bio'],
                 $r['Specialty'],
-                $r['Certifications']
+                $r['Certifications'],
+        isset($r['Featured']) ? (bool)$r['Featured'] : false
       );
     }
 
     public static function getTrainer(PDO $db, int $id) : ?Trainer {
       $stmt = $db->prepare('
-        SELECT t.TrainerId, u.FirstName, u.LastName, u.Photo, t.Bio, t.Specialty, t.Certifications
+        SELECT t.TrainerId, u.FirstName, u.LastName, u.Photo, t.Bio, t.Specialty, t.Certifications, t.Featured
         FROM Trainer t JOIN User u ON u.UserId = t.TrainerId
         WHERE t.TrainerId = ?
       ');
@@ -57,7 +60,7 @@
 
     public static function getTrainers(PDO $db) : array {
       $stmt = $db->prepare('
-        SELECT t.TrainerId, u.FirstName, u.LastName, u.Photo, t.Bio, t.Specialty, t.Certifications
+        SELECT t.TrainerId, u.FirstName, u.LastName, u.Photo, t.Bio, t.Specialty, t.Certifications, t.Featured
         FROM Trainer t JOIN User u ON u.UserId = t.TrainerId
         WHERE u.Active = 1
         ORDER BY u.FirstName, u.LastName
@@ -70,7 +73,7 @@
 
     public static function getBySpecialty(PDO $db, string $specialty) : array {
       $stmt = $db->prepare('
-        SELECT t.TrainerId, u.FirstName, u.LastName, u.Photo, t.Bio, t.Specialty, t.Certifications
+        SELECT t.TrainerId, u.FirstName, u.LastName, u.Photo, t.Bio, t.Specialty, t.Certifications, t.Featured
         FROM Trainer t JOIN User u ON u.UserId = t.TrainerId
         WHERE u.Active = 1 AND t.Specialty = ?
         ORDER BY u.FirstName, u.LastName
@@ -107,6 +110,25 @@
       ");
       $stmt->execute(array($trainerId, $trainerId));
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Promotional features: trainers flagged Featured = 1 surface on the homepage.
+    public static function getFeatured(PDO $db) : array {
+      $stmt = $db->prepare('
+        SELECT t.TrainerId, u.FirstName, u.LastName, u.Photo, t.Bio, t.Specialty, t.Certifications, t.Featured
+        FROM Trainer t JOIN User u ON u.UserId = t.TrainerId
+        WHERE u.Active = 1 AND t.Featured = 1
+        ORDER BY u.FirstName, u.LastName
+      ');
+      $stmt->execute();
+      $trainers = array();
+      while ($row = $stmt->fetch()) $trainers[] = self::fromRow($row);
+      return $trainers;
+    }
+
+    public static function setFeatured(PDO $db, int $id, bool $featured) : void {
+      $stmt = $db->prepare('UPDATE Trainer SET Featured = ? WHERE TrainerId = ?');
+      $stmt->execute(array($featured ? 1 : 0, $id));
     }
   }
 ?>

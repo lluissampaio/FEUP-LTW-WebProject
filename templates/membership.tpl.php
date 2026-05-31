@@ -1,16 +1,19 @@
 <?php declare(strict_types = 1); ?>
 
+<?php require_once(__DIR__ . '/../utils/format.php'); ?>
+
 <?php function drawPricing(array $plans, string $applyHref = '#apply') { ?>
   <section class="pricing">
     <div class="section-inner">
       <p class="section-label">01 &mdash; Plans</p>
       <h2 class="section-heading">Choose Your Plan</h2>
-      <div class="pricing-grid">
+      <ul class="pricing-grid">
         <?php foreach ($plans as $p) {
           $featured  = !empty($p['featured']);
           $cardClass = 'pricing-card' . ($featured ? ' pricing-card-featured' : '');
           $btnClass  = $featured ? 'btn-primary' : 'btn-outline';
         ?>
+        <li>
           <article class="<?= $cardClass ?>">
             <p class="pricing-plan-label"><?= htmlspecialchars($p['label'], ENT_QUOTES, 'UTF-8') ?></p>
             <h3 class="pricing-plan-name"><?= htmlspecialchars($p['name'], ENT_QUOTES, 'UTF-8') ?></h3>
@@ -23,8 +26,9 @@
             </ul>
             <a href="<?= htmlspecialchars($applyHref, ENT_QUOTES, 'UTF-8') ?>" class="<?= $btnClass ?>">Apply Now</a>
           </article>
+        </li>
         <?php } ?>
-      </div>
+      </ul>
     </div>
   </section>
 <?php } ?>
@@ -51,13 +55,13 @@
             <p class="membership-current-meta">
               <?= htmlspecialchars($current->plan->priceLabel(), ENT_QUOTES, 'UTF-8') ?> <?= htmlspecialchars($current->plan->period, ENT_QUOTES, 'UTF-8') ?>
               <?php if ($current->renewsAt) { ?>
-                &middot; renews <?= htmlspecialchars(date('j M Y', strtotime($current->renewsAt)), ENT_QUOTES, 'UTF-8') ?>
+                &middot; renews <?= htmlspecialchars(formatDate($current->renewsAt), ENT_QUOTES, 'UTF-8') ?>
               <?php } ?>
             </p>
           </div>
           <form method="post" action="../actions/action_cancel_membership.php" class="inline-form">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
-            <button type="submit" class="btn-outline">Cancel membership</button>
+            <button type="submit" class="btn-outline" data-confirm="Cancel your membership? This cannot be undone.">Cancel membership</button>
           </form>
         </div>
       <?php } else { ?>
@@ -65,28 +69,36 @@
         <p class="membership-current-meta">You don't have an active membership yet.</p>
       <?php } ?>
 
-      <div class="pricing-grid">
+      <ul class="pricing-grid">
         <?php foreach ($displayPlans as $dp) {
           $p = $dp['plan'];
         ?>
-          <article class="<?= $dp['cardClass'] ?>">
-            <p class="pricing-plan-label"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></p>
-            <h3 class="pricing-plan-name"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></h3>
-            <p class="pricing-price"><?= htmlspecialchars($p->priceLabel(), ENT_QUOTES, 'UTF-8') ?></p>
-            <p class="pricing-period"><?= htmlspecialchars($p->period, ENT_QUOTES, 'UTF-8') ?></p>
-            <ul class="pricing-features">
-              <?php foreach (($features[$p->name] ?? []) as $f) { ?>
-                <li><?= htmlspecialchars($f, ENT_QUOTES, 'UTF-8') ?></li>
+          <li>
+            <article class="<?= $dp['cardClass'] ?>">
+              <p class="pricing-plan-label"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></p>
+              <h3 class="pricing-plan-name"><?= htmlspecialchars($p->name, ENT_QUOTES, 'UTF-8') ?></h3>
+              <p class="pricing-price"><?= htmlspecialchars($p->priceLabel(), ENT_QUOTES, 'UTF-8') ?></p>
+              <p class="pricing-period"><?= htmlspecialchars($p->period, ENT_QUOTES, 'UTF-8') ?></p>
+              <ul class="pricing-features">
+                <?php foreach (($features[$p->name] ?? []) as $f) { ?>
+                  <li><?= htmlspecialchars($f, ENT_QUOTES, 'UTF-8') ?></li>
+                <?php } ?>
+              </ul>
+              <?php if ($dp['disabled']) { ?>
+                <button type="button" class="<?= $dp['btnClass'] ?>" disabled><?= htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></button>
+              <?php } elseif (!empty($dp['isApply'])) { ?>
+                <a href="contact.php?plan=<?= urlencode($p->name) ?>" class="<?= $dp['btnClass'] ?>"><?= htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></a>
+              <?php } else { ?>
+                <form method="post" action="../actions/action_subscribe.php">
+                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
+                  <input type="hidden" name="plan_id" value="<?= (int)$p->id ?>">
+                  <button type="submit" class="<?= $dp['btnClass'] ?>"><?= htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></button>
+                </form>
               <?php } ?>
-            </ul>
-            <form method="post" action="../actions/action_subscribe.php">
-              <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
-              <input type="hidden" name="plan_id" value="<?= (int)$p->id ?>">
-              <button type="submit" class="<?= $dp['btnClass'] ?>"<?= $dp['disabled'] ? ' disabled' : '' ?>><?= htmlspecialchars($dp['label'], ENT_QUOTES, 'UTF-8') ?></button>
-            </form>
-          </article>
+            </article>
+          </li>
         <?php } ?>
-      </div>
+      </ul>
     </div>
   </section>
 <?php } ?>
@@ -138,14 +150,16 @@
     <div class="section-inner">
       <p class="section-label">03 &mdash; Common Questions</p>
       <h2 class="section-heading">Before You Apply</h2>
-      <div class="faq-list">
+      <ul class="faq-list">
         <?php foreach ($faqs as $f) { ?>
-          <details class="faq-item">
-            <summary class="faq-summary"><?= htmlspecialchars($f['q'], ENT_QUOTES, 'UTF-8') ?></summary>
-            <div class="faq-body"><?= htmlspecialchars($f['a'], ENT_QUOTES, 'UTF-8') ?></div>
-          </details>
+          <li>
+            <details class="faq-item">
+              <summary class="faq-summary"><?= htmlspecialchars($f['q'], ENT_QUOTES, 'UTF-8') ?></summary>
+              <div class="faq-body"><?= htmlspecialchars($f['a'], ENT_QUOTES, 'UTF-8') ?></div>
+            </details>
+          </li>
         <?php } ?>
-      </div>
+      </ul>
     </div>
   </section>
 <?php } ?>

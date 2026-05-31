@@ -30,13 +30,23 @@
       region = document.createElement('section');
       region.id = 'messages';
       region.setAttribute('aria-label', 'System messages');
+      region.setAttribute('aria-live', 'polite');
+      region.setAttribute('role', 'status');
       document.querySelector('main')?.before(region);
     }
     const article = document.createElement('article');
     article.className = 'message message-' + type;
-    article.textContent = text;
+    const span = document.createElement('span');
+    span.textContent = text;
+    const close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'message-close';
+    close.setAttribute('aria-label', 'Dismiss message');
+    close.innerHTML = '&times;';
+    article.appendChild(span);
+    article.appendChild(close);
     region.appendChild(article);
-    setTimeout(() => article.remove(), 4000);
+    setTimeout(() => article.remove(), 6000);
   }
 
   // Build one enrol/cancel/waitlist form. `action` matches api_enroll.php's action param.
@@ -86,6 +96,7 @@
     for (const [k, v] of [...params.entries()]) if (v === '') params.delete(k);
 
     list.classList.add('is-updating');
+    list.setAttribute('aria-busy', 'true');
     try {
       const res = await fetch('../api/api_schedule.php?' + params.toString());
       const data = await res.json();
@@ -101,6 +112,7 @@
       filterForm.submit(); // fall back to a normal navigation
     } finally {
       list.classList.remove('is-updating');
+      list.removeAttribute('aria-busy');
     }
   }
 

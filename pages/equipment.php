@@ -17,6 +17,10 @@
   $locations = Location::getLocations($db);
   $types     = Equipment::getTypes($db);
 
+  // Logged-in members get a "Reserve" deep link on each item; the public,
+  // read-only view is unchanged.
+  $canReserve = $session->isLoggedIn() && isMemberUser($session);
+
   drawHeader($session, 'equipment', 'Equipment — Iron Haven');
   drawPageHero(
     'Equipment',
@@ -24,6 +28,6 @@
     'Live availability of equipment across our four locations. Updated by floor staff.'
   );
   drawEquipmentFilters($locations, $types, $locationId, $type);
-  drawEquipmentList($items);
+  drawEquipmentList($items, $canReserve);
   drawFooter();
 ?>

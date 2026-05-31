@@ -17,15 +17,18 @@
   $csrf      = $session->csrfToken();
   $disputes  = Dispute::getForUser($db, $session->getId());
 
+  require_once(__DIR__ . '/../database/membership.class.php');
+  $hasPlan   = isMemberUser($session) ? Membership::userHasActivePlan($db, $session->getId()) : true;
+
   drawHeader($session, '', 'Support & Disputes — Iron Haven', includeMain: false);
 ?>
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'disputes', $session->csrfToken()); ?>
 
-    <main class="dashboard-main">
+    <main id="main-content" class="dashboard-main">
       <?php drawDashboardPageHeader('Support', 'Disputes & feedback', 'Report an equipment fault, a class issue, or a billing query. Our team responds in confidence.'); ?>
-      <?php drawDisputeForm($csrf); ?>
+      <?php drawDisputeForm($csrf, $hasPlan); ?>
       <?php drawMemberDisputes($disputes); ?>
     </main>
   </div>

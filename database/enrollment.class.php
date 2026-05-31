@@ -57,6 +57,62 @@
     }
 
     /**
+     * Returns true if the user has ATTENDED any session of this class: i.e. the user
+     * is/was enrolled (or already marked attended) in some schedule of the class whose
+     * most recent weekly occurrence (DayOfWeek + StartTime + Duration) is in the past.
+     *
+     * Attendance is derived rather than stored: a recurring weekly slot counts as
+     * attended once that week's occurrence (the latest one on/before now) has fully
+     * elapsed. Cancelled enrollments never count.
+     */
+    public static function hasAttended(PDO $db, int $userId, int $classId, ?DateTimeInterface $now = null) : bool {
+      $stmt = $db->prepare("
+        SELECT s.DayOfWeek AS DayOfWeek, s.StartTime AS StartTime, s.Duration AS Duration
+        FROM Enrollment e JOIN Schedule s ON s.ScheduleId = e.ScheduleId
+        WHERE e.UserId = ? AND s.ClassId = ? AND e.Status IN ('enrolled','attended')
+      ");
+      $stmt->execute(array($userId, $classId));
+
+      $now = $now ?? new DateTimeImmutable('now');
+      while ($row = $stmt->fetch()) {
+        $end = self::lastOccurrenceEnd((string)$row['DayOfWeek'], (string)$row['StartTime'], (int)$row['Duration'], $now);
+        if ($end !== null && $end <= $now) return true;
+      }
+      return false;
+    }
+
+    /**
+     * Given a weekly recurring slot, return the end DateTime of its most recent
+     * occurrence on or before $now (start time + duration). Returns null if the day
+     * name is not recognised.
+     */
+    private static function lastOccurrenceEnd(string $dayOfWeek, string $startTime, int $duration, DateTimeInterface $now) : ?DateTimeImmutable {
+      $dayMap = array(
+        'Monday' => 1, 'Tuesday' => 2, 'Wednesday' => 3, 'Thursday' => 4,
+        'Friday' => 5, 'Saturday' => 6, 'Sunday' => 7,
+      );
+      if (!isset($dayMap[$dayOfWeek])) return null;
+
+      $h = (int)substr($startTime, 0, 2);
+      $m = (int)substr($startTime, 3, 2);
+
+      // Walk back from today to the most recent matching weekday whose start <= now.
+      $todayN = (int)$now->format('N');
+      $diff   = ($todayN - $dayMap[$dayOfWeek] + 7) % 7; // days back to that weekday (0..6)
+
+      $candidate = (new DateTimeImmutable($now->format('Y-m-d') . ' 00:00:00'))
+        ->modify('-' . $diff . ' day')
+        ->setTime($h, $m);
+
+      // If the most recent same-weekday slot has not started yet, step back a week.
+      if ($candidate > $now) {
+        $candidate = $candidate->modify('-7 day');
+      }
+
+      return $candidate->modify('+' . $duration . ' minute');
+    }
+
+    /**
      * Enrol a user into a schedule, respecting capacity. Throws on full / duplicate.
      */
     public static function enrol(PDO $db, int $userId, int $scheduleId) : Enrollment {

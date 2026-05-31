@@ -32,7 +32,7 @@
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'analytics', $session->csrfToken()); ?>
-    <main class="dashboard-main">
+    <main id="main-content" class="dashboard-main">
       <?php drawDashboardPageHeader('Admin analytics', 'Gym-wide metrics', 'Engagement, equipment usage, retention and revenue at a glance.'); ?>
       <?php drawAdminAnalytics($overview, $popular, $equipment, $retention, $planDist); ?>
     </main>

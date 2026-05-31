@@ -10,6 +10,9 @@
   const countEl = document.getElementById('equipment-count');
   if (!form || !results) return;
 
+  // Announce filtered-result updates to assistive tech.
+  results.setAttribute('aria-live', 'polite');
+
   const locationSel = form.querySelector('[name=location]');
   const typeSel = form.querySelector('[name=type]');
 
@@ -50,6 +53,7 @@
     if (typeSel && typeSel.value) params.set('type', typeSel.value);
 
     results.classList.add('is-updating');
+    results.setAttribute('aria-busy', 'true');
     try {
       const res = await fetch('../api/api_equipment.php?' + params.toString());
       const data = await res.json();
@@ -63,6 +67,7 @@
       form.submit();
     } finally {
       results.classList.remove('is-updating');
+      results.removeAttribute('aria-busy');
     }
   }
 

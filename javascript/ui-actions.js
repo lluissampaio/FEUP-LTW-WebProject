@@ -18,4 +18,22 @@
       else el.form.submit();
     }
   });
+
+  // Dismiss a flash message when its close button is clicked (works for both the
+  // server-rendered banner and JS-injected flashes, since this is delegated).
+  document.addEventListener('click', function (ev) {
+    const btn = ev.target.closest ? ev.target.closest('.message-close') : null;
+    if (!btn) return;
+    const msg = btn.closest('.message');
+    if (msg) msg.remove();
+  });
+
+  // Make the flash-message region announce to assistive tech.
+  document.addEventListener('DOMContentLoaded', function () {
+    const region = document.getElementById('messages');
+    if (region) {
+      region.setAttribute('aria-live', 'polite');
+      region.setAttribute('role', 'status');
+    }
+  });
 })();

@@ -144,4 +144,111 @@
   function isTrainerUser(Session $session) : bool {
     return sessionRole($session) === 'trainer';
   }
+
+  // ---------------------------------------------------------------------------
+  // Global fatal-error handling.
+  //
+  // Goal: an uncaught throwable or a fatal PHP error must show a branded error
+  // page instead of a blank screen. Normal pages are unaffected — these handlers
+  // only fire on uncaught throwables / fatal errors. Non-fatal notices/warnings
+  // are left to the default reporting (logged, since log_errors is on above).
+  //
+  // Registered only once, guarded so repeated require_once of this file is safe.
+  // ---------------------------------------------------------------------------
+  if (!defined('IRON_HAVEN_ERROR_HANDLERS_REGISTERED')) {
+    define('IRON_HAVEN_ERROR_HANDLERS_REGISTERED', true);
+
+    function ironHavenRenderError(int $code, string $title, string $message) : void {
+      // Send an appropriate status only if the response has not started yet.
+      if (!headers_sent()) {
+        http_response_code($code);
+      }
+
+      // Render the standalone branded error page. Guard the include so a missing
+      // template can never itself throw and produce a true blank screen.
+      $template = __DIR__ . '/../templates/error.tpl.php';
+      if (is_file($template)) {
+        require_once($template);
+      }
+
+      if (function_exists('drawErrorPage')) {
+        drawErrorPage($code, $title, $message);
+      } else {
+        // Last-resort fallback: minimal escaped output, never a blank page.
+        echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
+           . '<title>' . (int) $code . ' Error</title></head><body>'
+           . '<h1>' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '</h1>'
+           . '<p>' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</p>'
+           . '<p><a href="/pages/index.php">Back to home</a></p>'
+           . '</body></html>';
+      }
+    }
+
+    // Handle any throwable that escapes to the top level.
+    set_exception_handler(function (Throwable $e) : void {
+      error_log(sprintf(
+        'Uncaught %s: %s in %s:%d',
+        get_class($e),
+        $e->getMessage(),
+        $e->getFile(),
+        $e->getLine()
+      ));
+
+      ironHavenRenderError(
+        500,
+        'Something went wrong',
+        'An unexpected error occurred while processing your request. Our team has been notified — please try again shortly.'
+      );
+    });
+
+    // Convert fatal runtime errors (E_ERROR, E_PARSE, E_CORE_ERROR, etc.) that
+    // would otherwise leave a blank screen into the branded page. set_error_handler
+    // does not catch true fatals, so the work happens in the shutdown function;
+    // this handler is kept only to capture E_USER_ERROR and re-throw it.
+    set_error_handler(function (int $severity, string $message, string $file = '', int $line = 0) : bool {
+      // Respect the error_reporting level (and the @-operator, which sets it to 0).
+      if (!(error_reporting() & $severity)) {
+        return false;
+      }
+      // Only escalate the fatal user-error level; let everything else fall through
+      // to PHP's default handling so normal warnings/notices keep being logged.
+      if ($severity === E_USER_ERROR) {
+        throw new ErrorException($message, 0, $severity, $file, $line);
+      }
+      return false;
+    });
+
+    // Catch genuine fatal errors (parse/compile/out-of-memory/uncaught) on shutdown.
+    register_shutdown_function(function () : void {
+      $error = error_get_last();
+      if ($error === null) {
+        return;
+      }
+
+      $fatalLevels = E_ERROR | E_PARSE | E_CORE_ERROR | E_CORE_WARNING
+                   | E_COMPILE_ERROR | E_COMPILE_WARNING;
+
+      if (($error['type'] & $fatalLevels) === 0) {
+        return;
+      }
+
+      error_log(sprintf(
+        'Fatal error: %s in %s:%d',
+        $error['message'],
+        $error['file'],
+        $error['line']
+      ));
+
+      // If a partial successful response already started, do not overwrite it.
+      if (headers_sent()) {
+        return;
+      }
+
+      ironHavenRenderError(
+        500,
+        'Something went wrong',
+        'An unexpected error occurred while processing your request. Our team has been notified — please try again shortly.'
+      );
+    });
+  }
 ?>

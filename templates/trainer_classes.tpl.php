@@ -1,5 +1,6 @@
 <?php
   declare(strict_types = 1);
+  require_once(__DIR__ . '/../utils/format.php');
 
   function drawTrainerClasses(array $classes, array $schedules, array $rosters, array $days, string $csrf) {
 ?>
@@ -13,30 +14,30 @@
         <input type="hidden" name="action" value="create">
 
         <div class="schedule-add-grid">
-          <div class="form-field">
-            <label for="class_id">Class</label>
+          <label class="form-field">
+            Class
             <select id="class_id" name="class_id" required>
               <?php foreach ($classes as $c) { ?>
                 <option value="<?= (int)$c->id ?>"><?= htmlspecialchars($c->name, ENT_QUOTES, 'UTF-8') ?></option>
               <?php } ?>
             </select>
-          </div>
-          <div class="form-field">
-            <label for="schedule_day">Day</label>
+          </label>
+          <label class="form-field">
+            Day
             <select id="schedule_day" name="schedule_day" required>
               <?php foreach ($days as $d) { ?>
                 <option value="<?= htmlspecialchars($d, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($d, ENT_QUOTES, 'UTF-8') ?></option>
               <?php } ?>
             </select>
-          </div>
-          <div class="form-field">
-            <label for="schedule_start">Start</label>
+          </label>
+          <label class="form-field">
+            Start
             <input type="time" id="schedule_start" name="schedule_start" required>
-          </div>
-          <div class="form-field">
-            <label for="schedule_duration">Mins</label>
+          </label>
+          <label class="form-field">
+            Mins
             <input type="number" id="schedule_duration" name="schedule_duration" min="15" max="240" step="5" value="60" required>
-          </div>
+          </label>
         </div>
         <button type="submit" class="btn-primary">Add session</button>
       </form>
@@ -55,15 +56,44 @@
             <h2 class="dashboard-section-heading roster-head-title">
               <?= htmlspecialchars($s->className ?? '', ENT_QUOTES, 'UTF-8') ?> &mdash; <?= htmlspecialchars($s->classType ?? '', ENT_QUOTES, 'UTF-8') ?>
             </h2>
-            <form method="post" action="../actions/action_trainer_schedule.php" class="inline-form">
-              <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
-              <input type="hidden" name="action" value="delete">
-              <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
-              <button type="submit" class="btn-outline btn-sm" data-confirm="Cancel this session?">Delete</button>
-            </form>
+            <div class="roster-actions">
+              <details class="schedule-edit">
+                <summary class="btn-outline btn-sm">Edit</summary>
+                <form method="post" action="../actions/action_trainer_schedule.php" class="dashboard-form schedule-edit-form">
+                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
+                  <input type="hidden" name="action" value="edit">
+                  <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
+                  <div class="schedule-add-grid">
+                    <label class="form-field">
+                      Day<span class="required-mark" aria-hidden="true">*</span>
+                      <select name="schedule_day" required>
+                        <?php foreach ($days as $d) { ?>
+                          <option value="<?= htmlspecialchars($d, ENT_QUOTES, 'UTF-8') ?>"<?= $d === $s->dayOfWeek ? ' selected' : '' ?>><?= htmlspecialchars($d, ENT_QUOTES, 'UTF-8') ?></option>
+                        <?php } ?>
+                      </select>
+                    </label>
+                    <label class="form-field">
+                      Start<span class="required-mark" aria-hidden="true">*</span>
+                      <input type="time" name="schedule_start" value="<?= htmlspecialchars(substr($s->startTime, 0, 5), ENT_QUOTES, 'UTF-8') ?>" required>
+                    </label>
+                    <label class="form-field">
+                      Mins<span class="required-mark" aria-hidden="true">*</span>
+                      <input type="number" name="schedule_duration" min="15" max="240" step="5" value="<?= (int)$s->duration ?>" required>
+                    </label>
+                  </div>
+                  <button type="submit" class="btn-primary btn-sm">Save changes</button>
+                </form>
+              </details>
+              <form method="post" action="../actions/action_trainer_schedule.php" class="inline-form">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
+                <button type="submit" class="btn-outline btn-sm" data-confirm="Delete this session? This cannot be undone.">Delete</button>
+              </form>
+            </div>
           </div>
           <p class="dashboard-sub roster-meta">
-            <?= htmlspecialchars($s->dayOfWeek, ENT_QUOTES, 'UTF-8') ?>s at <?= htmlspecialchars($s->startTime, ENT_QUOTES, 'UTF-8') ?> &bull;
+            <?= htmlspecialchars($s->dayOfWeek, ENT_QUOTES, 'UTF-8') ?>s at <?= htmlspecialchars(substr($s->startTime, 0, 5), ENT_QUOTES, 'UTF-8') ?> &bull;
             <?= $s->duration ?> min &bull;
             <?= htmlspecialchars($s->locationName ?? '', ENT_QUOTES, 'UTF-8') ?> &bull;
             <?= count($roster) ?> / <?= $s->capacity ?? 0 ?> enrolled
@@ -88,7 +118,7 @@
                     <tr>
                       <td><?= htmlspecialchars($member['FirstName'] . ' ' . $member['LastName'], ENT_QUOTES, 'UTF-8') ?></td>
                       <td><?= htmlspecialchars($member['Email'], ENT_QUOTES, 'UTF-8') ?></td>
-                      <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($member['EnrolledAt'])), ENT_QUOTES, 'UTF-8') ?></td>
+                      <td><?= htmlspecialchars(formatDateTime($member['EnrolledAt']), ENT_QUOTES, 'UTF-8') ?></td>
                     </tr>
                   <?php } ?>
                 <?php } ?>

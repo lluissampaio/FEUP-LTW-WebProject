@@ -1,6 +1,8 @@
 <?php
   declare(strict_types = 1);
 
+  require_once(__DIR__ . '/../utils/mailer.php');
+
   class Notification {
     public int     $id;
     public int     $userId;
@@ -38,7 +40,45 @@
     public static function send(PDO $db, int $userId, string $type, string $title, string $message, ?string $link = null) : int {
       $stmt = $db->prepare('INSERT INTO Notification (UserId, Type, Title, Message, Link) VALUES (?, ?, ?, ?, ?)');
       $stmt->execute(array($userId, $type, $title, $message, $link));
-      return (int)$db->lastInsertId();
+      $id = (int)$db->lastInsertId();
+
+      // Best-effort email mirror of the in-app notification. This must never
+      // block or break the originating flow (enroll, booking, waitlist, ...),
+      // so every step is guarded and failures are swallowed after logging.
+      self::emailNotification($db, $userId, $id, $title, $message, $link);
+
+      return $id;
+    }
+
+    /**
+     * Look up the recipient's email and dispatch the notification through the
+     * email channel. On successful hand-off, flag Notification.Emailed = 1.
+     * Any failure (no email, no MTA, DB hiccup) is logged and ignored so the
+     * caller's request is never disrupted.
+     */
+    private static function emailNotification(PDO $db, int $userId, int $id, string $title, string $message, ?string $link) : void {
+      try {
+        $stmt = $db->prepare('SELECT Email FROM User WHERE UserId = ?');
+        $stmt->execute(array($userId));
+        $row   = $stmt->fetch();
+        $email = ($row && isset($row['Email'])) ? (string)$row['Email'] : '';
+        if ($email === '') {
+          return;
+        }
+
+        $body = $message;
+        if ($link !== null && $link !== '') {
+          $body .= "\n\n" . $link;
+        }
+        $body .= "\n\n-- Iron Haven";
+
+        if (sendEmail($email, $title, $body)) {
+          $upd = $db->prepare('UPDATE Notification SET Emailed = 1 WHERE NotificationId = ?');
+          $upd->execute(array($id));
+        }
+      } catch (\Throwable $e) {
+        error_log('Notification::emailNotification failed for user ' . $userId . ': ' . $e->getMessage());
+      }
     }
 
     public static function getForUser(PDO $db, int $userId, int $limit = 20) : array {

@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1); ?>
 
+<?php require_once(__DIR__ . '/../utils/format.php'); ?>
+
 <?php
   /** Trainer's one-on-one sessions roster. */
   function drawTrainerRoster(array $roster) {
@@ -19,7 +21,7 @@
         <tbody>
           <?php foreach ($roster as $b) { ?>
             <tr>
-              <td><?= htmlspecialchars(date('D j M', strtotime($b->bookingDate)), ENT_QUOTES, 'UTF-8') ?></td>
+              <td><?= htmlspecialchars(formatDate($b->bookingDate), ENT_QUOTES, 'UTF-8') ?></td>
               <td><?= htmlspecialchars($b->memberName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
               <td><?= htmlspecialchars((string)$b->startTime, ENT_QUOTES, 'UTF-8') ?></td>
               <td><?= (int)$b->duration ?> min</td>
@@ -58,7 +60,7 @@
           <tbody>
             <?php foreach ($bookings as $b) { ?>
               <tr>
-                <td><?= htmlspecialchars(date('D j M', strtotime($b->bookingDate)), ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars(formatDate($b->bookingDate), ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($b->trainerName ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars((string)$b->startTime, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= (int)$b->duration ?> min</td>
@@ -66,7 +68,7 @@
                   <form method="post" action="../actions/action_cancel_booking.php" class="inline-form">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="booking_id" value="<?= (int)$b->id ?>">
-                    <button type="submit" class="btn-outline btn-sm">Cancel</button>
+                    <button type="submit" class="btn-outline btn-sm" data-confirm="Cancel this session? This cannot be undone.">Cancel</button>
                   </form>
                 </td>
               </tr>
@@ -105,7 +107,7 @@
               <li class="booking-slot">
                 <span class="booking-slot-when">
                   <?= htmlspecialchars($s['DayOfWeek'] . ' ' . $s['StartTime'], ENT_QUOTES, 'UTF-8') ?>
-                  <span class="booking-slot-next">next: <?= htmlspecialchars(date('j M', strtotime($s['NextDate'])), ENT_QUOTES, 'UTF-8') ?></span>
+                  <span class="booking-slot-next">next: <?= htmlspecialchars(formatDate($s['NextDate']), ENT_QUOTES, 'UTF-8') ?></span>
                 </span>
                 <?php if (!empty($s['IsBooked'])) { ?>
                   <span class="booking-slot-taken">Booked</span>

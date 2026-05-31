@@ -37,7 +37,7 @@
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'trainer_classes', $session->csrfToken()); ?>
-    <main class="dashboard-main">
+    <main id="main-content" class="dashboard-main">
       <?php drawDashboardPageHeader('Trainer Management', 'My Classes & Roster', 'View your schedule and enrolled members.'); ?>
       <?php drawTrainerClasses($classes, $schedules, $rosters, $days, $session->csrfToken()); ?>
     </main>

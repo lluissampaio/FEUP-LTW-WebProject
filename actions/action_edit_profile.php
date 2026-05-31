@@ -19,11 +19,16 @@
 
   $firstName = trim($_POST['first_name'] ?? '');
   $lastName  = trim($_POST['last_name'] ?? '');
-  $username  = trim($_POST['username'] ?? '');
+  $username  = strtolower(trim($_POST['username'] ?? ''));
   $email     = trim($_POST['email'] ?? '');
 
   if ($firstName === '' || $lastName === '' || $username === '' || $email === '') {
     $session->addMessage('error', 'Name, username and email are required.');
+    header('Location: ../pages/profile.php');
+    exit();
+  }
+  if (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $username)) {
+    $session->addMessage('error', 'Username must be 3-20 characters long and contain only letters, numbers, and underscores.');
     header('Location: ../pages/profile.php');
     exit();
   }
@@ -83,7 +88,58 @@
     $destDir  = __DIR__ . '/../uploads';
     $dest     = $destDir . '/' . $filename;
 
-    if (!move_uploaded_file($file['tmp_name'], $dest)) {
+    // Re-encode the image through GD instead of moving the raw bytes. Decoding
+    // and re-emitting the pixels drops any data appended after the image stream
+    // (e.g. an image/PHP polyglot that slips past the finfo MIME check), so the
+    // saved file is guaranteed to contain image data only.
+    if (!extension_loaded('gd')) {
+      $session->addMessage('error', 'Image processing is unavailable. Please try again later.');
+      header('Location: ../pages/profile.php');
+      exit();
+    }
+
+    $image = false;
+    switch ($mime) {
+      case 'image/jpeg':
+        $image = @imagecreatefromjpeg($file['tmp_name']);
+        break;
+      case 'image/png':
+        $image = @imagecreatefrompng($file['tmp_name']);
+        break;
+      case 'image/webp':
+        $image = @imagecreatefromwebp($file['tmp_name']);
+        break;
+    }
+
+    if ($image === false) {
+      $session->addMessage('error', 'Could not process the uploaded image. Please use a valid JPG, PNG or WebP file.');
+      header('Location: ../pages/profile.php');
+      exit();
+    }
+
+    // Preserve transparency for the formats that support it.
+    if ($mime === 'image/png' || $mime === 'image/webp') {
+      imagepalettetotruecolor($image);
+      imagealphablending($image, false);
+      imagesavealpha($image, true);
+    }
+
+    $saved = false;
+    switch ($mime) {
+      case 'image/jpeg':
+        $saved = imagejpeg($image, $dest, 85);
+        break;
+      case 'image/png':
+        $saved = imagepng($image, $dest, 6);
+        break;
+      case 'image/webp':
+        $saved = imagewebp($image, $dest, 85);
+        break;
+    }
+    imagedestroy($image);
+
+    if (!$saved) {
+      if (is_file($dest)) @unlink($dest);
       $session->addMessage('error', 'Could not save the uploaded photo.');
       header('Location: ../pages/profile.php');
       exit();

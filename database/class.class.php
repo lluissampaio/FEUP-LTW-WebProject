@@ -13,8 +13,9 @@
     public int     $locationId;
     public ?string $locationName;
     public int     $capacity;
+    public bool    $featured;
 
-    public function __construct(int $id, string $name, string $type, ?string $description, int $trainerId, ?string $trainerName, int $locationId, ?string $locationName, int $capacity) {
+    public function __construct(int $id, string $name, string $type, ?string $description, int $trainerId, ?string $trainerName, int $locationId, ?string $locationName, int $capacity, bool $featured = false) {
       $this->id           = $id;
       $this->name         = $name;
       $this->type         = $type;
@@ -24,6 +25,7 @@
       $this->locationId   = $locationId;
       $this->locationName = $locationName;
       $this->capacity     = $capacity;
+      $this->featured     = $featured;
     }
 
     public function save(PDO $db) : void {
@@ -47,12 +49,13 @@
         isset($r['TrainerName']) ? (string)$r['TrainerName'] : null,
         (int)   $r['LocationId'],
         isset($r['LocationName']) ? (string)$r['LocationName'] : null,
-        (int)   $r['Capacity']
+        (int)   $r['Capacity'],
+        isset($r['Featured']) ? (bool)$r['Featured'] : false
       );
     }
 
     private const SELECT_FULL = "
-      SELECT c.ClassId, c.Name, c.Type, c.Description, c.TrainerId, c.LocationId, c.Capacity,
+      SELECT c.ClassId, c.Name, c.Type, c.Description, c.TrainerId, c.LocationId, c.Capacity, c.Featured,
              (u.FirstName || ' ' || u.LastName) AS TrainerName,
              l.Name AS LocationName
       FROM Class c
@@ -127,6 +130,20 @@
     public static function delete(PDO $db, int $id) : void {
       $stmt = $db->prepare('DELETE FROM Class WHERE ClassId = ?');
       $stmt->execute(array($id));
+    }
+
+    // Promotional features: classes flagged Featured = 1 surface on the homepage.
+    public static function getFeatured(PDO $db) : array {
+      $stmt = $db->prepare(self::SELECT_FULL . ' WHERE c.Featured = 1 ORDER BY c.Name');
+      $stmt->execute();
+      $items = array();
+      while ($row = $stmt->fetch()) $items[] = self::fromRow($row);
+      return $items;
+    }
+
+    public static function setFeatured(PDO $db, int $id, bool $featured) : void {
+      $stmt = $db->prepare('UPDATE Class SET Featured = ? WHERE ClassId = ?');
+      $stmt->execute(array($featured ? 1 : 0, $id));
     }
   }
 ?>

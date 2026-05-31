@@ -70,9 +70,9 @@
       return (int)$db->lastInsertId();
     }
 
-    public static function delete(PDO $db, int $id) : void {
-      $stmt = $db->prepare('DELETE FROM Workout WHERE WorkoutId = ?');
-      $stmt->execute(array($id));
+    public static function delete(PDO $db, int $id, int $userId) : void {
+      $stmt = $db->prepare('DELETE FROM Workout WHERE WorkoutId = ? AND UserId = ?');
+      $stmt->execute(array($id, $userId));
     }
   }
 ?>

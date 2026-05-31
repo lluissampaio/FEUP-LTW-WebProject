@@ -88,5 +88,11 @@
       $stmt->execute(array($userId));
       return $stmt->rowCount() > 0;
     }
+
+    /** True if the user currently has an active subscription (i.e. has chosen a plan). */
+    public static function userHasActivePlan(PDO $db, int $userId) : bool {
+      $m = self::getForUser($db, $userId);
+      return $m !== null && $m->isActive();
+    }
   }
 ?>

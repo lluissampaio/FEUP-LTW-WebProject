@@ -33,7 +33,7 @@
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'disputes', $session->csrfToken()); ?>
 
-    <main class="dashboard-main">
+    <main id="main-content" class="dashboard-main">
       <?php drawDashboardPageHeader('Admin', 'Disputes & feedback', 'Triage member reports and respond. ' . (int)$counts['open'] . ' open · ' . (int)$counts['in_review'] . ' in review · ' . (int)$counts['resolved'] . ' resolved.'); ?>
 
       <nav class="dispute-filter" aria-label="Filter disputes">

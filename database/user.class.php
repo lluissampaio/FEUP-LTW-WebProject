@@ -37,8 +37,9 @@
 
     public function getPhotoUrl() : string {
       if (!empty($this->photo)) {
-        $photoFile = __DIR__ . '/../uploads/' . $this->photo;
-        if (is_file($photoFile)) return '../uploads/' . $this->photo;
+        // Uploaded photos live in uploads/; seeded accounts reference images/.
+        if (is_file(__DIR__ . '/../uploads/' . $this->photo)) return '../uploads/' . $this->photo;
+        if (is_file(__DIR__ . '/../images/'  . $this->photo)) return '../images/'  . $this->photo;
       }
       return '';
     }

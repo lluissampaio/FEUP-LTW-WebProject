@@ -125,6 +125,21 @@
       return (int)$db->lastInsertId();
     }
 
+    public static function update(PDO $db, int $scheduleId, string $dayOfWeek, string $startTime, int $duration) : void {
+      $validDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+      if (!in_array($dayOfWeek, $validDays, true)) {
+        throw new InvalidArgumentException('Invalid day of week.');
+      }
+      if (preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $startTime) !== 1) {
+        throw new InvalidArgumentException('Invalid start time format.');
+      }
+      if ($duration <= 0) {
+        throw new InvalidArgumentException('Duration must be positive.');
+      }
+      $stmt = $db->prepare('UPDATE Schedule SET DayOfWeek = ?, StartTime = ?, Duration = ? WHERE ScheduleId = ?');
+      $stmt->execute(array($dayOfWeek, $startTime, $duration, $scheduleId));
+    }
+
     public static function delete(PDO $db, int $id) : void {
       $stmt = $db->prepare('DELETE FROM Schedule WHERE ScheduleId = ?');
       $stmt->execute(array($id));

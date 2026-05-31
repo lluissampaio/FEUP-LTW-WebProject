@@ -6,7 +6,7 @@
   require_once(__DIR__ . '/../database/notification.class.php');
 
   function navLink(string $href, string $label, string $current, string $slug) : string {
-    $active = $current === $slug ? ' class="is-active"' : '';
+    $active = $current === $slug ? ' class="is-active" aria-current="page"' : '';
     return "<a href=\"$href\"$active>$label</a>";
   }
 
@@ -44,6 +44,7 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
   <header class="site-header">
     <div class="header-inner">
@@ -56,20 +57,18 @@
         <?= navLink('membership.php', 'Membership', $current, 'membership') ?>
         <?= navLink('equipment.php', 'Equipment', $current, 'equipment') ?>
         <?= navLink('contact.php',    'Contact',    $current, 'contact') ?>
-        <?php if (!$session->isLoggedIn()) { ?>
-          <?= navLink('login.php', 'Sign in', $current, 'login') ?>
-        <?php } ?>
       </nav>
       <?php if ($session->isLoggedIn()) { ?>
-        <a href="notifications.php" class="nav-bell" aria-label="Notifications">
+        <a href="notifications.php" class="nav-bell" aria-label="<?= $unread > 0 ? 'Notifications (' . (int)$unread . ' unread)' : 'Notifications' ?>">
           <span aria-hidden="true">&#9788;</span>
           <?php if ($unread > 0) { ?>
-            <span class="nav-bell-count"><?= (int)$unread ?></span>
+            <span class="nav-bell-count" aria-hidden="true"><?= (int)$unread ?></span>
           <?php } ?>
         </a>
         <a href="dashboard.php" class="nav-cta" title="<?= htmlspecialchars($fullName, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8') ?></a>
       <?php } else { ?>
-        <a href="<?= htmlspecialchars($ctaHref, ENT_QUOTES, 'UTF-8') ?>" class="nav-cta"><?= htmlspecialchars($ctaLabel, ENT_QUOTES, 'UTF-8') ?></a>
+        <a href="login.php" class="nav-login">Log in</a>
+        <a href="register.php" class="nav-cta">Join</a>
       <?php } ?>
       <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-controls="primary-nav" aria-expanded="false">
         <span class="nav-toggle-bar"></span>
@@ -84,13 +83,14 @@
       <?php foreach ($session->getMessages() as $message) { ?>
         <article class="message message-<?= htmlspecialchars($message['type'], ENT_QUOTES, 'UTF-8') ?>">
           <?= htmlspecialchars($message['text'], ENT_QUOTES, 'UTF-8') ?>
+          <button type="button" class="message-close" aria-label="Dismiss message">&times;</button>
         </article>
       <?php } ?>
     </section>
   <?php } ?>
 
   <?php if ($includeMain) { ?>
-  <main>
+  <main id="main-content">
   <?php } ?>
 <?php } ?>
 
@@ -107,10 +107,13 @@
         <a href="index.php">Home</a>
         <a href="classes.php">Classes</a>
         <a href="trainers.php">Trainers</a>
-        <a href="equipment.php">Equipment</a>
         <a href="about.php">About</a>
         <a href="membership.php">Membership</a>
+        <a href="equipment.php">Equipment</a>
         <a href="contact.php">Contact</a>
+        <?php if (!isset($_SESSION['id'])) { ?>
+          <a href="login.php">Log in</a>
+        <?php } ?>
       </nav>
     </div>
   </footer>

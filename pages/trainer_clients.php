@@ -28,7 +28,7 @@
 
   <div class="dashboard">
     <?php drawDashboardSidebar($user, 'trainer_clients', $session->csrfToken()); ?>
-    <main class="dashboard-main">
+    <main id="main-content" class="dashboard-main">
       <?php drawDashboardPageHeader('Trainer Management', 'Member Nutrition', 'Manage nutrition plans for your class members and personal training clients.'); ?>
       <?php drawTrainerClients($clients); ?>
     </main>

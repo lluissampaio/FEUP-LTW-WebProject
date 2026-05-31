@@ -11,38 +11,38 @@
         <input type="hidden" name="action" value="<?= $editing ? 'update' : 'create' ?>">
         <?php if ($editing) { ?><input type="hidden" name="equipment_id" value="<?= (int)$editing->id ?>"><?php } ?>
 
-        <div class="form-field">
-          <label for="e-name">Name</label>
+        <label class="form-field">
+          Name <span class="required-mark" aria-hidden="true">*</span>
           <input type="text" id="e-name" name="name" required maxlength="120" value="<?= htmlspecialchars($editing->name ?? '', ENT_QUOTES, 'UTF-8') ?>">
-        </div>
-        <div class="form-field">
-          <label for="e-type">Type</label>
+        </label>
+        <label class="form-field">
+          Type <span class="required-mark" aria-hidden="true">*</span>
           <input type="text" id="e-type" name="type" required maxlength="60" value="<?= htmlspecialchars($editing->type ?? '', ENT_QUOTES, 'UTF-8') ?>">
-        </div>
-        <div class="form-field">
-          <label for="e-location">Location</label>
+        </label>
+        <label class="form-field">
+          Location <span class="required-mark" aria-hidden="true">*</span>
           <select id="e-location" name="location_id" required>
             <?php foreach ($locations as $l) { ?>
               <option value="<?= (int)$l->id ?>" <?= ($editing && $editing->locationId === $l->id) ? 'selected' : '' ?>><?= htmlspecialchars($l->name, ENT_QUOTES, 'UTF-8') ?></option>
             <?php } ?>
           </select>
-        </div>
-        <div class="form-field">
-          <label for="e-quantity">Quantity</label>
+        </label>
+        <label class="form-field">
+          Quantity <span class="required-mark" aria-hidden="true">*</span>
           <input type="number" id="e-quantity" name="quantity" min="0" max="999" value="<?= (int)($editing->quantity ?? 1) ?>" required>
-        </div>
-        <div class="form-field">
-          <label for="e-available">Available</label>
+        </label>
+        <label class="form-field">
+          Available <span class="required-mark" aria-hidden="true">*</span>
           <input type="number" id="e-available" name="available" min="0" max="999" value="<?= (int)($editing->available ?? 1) ?>" required>
-        </div>
-        <div class="form-field">
-          <label for="e-status">Status</label>
+        </label>
+        <label class="form-field">
+          Status <span class="required-mark" aria-hidden="true">*</span>
           <select id="e-status" name="status" required>
             <?php foreach (['operational','maintenance','out_of_order'] as $s) { ?>
               <option value="<?= $s ?>" <?= ($editing && $editing->status === $s) ? 'selected' : '' ?>><?= str_replace('_', ' ', $s) ?></option>
             <?php } ?>
           </select>
-        </div>
+        </label>
 
         <div class="form-actions">
           <button type="submit" class="btn-primary"><?= $editing ? 'Update equipment' : 'Add equipment' ?></button>
@@ -76,6 +76,9 @@
                 </form>
               </td>
             </tr>
+          <?php } ?>
+          <?php if (empty($items)) { ?>
+            <tr><td colspan="6" class="empty-state">No equipment yet.</td></tr>
           <?php } ?>
         </tbody>
       </table>

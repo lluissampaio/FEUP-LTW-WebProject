@@ -1,5 +1,8 @@
 # ltw12g06 — Iron Haven
 
+A gym management site built with plain PHP 8.4 and SQLite (PDO). No
+frameworks — the only third-party resource is the Google Fonts CDN.
+
 ## Features
 
 **All users:**
@@ -26,15 +29,51 @@
 - [x] Elevate a user to admin status.
 - [x] Oversee and ensure the smooth operation of the entire system.
 
-**Extra:**
-- [x] Personal training bookings, membership plans, automatic waitlist with promotion, in-app notifications, nutrition plans, and a member dispute/support channel.
+**Extras:**
+- [x] Personal training bookings — members book one-to-one sessions against a
+      trainer's availability, subject to their plan's PT session limit.
+- [x] Membership plans — members apply for a plan, an admin approves the
+      application, and the member then subscribes to it.
+- [x] Class waitlist with automatic promotion — when a class is full, members
+      join a waitlist; a cancelled enrollment auto-promotes the next person.
+- [x] In-app notifications, with best-effort email delivery (each delivered
+      notification is flagged via `Notification.Emailed`).
+- [x] Trainer and admin analytics dashboards, with hand-rolled `<canvas>`
+      charts (no charting library).
+- [x] Nutrition plans with per-meal breakdowns and daily calorie/macro logging.
+- [x] Disputes & feedback channel — members raise disputes, admins respond.
+- [x] REST-style JSON API (`api/api_schedule.php`, `api/api_trainers.php`,
+      `api/api_equipment.php`, `api/api_enroll.php`).
+- [x] Equipment reservations — members reserve a piece of equipment for a date
+      and time slot, with per-slot capacity enforced in code against
+      `Equipment.Quantity`.
+- [x] Promotional features — featured classes, trainers, and plans surfaced on
+      the home page (`Featured` flags).
+- [x] Member fitness goals with progress charts on the member progress page.
 
 ## Running
 
-    sqlite3 database/database.db < database/database.sql
-    php -S localhost:9000
+The canonical database is built from `database/database.sql`, which contains
+the full schema plus seed data. The committed `database/database.db` is not
+required: `database/connection.db.php` builds the database from
+`database.sql` on first connection if `database.db` is missing or empty.
+It also self-heals — on every connection it checks for any expected table
+that is missing and recreates just those tables (data-preserving; it never
+runs the `DROP`/`INSERT` statements over existing data). This means a stale
+database built before newer tables were added will not produce 500s.
 
-Then open <http://localhost:9000> (redirects to `pages/`).
+To build the database explicitly and start the server:
+
+    sqlite3 database/database.db < database/database.sql
+    php -S localhost:8000 router.php
+
+The `router.php` script is the dev-server router: it serves real files as-is
+and renders a branded 404 page for unknown URLs (without it, `php -S` would
+fall back to the homepage for mistyped paths). You can still run plain
+`php -S localhost:8000`; you just lose proper 404s.
+
+Then open <http://localhost:8000> (redirects to `pages/`, i.e.
+`pages/index.php`).
 
 ## Credentials
 

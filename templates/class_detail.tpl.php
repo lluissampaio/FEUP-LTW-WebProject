@@ -1,4 +1,5 @@
 <?php declare(strict_types = 1); ?>
+<?php require_once(__DIR__ . '/../utils/format.php'); ?>
 
 <?php function drawClassDetail(GymClass $class, array $schedules, array $myEnrolled, array $myWaiting, bool $isLoggedIn, string $csrf) { ?>
   <section class="page-hero">
@@ -49,7 +50,7 @@
                   <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
                   <input type="hidden" name="schedule_id" value="<?= (int)$s->id ?>">
                   <span class="enrolled-tag">Enrolled</span>
-                  <button type="submit" class="btn-outline">Cancel</button>
+                  <button type="submit" class="btn-outline" data-confirm="Cancel this enrollment? This cannot be undone.">Cancel</button>
                 </form>
               <?php } elseif ($waiting) { ?>
                 <form method="post" action="../actions/action_waitlist_leave.php">
@@ -124,7 +125,7 @@
             <?php if ($r->comment) { ?>
               <blockquote><?= htmlspecialchars($r->comment, ENT_QUOTES, 'UTF-8') ?></blockquote>
             <?php } ?>
-            <p class="review-author"><?= htmlspecialchars($r->userName ?? '', ENT_QUOTES, 'UTF-8') ?> &middot; <?= htmlspecialchars(date('d M Y', strtotime($r->createdAt)), ENT_QUOTES, 'UTF-8') ?></p>
+            <p class="review-author"><?= htmlspecialchars($r->userName ?? '', ENT_QUOTES, 'UTF-8') ?> &middot; <?= htmlspecialchars(formatDate($r->createdAt), ENT_QUOTES, 'UTF-8') ?></p>
           </li>
         <?php } ?>
       </ul>

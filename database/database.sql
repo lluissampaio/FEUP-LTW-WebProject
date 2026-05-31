@@ -5,6 +5,11 @@
    (bcrypt hash: $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi)
 ********************************************************************************/
 
+DROP TABLE IF EXISTS NutritionLog;
+DROP TABLE IF EXISTS NutritionMeal;
+DROP TABLE IF EXISTS FitnessGoal;
+DROP TABLE IF EXISTS EquipmentReservation;
+DROP TABLE IF EXISTS MembershipApplication;
 DROP TABLE IF EXISTS NutritionPlan;
 DROP TABLE IF EXISTS Dispute;
 DROP TABLE IF EXISTS Booking;
@@ -31,7 +36,7 @@ CREATE TABLE User (
     UserId      INTEGER       NOT NULL,
     FirstName   NVARCHAR(40)  NOT NULL,
     LastName    NVARCHAR(40)  NOT NULL,
-    Username    NVARCHAR(40)  NOT NULL,
+    Username    NVARCHAR(20)  NOT NULL,
     Email       NVARCHAR(120) NOT NULL,
     Password    NVARCHAR(255) NOT NULL,
     Photo       NVARCHAR(255),
@@ -59,6 +64,7 @@ CREATE TABLE Trainer (
     Bio             TEXT,
     Specialty       NVARCHAR(120),
     Certifications  TEXT,
+    Featured        INTEGER       NOT NULL DEFAULT 0,  -- admin promo: highlight on homepage
     CONSTRAINT PK_Trainer PRIMARY KEY (TrainerId),
     FOREIGN KEY (TrainerId) REFERENCES User (UserId) ON DELETE CASCADE
 );
@@ -71,6 +77,7 @@ CREATE TABLE Class (
     TrainerId    INTEGER        NOT NULL,
     LocationId   INTEGER        NOT NULL,
     Capacity     INTEGER        NOT NULL DEFAULT 10,
+    Featured     INTEGER        NOT NULL DEFAULT 0,  -- admin promo: highlight on homepage
     CONSTRAINT PK_Class PRIMARY KEY (ClassId),
     FOREIGN KEY (TrainerId)  REFERENCES Trainer  (TrainerId),
     FOREIGN KEY (LocationId) REFERENCES Location (LocationId)
@@ -148,6 +155,7 @@ CREATE TABLE Notification (
     Message         TEXT          NOT NULL,
     Link            NVARCHAR(255),
     ReadFlag        INTEGER       NOT NULL DEFAULT 0,
+    Emailed         INTEGER       NOT NULL DEFAULT 0,  -- 1 once an email copy has been sent
     CreatedAt       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT PK_Notification PRIMARY KEY (NotificationId),
     FOREIGN KEY (UserId) REFERENCES User (UserId) ON DELETE CASCADE
@@ -273,6 +281,111 @@ CREATE TABLE NutritionPlan (
 );
 
 /*******************************************************************************
+   Membership applications (apply to join → admin accepts/rejects → email may register)
+********************************************************************************/
+
+CREATE TABLE MembershipApplication (
+    ApplicationId INTEGER       NOT NULL,
+    UserId        INTEGER       NOT NULL,                    -- the member applying
+    PlanId        INTEGER       NOT NULL,                    -- the plan they applied for
+    Message       TEXT,                                      -- optional note written by the applicant
+    Status        NVARCHAR(20)  NOT NULL DEFAULT 'pending',  -- 'pending' | 'accepted' | 'rejected'
+    CreatedAt     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DecidedAt     DATETIME,
+    DecidedBy     INTEGER,                                   -- admin UserId who decided
+    CONSTRAINT PK_MembershipApplication PRIMARY KEY (ApplicationId),
+    CONSTRAINT CK_Application_Status CHECK (Status IN ('pending','accepted','rejected')),
+    FOREIGN KEY (UserId)    REFERENCES User (UserId) ON DELETE CASCADE,
+    FOREIGN KEY (PlanId)    REFERENCES Plan (PlanId) ON DELETE CASCADE,
+    FOREIGN KEY (DecidedBy) REFERENCES User (UserId)
+);
+
+-- A member may have only one pending application per plan.
+CREATE UNIQUE INDEX UQ_Application_Pending ON MembershipApplication (UserId, PlanId) WHERE Status = 'pending';
+
+/*******************************************************************************
+   Equipment reservation (member reserves a piece of equipment for a time slot)
+********************************************************************************/
+
+CREATE TABLE EquipmentReservation (
+    ReservationId   INTEGER       NOT NULL,
+    EquipmentId     INTEGER       NOT NULL,
+    UserId          INTEGER       NOT NULL,
+    ReservationDate DATE          NOT NULL,                      -- 'YYYY-MM-DD'
+    StartTime       NVARCHAR(5)   NOT NULL,                      -- 'HH:MM'
+    Duration        INTEGER       NOT NULL DEFAULT 60,           -- minutes
+    Status          NVARCHAR(20)  NOT NULL DEFAULT 'reserved',   -- 'reserved' | 'cancelled' | 'completed'
+    CreatedAt       DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_EquipmentReservation PRIMARY KEY (ReservationId),
+    CONSTRAINT CK_EquipmentReservation_Status CHECK (Status IN ('reserved','cancelled','completed')),
+    FOREIGN KEY (EquipmentId) REFERENCES Equipment (EquipmentId) ON DELETE CASCADE,
+    FOREIGN KEY (UserId)      REFERENCES User      (UserId)      ON DELETE CASCADE
+);
+
+-- A member cannot hold two active reservations for the same equipment + date + slot.
+-- (Overall slot capacity vs Equipment.Quantity is enforced in application code.)
+CREATE UNIQUE INDEX UQ_EquipmentReservation_Slot
+    ON EquipmentReservation (EquipmentId, UserId, ReservationDate, StartTime)
+    WHERE Status = 'reserved';
+
+/*******************************************************************************
+   Member progress: fitness goals (target/current, tracked over time)
+********************************************************************************/
+
+CREATE TABLE FitnessGoal (
+    GoalId       INTEGER       NOT NULL,
+    UserId       INTEGER       NOT NULL,
+    Title        NVARCHAR(120) NOT NULL,
+    Metric       NVARCHAR(40)  NOT NULL DEFAULT 'custom',  -- 'weight' | 'workouts_per_week' | 'calories' | 'duration' | 'custom'
+    TargetValue  REAL          NOT NULL,
+    CurrentValue REAL          NOT NULL DEFAULT 0,
+    Unit         NVARCHAR(20),
+    Deadline     DATE,
+    Status       NVARCHAR(20)  NOT NULL DEFAULT 'active',  -- 'active' | 'achieved' | 'abandoned'
+    CreatedAt    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_FitnessGoal PRIMARY KEY (GoalId),
+    CONSTRAINT CK_FitnessGoal_Status CHECK (Status IN ('active','achieved','abandoned')),
+    FOREIGN KEY (UserId) REFERENCES User (UserId) ON DELETE CASCADE
+);
+
+/*******************************************************************************
+   Nutrition: per-meal breakdown of a plan + daily consumption log
+********************************************************************************/
+
+CREATE TABLE NutritionMeal (
+    MealId    INTEGER       NOT NULL,
+    PlanId    INTEGER       NOT NULL,                 -- FK NutritionPlan.PlanId
+    Name      NVARCHAR(80)  NOT NULL,                 -- 'Breakfast', 'Lunch', ...
+    Calories  INTEGER       NOT NULL DEFAULT 0,
+    Protein   INTEGER       NOT NULL DEFAULT 0,
+    Carbs     INTEGER       NOT NULL DEFAULT 0,
+    Fats      INTEGER       NOT NULL DEFAULT 0,
+    MealOrder INTEGER       NOT NULL DEFAULT 0,
+    CONSTRAINT PK_NutritionMeal PRIMARY KEY (MealId),
+    FOREIGN KEY (PlanId) REFERENCES NutritionPlan (PlanId) ON DELETE CASCADE
+);
+
+CREATE TABLE NutritionLog (
+    LogId     INTEGER       NOT NULL,
+    UserId    INTEGER       NOT NULL,
+    LogDate   DATE          NOT NULL,                 -- 'YYYY-MM-DD'
+    Calories  INTEGER       NOT NULL DEFAULT 0,
+    Protein   INTEGER       NOT NULL DEFAULT 0,
+    Carbs     INTEGER       NOT NULL DEFAULT 0,
+    Fats      INTEGER       NOT NULL DEFAULT 0,
+    Note      NVARCHAR(140),
+    CreatedAt DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_NutritionLog PRIMARY KEY (LogId),
+    FOREIGN KEY (UserId) REFERENCES User (UserId) ON DELETE CASCADE
+);
+
+CREATE INDEX IFK_EquipmentReservationUser  ON EquipmentReservation (UserId);
+CREATE INDEX IFK_EquipmentReservationEquip ON EquipmentReservation (EquipmentId);
+CREATE INDEX IFK_FitnessGoalUser           ON FitnessGoal          (UserId);
+CREATE INDEX IFK_NutritionMealPlan         ON NutritionMeal        (PlanId);
+CREATE INDEX IFK_NutritionLogUser          ON NutritionLog         (UserId);
+
+/*******************************************************************************
    Create Indexes (foreign-key access paths)
 ********************************************************************************/
 
@@ -296,6 +409,8 @@ CREATE INDEX IFK_BookingTrainer      ON Booking             (TrainerId);
 CREATE INDEX IFK_BookingAvailability ON Booking             (AvailabilityId);
 CREATE INDEX IFK_DisputeUser         ON Dispute             (UserId);
 CREATE INDEX IFK_NutritionPlanUser   ON NutritionPlan       (UserId);
+CREATE INDEX IFK_ApplicationUser     ON MembershipApplication (UserId);
+CREATE INDEX IFK_ApplicationPlan     ON MembershipApplication (PlanId);
 
 /*******************************************************************************
    Populate Tables
@@ -426,6 +541,11 @@ INSERT INTO Membership (MembershipId, UserId, PlanId, Status, RenewsAt) VALUES
 (2, 12, 1, 'active', datetime('now', '+1 month')),
 (3, 13, 3, 'active', datetime('now', '+1 month'));
 
+-- Membership applications (a member applies for a plan; admin accepts/rejects) -
+-- Beatriz (14) has no active plan: one pending application for Premium to triage.
+INSERT INTO MembershipApplication (ApplicationId, UserId, PlanId, Message, Status, DecidedAt, DecidedBy) VALUES
+(1, 14, 2, 'I''d love to move up to Premium for the personal training sessions.', 'pending', NULL, NULL);
+
 -- Trainer availability (recurring weekly one-on-one slots) --------------------
 INSERT INTO TrainerAvailability (AvailabilityId, TrainerId, DayOfWeek, StartTime, Duration) VALUES
 (1,  3, 'Monday',    '09:00', 60),
@@ -448,3 +568,40 @@ INSERT INTO Dispute (DisputeId, UserId, Category, Subject, Message, Status, Resp
 (1, 11, 'equipment', 'Cable crossover out of service', 'The cable crossover in Porto has been down for two weeks.', 'in_review', NULL, NULL),
 (2, 12, 'class', 'Reformer class overbooked', 'My Wednesday reformer session felt over capacity last week.', 'resolved', 'Apologies — capacity has been corrected and a spot reserved for you.', 1),
 (3, 14, 'billing', 'Double charge in May', 'I appear to have been billed twice for my May membership.', 'open', NULL, NULL);
+
+/*******************************************************************************
+   Seed data for new feature slices
+   (promotions, equipment reservations, fitness goals, nutrition meals/logs)
+********************************************************************************/
+
+-- Promotional Features: highlight a couple of classes and trainers on the homepage
+UPDATE Class   SET Featured = 1 WHERE ClassId   IN (1, 3);
+UPDATE Trainer SET Featured = 1 WHERE TrainerId IN (3, 2);
+
+-- Equipment reservations (Jordan reserves a Power Rack and a Cold Plunge slot)
+INSERT INTO EquipmentReservation (ReservationId, EquipmentId, UserId, ReservationDate, StartTime, Duration, Status) VALUES
+(1, 4,  11, date('now', '+1 day'), '18:00', 60, 'reserved'),
+(2, 10, 11, date('now', '+2 day'), '07:30', 30, 'reserved');
+
+-- Fitness goals (Jordan)
+INSERT INTO FitnessGoal (GoalId, UserId, Title, Metric, TargetValue, CurrentValue, Unit, Deadline, Status) VALUES
+(1, 11, 'Squat 140kg',          'weight',            140, 120, 'kg',       date('now', '+2 month'), 'active'),
+(2, 11, 'Train 4x per week',    'workouts_per_week', 4,   2,   'sessions', date('now', '+1 month'), 'active'),
+(3, 12, 'Reach 1800 kcal/day',  'calories',          1800,2000,'kcal',     date('now', '+1 month'), 'active');
+
+-- A nutrition plan for Jordan (11) with a per-meal breakdown, assigned by trainer Clara (3)
+INSERT INTO NutritionPlan (PlanId, UserId, DietType, DailyCalories, Protein, Carbs, Fats, Guidelines) VALUES
+(1, 11, 'High Protein', 2400, 190, 230, 70, 'Prioritise protein at every meal. Hydrate to 3L/day. Carbs around training.');
+
+INSERT INTO NutritionMeal (MealId, PlanId, Name, Calories, Protein, Carbs, Fats, MealOrder) VALUES
+(1, 1, 'Breakfast',     520, 40, 55, 14, 1),
+(2, 1, 'Lunch',         700, 55, 70, 20, 2),
+(3, 1, 'Pre-Training',  300, 20, 45, 5,  3),
+(4, 1, 'Dinner',        680, 60, 45, 24, 4),
+(5, 1, 'Evening Snack', 200, 15, 15, 7,  5);
+
+-- A few days of consumption logs for Jordan (so progress charts have data)
+INSERT INTO NutritionLog (LogId, UserId, LogDate, Calories, Protein, Carbs, Fats, Note) VALUES
+(1, 11, date('now', '-3 day'), 2310, 185, 210, 66, 'On track'),
+(2, 11, date('now', '-2 day'), 2480, 195, 240, 72, 'Refeed day'),
+(3, 11, date('now', '-1 day'), 2260, 180, 205, 64, NULL);

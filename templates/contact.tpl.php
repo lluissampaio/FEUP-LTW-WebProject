@@ -9,14 +9,14 @@
           <h2 class="contact-info-heading">Membership enquiry.</h2>
           <p class="contact-info-body">If you have been referred by a member, mention them by name. If you have not, tell us a little about yourself &mdash; we read every word.</p>
 
-          <div class="contact-info-list">
+          <ul class="contact-info-list">
             <?php foreach ($info as $row) { ?>
-              <div class="contact-info-row">
+              <li class="contact-info-row">
                 <p class="contact-info-label"><?= htmlspecialchars($row['label'], ENT_QUOTES, 'UTF-8') ?></p>
                 <p class="contact-info-value"><?= $row['value'] ?></p>
-              </div>
+              </li>
             <?php } ?>
-          </div>
+          </ul>
         </div>
 
         <?php drawContactForm($csrf); ?>
@@ -31,61 +31,63 @@
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
 
     <div class="form-row">
-      <div class="form-field">
-        <label for="first">First name</label>
+      <label class="form-field">
+        First name <span class="required-mark" aria-hidden="true">*</span>
         <input type="text" id="first" name="first" required>
-      </div>
-      <div class="form-field">
-        <label for="last">Last name</label>
+      </label>
+      <label class="form-field">
+        Last name <span class="required-mark" aria-hidden="true">*</span>
         <input type="text" id="last" name="last" required>
-      </div>
+      </label>
     </div>
 
-    <div class="form-field">
-      <label for="email">Email</label>
+    <label class="form-field">
+      Email <span class="required-mark" aria-hidden="true">*</span>
       <input type="email" id="email" name="email" required>
-    </div>
+    </label>
 
-    <div class="form-field">
-      <label for="phone">Phone (optional)</label>
+    <label class="form-field">
+      Phone (optional)
       <input type="tel" id="phone" name="phone">
-    </div>
+    </label>
 
     <div class="form-row">
-      <div class="form-field">
-        <label for="location">Preferred location</label>
+      <label class="form-field">
+        Preferred location
         <select id="location" name="location">
           <option>New York</option>
           <option>Lisbon</option>
           <option>Porto</option>
           <option>Viseu</option>
         </select>
-      </div>
-      <div class="form-field">
-        <label for="plan">Plan of interest</label>
+      </label>
+      <label class="form-field">
+        Plan of interest
         <select id="plan" name="plan">
           <option>Essential</option>
           <option>Premium</option>
           <option>Elite</option>
-          <option>Not sure yet</option>
+          <option selected>Not sure yet</option>
         </select>
-      </div>
+      </label>
     </div>
 
-    <div class="form-field">
-      <label for="referrer">Referring member (if any)</label>
+    <label class="form-field">
+      Referring member (if any)
       <input type="text" id="referrer" name="referrer" placeholder="Optional">
-    </div>
+    </label>
 
-    <div class="form-field">
-      <label for="message">A little about you</label>
-      <textarea id="message" name="message" rows="4" required data-counter="600"></textarea>
-    </div>
+    <label class="form-field">
+      A little about you <span class="required-mark" aria-hidden="true">*</span>
+      <textarea id="message" name="message" rows="4" required maxlength="600" data-counter="600"></textarea>
+    </label>
 
     <button type="submit" class="btn-primary">Send enquiry</button>
     <p class="form-disclaimer">By submitting, you consent to Iron Haven contacting you in confidence about your enquiry. We do not share, sell, or publish any applicant information.</p>
 
   </form>
+
+  <script src="../javascript/contact-plan.js" defer></script>
 
   <script src="../javascript/form-validate.js" defer></script>
 <?php } ?>
@@ -99,9 +101,9 @@
       <div class="locations-grid">
         <?php foreach ($locations as $loc) { ?>
           <article class="location-card">
-            <div class="img-real-wrap location-card-img">
+            <figure class="img-real-wrap location-card-img">
               <img class="img-real" src="../images/<?= htmlspecialchars($loc['image'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($loc['alt'], ENT_QUOTES, 'UTF-8') ?>">
-            </div>
+            </figure>
             <h3 class="location-name"><?= htmlspecialchars($loc['name'], ENT_QUOTES, 'UTF-8') ?></h3>
             <p class="location-region"><?= htmlspecialchars($loc['region'], ENT_QUOTES, 'UTF-8') ?></p>
             <address class="location-address"><?= $loc['address'] ?></address>

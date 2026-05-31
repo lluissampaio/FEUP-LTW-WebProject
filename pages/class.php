@@ -35,8 +35,8 @@
   if ($session->isLoggedIn()) {
     foreach (Enrollment::getForUser($db, $session->getId(), 'enrolled') as $e) $myEnrolled[$e->scheduleId] = true;
     foreach (Waitlist::getForUser($db, $session->getId())               as $w) $myWaiting[$w->scheduleId]  = true;
-    // Allow review if user has any enrollment (enrolled or attended) for this class
-    $canReview = Enrollment::hasEnrolledInClass($db, $session->getId(), $class->id);
+    // Allow review only if the member has actually ATTENDED a past occurrence of this class.
+    $canReview = Enrollment::hasAttended($db, $session->getId(), $class->id);
     foreach ($reviews as $r) if ($r->userId === $session->getId()) { $myReview = $r; break; }
   }
 

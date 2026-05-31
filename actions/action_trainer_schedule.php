@@ -44,6 +44,31 @@
         throw new RuntimeException('Invalid schedule parameters.');
       }
 
+    } elseif ($action === 'edit') {
+      $scheduleId = (int)($_POST['schedule_id'] ?? 0);
+      $s = Schedule::getSchedule($db, $scheduleId);
+
+      if (!$s) {
+        throw new RuntimeException('Schedule not found.');
+      }
+
+      $c = GymClass::getClass($db, $s->classId);
+      if (!$c || $c->trainerId !== $user->id) {
+        throw new RuntimeException('Unauthorized access.');
+      }
+
+      $validDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+      $day      = trim((string)($_POST['schedule_day']      ?? ''));
+      $start    = substr(trim((string)($_POST['schedule_start'] ?? '')), 0, 5);
+      $duration = (int)        ($_POST['schedule_duration'] ?? 0);
+
+      if ($day !== '' && $start !== '' && $duration > 0 && in_array($day, $validDays, true)) {
+        Schedule::update($db, $scheduleId, $day, $start, $duration);
+        $session->addMessage('success', 'Class session updated successfully.');
+      } else {
+        throw new RuntimeException('Invalid schedule parameters.');
+      }
+
     } elseif ($action === 'delete') {
       $scheduleId = (int)($_POST['schedule_id'] ?? 0);
       $s = Schedule::getSchedule($db, $scheduleId);
@@ -63,6 +88,8 @@
       $session->addMessage('error', 'Unknown action.');
     }
   } catch (RuntimeException $e) {
+    $session->addMessage('error', $e->getMessage());
+  } catch (InvalidArgumentException $e) {
     $session->addMessage('error', $e->getMessage());
   } catch (Throwable $e) {
     error_log('action_trainer_schedule: ' . $e->getMessage());

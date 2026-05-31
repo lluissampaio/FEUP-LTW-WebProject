@@ -12,11 +12,11 @@
         <?php if ($editing) { ?><input type="hidden" name="class_id" value="<?= (int)$editing->id ?>"><?php } ?>
 
         <div class="form-field">
-          <label for="c-name">Name</label>
+          <label for="c-name">Name <span class="required-mark" aria-hidden="true">*</span></label>
           <input type="text" id="c-name" name="name" required maxlength="120" value="<?= htmlspecialchars($editing->name ?? '', ENT_QUOTES, 'UTF-8') ?>">
         </div>
         <div class="form-field">
-          <label for="c-type">Type</label>
+          <label for="c-type">Type <span class="required-mark" aria-hidden="true">*</span></label>
           <input type="text" id="c-type" name="type" required maxlength="60" value="<?= htmlspecialchars($editing->type ?? '', ENT_QUOTES, 'UTF-8') ?>">
         </div>
         <div class="form-field">
@@ -24,7 +24,7 @@
           <textarea id="c-desc" name="description" rows="3" maxlength="1000"><?= htmlspecialchars($editing->description ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
         </div>
         <div class="form-field">
-          <label for="c-trainer">Trainer</label>
+          <label for="c-trainer">Trainer <span class="required-mark" aria-hidden="true">*</span></label>
           <select id="c-trainer" name="trainer_id" required>
             <?php foreach ($trainers as $tr) { ?>
               <option value="<?= (int)$tr->id ?>" <?= ($editing && $editing->trainerId === $tr->id) ? 'selected' : '' ?>><?= htmlspecialchars($tr->name(), ENT_QUOTES, 'UTF-8') ?></option>
@@ -32,7 +32,7 @@
           </select>
         </div>
         <div class="form-field">
-          <label for="c-location">Location</label>
+          <label for="c-location">Location <span class="required-mark" aria-hidden="true">*</span></label>
           <select id="c-location" name="location_id" required>
             <?php foreach ($locations as $l) { ?>
               <option value="<?= (int)$l->id ?>" <?= ($editing && $editing->locationId === $l->id) ? 'selected' : '' ?>><?= htmlspecialchars($l->name, ENT_QUOTES, 'UTF-8') ?></option>
@@ -40,7 +40,7 @@
           </select>
         </div>
         <div class="form-field">
-          <label for="c-capacity">Capacity</label>
+          <label for="c-capacity">Capacity <span class="required-mark" aria-hidden="true">*</span></label>
           <input type="number" id="c-capacity" name="capacity" min="1" max="100" value="<?= (int)($editing->capacity ?? 10) ?>" required>
         </div>
 
@@ -89,7 +89,7 @@
           <input type="hidden" name="class_id"   value="<?= (int)$editing->id ?>">
 
           <div class="form-field">
-            <label for="s-day">Day</label>
+            <label for="s-day">Day <span class="required-mark" aria-hidden="true">*</span></label>
             <select id="s-day" name="day_of_week" required>
               <?php foreach ($days as $d) { ?>
                 <option value="<?= htmlspecialchars($d, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($d, ENT_QUOTES, 'UTF-8') ?></option>
@@ -97,11 +97,11 @@
             </select>
           </div>
           <div class="form-field">
-            <label for="s-start">Start time</label>
+            <label for="s-start">Start time <span class="required-mark" aria-hidden="true">*</span></label>
             <input type="time" id="s-start" name="start_time" required>
           </div>
           <div class="form-field">
-            <label for="s-duration">Duration (min)</label>
+            <label for="s-duration">Duration (min) <span class="required-mark" aria-hidden="true">*</span></label>
             <input type="number" id="s-duration" name="duration" min="15" max="240" step="5" value="60" required>
           </div>
 
@@ -175,6 +175,9 @@
                 </form>
               </td>
             </tr>
+          <?php } ?>
+          <?php if (empty($classes)) { ?>
+            <tr><td colspan="7" class="empty-state">No classes yet.</td></tr>
           <?php } ?>
         </tbody>
       </table>
